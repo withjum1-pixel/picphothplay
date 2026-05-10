@@ -96,21 +96,23 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 #cam { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:9999; flex-direction:column; }
 #cam.on { display:flex; }
 
-#cam-header { background:rgba(0,0,0,.82); padding:12px 14px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; z-index:2; height: 64px; transition: all 0.3s ease; }
+#cam-header { background:rgba(0,0,0,.82); padding:12px 14px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; z-index:10001; height: 64px; transition: all 0.3s ease; }
 #cam-body { flex:1; position:relative; overflow:hidden; background:#111; display:flex; align-items:center; justify-content:center; touch-action: none; }
-#cam-footer { background:rgba(0,0,0,.88); padding:14px 16px 36px; display:flex; align-items:center; justify-content:space-around; flex-shrink:0; z-index:2; height: 120px; transition: all 0.3s ease; padding-bottom: env(safe-area-inset-bottom); }
+#cam-footer { background:rgba(0,0,0,.88); padding:14px 16px 36px; display:flex; align-items:center; justify-content:space-around; flex-shrink:0; z-index:10001; height: 120px; transition: all 0.3s ease; padding-bottom: env(safe-area-inset-bottom); }
 
 .cam-nb { background:rgba(255,255,255,.2); border:none; border-radius:.9rem; padding:9px 14px; color:#fff; font-size:14px; font-weight:800; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:6px; white-space:nowrap; transition: background 0.2s; }
 .cam-nb:active { background:rgba(255,255,255,.4); }
 .cam-title-txt { color:#fff; font-size:14px; font-weight:800; text-align:center; flex:1; }
 
 .v-tag { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:block; transform-origin:center center; transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-.cam-grid-ov { position:absolute; top:0; left:0; right:0; bottom:0; pointer-events:none; z-index:2; background-image:linear-gradient(rgba(255,255,255,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.2) 1px,transparent 1px); background-size:33.33% 33.33%; opacity: 0.7; }
-.cd-ov { display:none; position:absolute; top:0; left:0; right:0; bottom:0; align-items:center; justify-content:center; background:rgba(0,0,0,.28); z-index:10; }
-.cd-ov.on { display:flex; }
-.cd-n { font-size:170px; font-weight:800; color:#fff; text-shadow:0 0 60px rgba(255,255,255,.9); animation:cd 1s ease forwards; }
+.cam-grid-ov { position:absolute; top:0; left:0; right:0; bottom:0; pointer-events:none; z-index:1000; background-image:linear-gradient(rgba(255,255,255,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.2) 1px,transparent 1px); background-size:33.33% 33.33%; opacity: 0.7; }
 
-.zoom-row { position:absolute; bottom:16px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:5; background: rgba(0,0,0,0.3); padding: 4px; border-radius: 2rem; backdrop-filter: blur(4px); }
+/* 카운트다운 레이어는 비디오보다 위, 헤더보다 아래 */
+.cd-ov { display:none; position:absolute; top:0; left:0; right:0; bottom:0; align-items:center; justify-content:center; background:rgba(0,0,0,0); z-index:5000; pointer-events:none; }
+.cd-ov.on { display:flex; }
+.cd-n { font-size:170px; font-weight:800; color:#fff; text-shadow:0 0 60px rgba(0,0,0,0.8); animation:cd 1s ease forwards; }
+
+.zoom-row { position:absolute; bottom:16px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:1000; background: rgba(0,0,0,0.3); padding: 4px; border-radius: 2rem; backdrop-filter: blur(4px); }
 .zb { background:transparent; color:#fff; border:none; border-radius:1.5rem; padding:8px 14px; font-size:14px; font-weight:800; cursor:pointer; font-family:inherit; transition: all 0.2s; }
 .zb.on { background:rgba(255,255,255,.93); color:#333; }
 
@@ -122,7 +124,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 .shutter:active { transform:scale(.9); }
 .shutter:disabled { opacity:.4; cursor:not-allowed; }
 
-/* 가로 모드 UI */
+/* 가로 모드 대응 UI */
 @media (orientation: landscape) {
   #cam { flex-direction: row; }
   #cam-header { flex-direction: column; width: 70px; height: 100%; padding: 16px 0; padding-left: env(safe-area-inset-left); justify-content: flex-start; gap: 20px; }
@@ -133,7 +135,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
   .zoom-row { bottom: 16px; left: auto; right: 16px; transform: none; flex-direction: column; }
 }
 
-#inp-wrap{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.72);z-index:99999;align-items:flex-end;justify-content:center;}
+#inp-wrap{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.72);z-index:100000;align-items:flex-end;justify-content:center;}
 #inp-wrap.on{display:flex;}
 #inp-sheet{background:#fff;border-radius:1.5rem 1.5rem 0 0;padding:24px 20px 40px;width:100%;max-width:480px;}
 #inp-sheet h3{font-size:18px;font-weight:800;margin-bottom:18px;text-align:center;}
@@ -141,7 +143,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 #inp-sheet input:focus{outline:none;border-color:var(--gn);}
 .inp-btns{display:flex;gap:12px;margin-top:6px;}
 
-#modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.88);z-index:200;align-items:center;justify-content:center;padding:20px;}
+#modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.88);z-index:100001;align-items:center;justify-content:center;padding:20px;}
 #modal.on{display:flex;}
 .mc2{background:#fff;border-radius:1.5rem;overflow:hidden;width:100%;max-width:420px;animation:pp .3s ease;}
 #vwr{overflow:hidden;background:#111;display:flex;align-items:center;justify-content:center;min-height:200px;max-height:60vh;}
@@ -167,7 +169,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 .fw input:focus{outline:none;border-color:var(--gn);}
 #stEl{margin-top:10px;font-size:14px;text-align:center;color:#888;min-height:20px;line-height:1.7;}
 
-.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(120px);background:rgba(30,30,30,.95);color:#fff;border-radius:2rem;padding:13px 24px;font-size:14px;font-weight:700;z-index:99998;transition:transform .3s;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.3);}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(120px);background:rgba(30,30,30,.95);color:#fff;border-radius:2rem;padding:13px 24px;font-size:14px;font-weight:700;z-index:110000;transition:transform .3s;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.3);}
 .toast.show{transform:translateX(-50%) translateY(0);}
 
 #captureCanvas{display:none;}
@@ -175,6 +177,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 </head>
 <body>
 
+<!-- 안전수칙 페이지 -->
 <div id="pg-safety" class="pg on">
   <div class="hero-safety">
     <span class="em">📸</span>
@@ -199,6 +202,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
   </div>
 </div>
 
+<!-- 홈 페이지 -->
 <div id="pg-home" class="pg">
   <div class="hero-home">
     <span class="cam">📷</span>
@@ -212,6 +216,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
   </div>
 </div>
 
+<!-- 연습 페이지 -->
 <div id="pg-practice" class="pg">
   <div class="nav">
     <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
@@ -231,6 +236,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
   </div>
 </div>
 
+<!-- 미션 페이지 -->
 <div id="pg-mission" class="pg">
   <div class="nav">
     <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
@@ -272,10 +278,10 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
   </div>
 </div>
 
+<!-- 카메라 UI -->
 <div id="cam">
   <div id="cam-header">
     <button class="cam-nb" onclick="closeCam()"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
-    <!-- 전체화면 토글 버튼 추가 -->
     <button class="cam-nb" onclick="toggleFullscreen()" id="fsBtn"><i class="fa-solid fa-expand"></i> 전체화면</button>
     <span id="camTitle" class="cam-title-txt">사진 찍기</span>
   </div>
@@ -300,11 +306,12 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
   <canvas id="captureCanvas"></canvas>
 </div>
 
+<!-- 입력창 -->
 <div id="inp-wrap">
   <div id="inp-sheet">
     <h3>📝 사진 정보 입력</h3>
-    <input type="text" id="inpTitle" placeholder="사진 제목">
-    <input type="text" id="inpPlace" placeholder="촬영 장소">
+    <input type="text" id="inpTitle" placeholder="사진 제목을 입력하세요">
+    <input type="text" id="inpPlace" placeholder="촬영 장소를 입력하세요">
     <div class="inp-btns">
       <button class="btn btn-rd btn-sm" onclick="discardPhoto()" style="flex:1;">버리기</button>
       <button class="btn btn-gn btn-sm" onclick="savePhoto()" style="flex:1.5;">저장하기</button>
@@ -312,15 +319,26 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
   </div>
 </div>
 
+<!-- 뷰어 모달 -->
 <div id="modal">
   <div class="mc2">
     <div id="vwr"><img id="pvImg" src="" alt=""></div>
-    <div class="zm-bar"><button class="zm-btn" onclick="zm(-1)">－</button><span id="zmLbl">100%</span><button class="zm-btn" onclick="zm(1)">＋</button></div>
-    <div class="mi"><div class="mi-t" id="pvTitle">📸</div><div class="mi-p">📍 <span id="pvPlace"></span></div></div>
-    <div style="padding:0 16px 16px;"><button class="btn btn-gy btn-sm" onclick="closeModal()">닫기</button></div>
+    <div class="zm-bar">
+      <button class="zm-btn" onclick="zm(-1)">－</button>
+      <span id="zmLbl">100%</span>
+      <button class="zm-btn" onclick="zm(1)">＋</button>
+    </div>
+    <div class="mi">
+      <div class="mi-t" id="pvTitle">📸</div>
+      <div class="mi-p">📍 <span id="pvPlace"></span></div>
+    </div>
+    <div style="padding:0 16px 16px;">
+      <button class="btn btn-gy btn-sm" onclick="closeModal()">닫기</button>
+    </div>
   </div>
 </div>
 
+<!-- 결과물 페이지 -->
 <div id="pg-result" class="pg">
   <div class="nav">
     <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
@@ -357,11 +375,10 @@ try {
   if(saved) photos = JSON.parse(saved);
 } catch(e){ photos = []; }
 
-// 핀치 줌 변수
 let startDist = 0, initialZoom = 1;
 
 // ═══════════════════════════════
-// 화면 전환 및 UI
+// 기본 기능 및 전체화면
 // ═══════════════════════════════
 document.getElementById('agCk').addEventListener('change', function(){ document.getElementById('agBtn').disabled = !this.checked; });
 function goHome(){ if(!document.getElementById('agCk').checked) return; go('pg-home'); }
@@ -376,21 +393,16 @@ function tipTog(hd){
   if(t) t.style.display = t.style.display==='block' ? 'none' : 'block';
 }
 
-// ═══════════════════════════════
-// 전체화면 제어
-// ═══════════════════════════════
 async function toggleFullscreen() {
   if (!document.fullscreenElement) {
     try {
       if (document.documentElement.requestFullscreen) {
         await document.documentElement.requestFullscreen();
-      } else if (document.documentElement.webkitRequestFullscreen) { // Safari 지원
+      } else if (document.documentElement.webkitRequestFullscreen) {
         await document.documentElement.webkitRequestFullscreen();
       }
       document.getElementById('fsBtn').innerHTML = '<i class="fa-solid fa-compress"></i> 화면축소';
-    } catch (err) {
-      toast('전체화면 전환에 실패했습니다.');
-    }
+    } catch (err) { toast('전체화면 전환 실패'); }
   } else {
     if (document.exitFullscreen) {
       document.exitFullscreen();
@@ -402,7 +414,7 @@ async function toggleFullscreen() {
 }
 
 // ═══════════════════════════════
-// 카메라 & 줌 기능 (핀치 줌 포함)
+// 카메라 & 줌 기능
 // ═══════════════════════════════
 async function openCam(title, btn){
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ alert('카메라를 지원하지 않습니다.'); return; }
@@ -413,7 +425,7 @@ async function openCam(title, btn){
   applyZoom(1);
   document.getElementById('cam').classList.add('on');
 
-  // 전체 화면 자동 시도 (사용자 클릭 이벤트 핸들러 내이므로 가능)
+  // 전체 화면 자동 시도
   try {
     if (!document.fullscreenElement) {
         if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
@@ -422,7 +434,6 @@ async function openCam(title, btn){
     }
   } catch(e) {}
 
-  // 핀치 줌 이벤트 리스너
   const body = document.getElementById('cam-body');
   body.addEventListener('touchstart', e => {
     if(e.touches.length === 2){
@@ -453,20 +464,17 @@ async function startCam(){
     var vid = document.getElementById('videoMain');
     vid.srcObject = stream;
     vid.onloadedmetadata = () => vid.play();
-  }catch(e){ alert('카메라를 시작할 수 없습니다.'); closeCam(); }
+  }catch(e){ alert('카메라 시작 불가'); closeCam(); }
 }
 
 function closeCam(){
   if(stream){ stream.getTracks().forEach(t => t.stop()); stream=null; }
   document.getElementById('cam').classList.remove('on');
   if(callerBtn) callerBtn.disabled = false;
-  
-  // 전체화면 해제 시도
   if (document.fullscreenElement) {
       if (document.exitFullscreen) document.exitFullscreen();
       else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
   }
-  
   go('pg-home');
 }
 
@@ -480,27 +488,64 @@ function applyZoom(z){
 function setZoom(z, btn){ applyZoom(z); }
 function flipCam(){ facing = facing === 'environment' ? 'user' : 'environment'; startCam(); }
 
+// ═══════════════════════════════
+// 카운트다운 및 사운드 (수정 완료)
+// ═══════════════════════════════
+function playShutter(){
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const sr = ctx.sampleRate, now = ctx.currentTime;
+    const mkBuf = (dur, fn) => { 
+      const b = ctx.createBuffer(1, Math.floor(sr * dur), sr); 
+      fn(b.getChannelData(0), sr); return b; 
+    };
+    const b1 = mkBuf(0.08, (d, sr) => {
+      for (let i = 0; i < d.length; i++) {
+        let t = i / sr, e = i < d.length * 0.1 ? (i / (d.length * 0.1)) : Math.exp(-(t - 0.008) * 15);
+        d[i] = (Math.sin(2 * Math.PI * 7000 * t) * 0.5 + Math.sin(2 * Math.PI * 5000 * t) * 0.3) * e * 2.5;
+      }
+    });
+    const s1 = ctx.createBufferSource(); s1.buffer = b1;
+    s1.connect(ctx.destination); s1.start(now);
+  } catch(e) {}
+}
+
 function startCD(){
   if(cdTimer) return;
+  document.getElementById('shutBtn').disabled = true;
   var cnt = 3;
   var ov = document.getElementById('cdOv'), nm = document.getElementById('cdN');
-  nm.textContent = cnt; ov.classList.add('on');
+  
+  function show(n){
+    nm.textContent = n;
+    ov.classList.add('on');
+    // 애니메이션 초기화 로직 (강제 리플로우)
+    nm.style.animation = 'none';
+    void nm.offsetWidth; 
+    nm.style.animation = 'cd 1s ease forwards';
+  }
+  
+  show(cnt);
   cdTimer = setInterval(() => {
     cnt--;
-    if(cnt<=0){
-      clearInterval(cdTimer); cdTimer=null;
+    if(cnt <= 0){
+      clearInterval(cdTimer); cdTimer = null;
       ov.classList.remove('on');
       takePhoto();
-    } else { nm.textContent = cnt; }
+      document.getElementById('shutBtn').disabled = false;
+    } else { show(cnt); }
   }, 1000);
 }
 
 // ═══════════════════════════════
-// 사진 촬영 & 화질 개선
+// 사진 촬영 및 저장 (수정 완료)
 // ═══════════════════════════════
 function takePhoto(){
   var vid = document.getElementById('videoMain');
-  if(vid.readyState < 2){ toast('카메라 준비 중이에요!'); return; }
+  if(vid.readyState < 2){ toast('준비 중...'); return; }
+
+  // 셔터음 재생
+  playShutter();
 
   var isLand = window.innerWidth > window.innerHeight;
   var vidW = vid.videoWidth, vidH = vid.videoHeight;
@@ -511,7 +556,7 @@ function takePhoto(){
   var drawH = isLand ? Math.min(vidW, vidH) : Math.max(vidW, vidH);
   
   const limit = 2048;
-  if(drawW > limit || drawH > limit){ let r = Math.min(limit/drawW, limit/drawH); drawW *= r; dh *= r; }
+  if(drawW > limit || drawH > limit){ let r = Math.min(limit/drawW, limit/drawH); drawW *= r; drawH *= r; }
   canvas.width = drawW; canvas.height = drawH;
 
   ctx.save();
@@ -525,9 +570,18 @@ function takePhoto(){
   }
   ctx.restore();
 
+  // 촬영 후 플래시 효과
+  const flash = document.createElement('div');
+  flash.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:200000;opacity:0.8;';
+  document.body.appendChild(flash);
+  setTimeout(() => { flash.style.transition='opacity 0.2s'; flash.style.opacity='0'; setTimeout(()=>flash.remove(), 200); }, 50);
+
   resizeImage(canvas.toDataURL('image/jpeg', 0.95), 1600, data => {
     pendingData = data;
     pendingIsLand = isLand;
+    document.getElementById('inpTitle').value = '';
+    document.getElementById('inpPlace').value = '';
+    // 입력창 표시
     document.getElementById('inp-wrap').classList.add('on');
   });
 }
@@ -547,20 +601,27 @@ function resizeImage(data, max, cb){
 function savePhoto(){
   var t = document.getElementById('inpTitle').value.trim();
   var p = document.getElementById('inpPlace').value.trim();
-  if(!t || !p){ toast('제목과 장소를 입력하세요!'); return; }
+  if(!t || !p){ toast('정보를 모두 입력하세요!'); return; }
   photos.push({ id: Date.now(), data: pendingData, title: t, place: p, timestamp: new Date().toLocaleString('ko-KR'), mode: camMode, isLand: pendingIsLand });
   localStorage.setItem('photos', JSON.stringify(photos));
-  document.getElementById('lastTh').src = pendingData;
-  document.getElementById('lastTh').style.display='block';
-  document.getElementById('galIco').style.display='none';
+  
+  // 썸네일 업데이트
+  const lastImg = document.getElementById('lastTh');
+  lastImg.src = pendingData;
+  lastImg.style.display = 'block';
+  document.getElementById('galIco').style.display = 'none';
+  
   document.getElementById('inp-wrap').classList.remove('on');
   toast('✅ 저장되었습니다!');
 }
 
-function discardPhoto(){ document.getElementById('inp-wrap').classList.remove('on'); toast('🗑️ 버렸습니다.'); }
+function discardPhoto(){ 
+  document.getElementById('inp-wrap').classList.remove('on'); 
+  toast('🗑️ 버렸습니다.'); 
+}
 
 // ═══════════════════════════════
-// 결과 렌더링 & 제출 (목록 유지)
+// 결과 및 유틸리티
 // ═══════════════════════════════
 function renderResult(){
   var g = document.getElementById('pgrid');
@@ -597,13 +658,10 @@ async function submitAll(){
     st.innerHTML = '✅ 제출 완료! 사진은 목록에 그대로 남아있습니다. 📝';
     toast('🎉 전송 성공!');
   } catch(e){
-    st.innerHTML = '❌ 실패! 인터넷 연결을 확인하세요.';
+    st.innerHTML = '❌ 실패! 인터넷 연결 확인';
   } finally { btn.disabled = false; }
 }
 
-// ═══════════════════════════════
-// 뷰어 및 유틸
-// ═══════════════════════════════
 function openModal(p){
   document.getElementById('pvImg').src = p.data;
   document.getElementById('pvTitle').textContent = '📸 ' + p.title;
