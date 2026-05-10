@@ -92,12 +92,12 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 .pf textarea{height:64px;resize:none;}
 .pf input:focus,.pf textarea:focus{outline:none;border-color:var(--gn);}
 
-/* ══ 카메라 앱 스타일 (가로/세로 네이티브 반응형) ══ */
+/* ══ 카메라 앱 스타일 ══ */
 #cam { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:9999; flex-direction:column; }
 #cam.on { display:flex; }
 
 #cam-header { background:rgba(0,0,0,.82); padding:12px 14px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; z-index:2; height: 64px; transition: all 0.3s ease; }
-#cam-body { flex:1; position:relative; overflow:hidden; background:#111; display:flex; align-items:center; justify-content:center; }
+#cam-body { flex:1; position:relative; overflow:hidden; background:#111; display:flex; align-items:center; justify-content:center; touch-action: none; } /* touch-action 추가 */
 #cam-footer { background:rgba(0,0,0,.88); padding:14px 16px 36px; display:flex; align-items:center; justify-content:space-around; flex-shrink:0; z-index:2; height: 120px; transition: all 0.3s ease; padding-bottom: env(safe-area-inset-bottom); }
 
 .cam-nb { background:rgba(255,255,255,.2); border:none; border-radius:.9rem; padding:9px 14px; color:#fff; font-size:14px; font-weight:800; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:6px; white-space:nowrap; transition: background 0.2s; }
@@ -380,6 +380,10 @@ var pendingData = null, pendingIsLand = false;
 var camMode = '', callerBtn = null, curZoom = 1;
 var photos = [];
 
+// ★ 줌 관련 변수
+let initialPinchDistance = null;
+let initialZoomOnPinch = 1;
+
 // ★ 앱 시작 시 저장된 사진 불러오기 로직 강화
 try { 
   var saved = localStorage.getItem('photos');
@@ -401,7 +405,7 @@ function go(id){
   document.querySelectorAll('.pg').forEach(function(p){ p.classList.remove('on'); });
   var t = document.getElementById(id);
   if(t) t.classList.add('on');
-  if(id==='pg-result') renderResult(); // ★ 결과 페이지 갈 때 무조건 새로고침
+  if(id==='pg-result') renderResult(); 
   window.scrollTo(0,0);
 }
 function tipTog(hd){
@@ -410,7 +414,7 @@ function tipTog(hd){
 }
 
 // ═══════════════════════════════
-// 카메라 제어
+// 카메라 제어 및 핀치 줌
 // ═══════════════════════════════
 async function openCam(title, btn){
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
@@ -424,15 +428,67 @@ async function openCam(title, btn){
   document.querySelectorAll('.zb').forEach(function(b){ b.classList.remove('on'); });
   document.querySelectorAll('.zb')[0].classList.add('on');
   document.getElementById('cam').classList.add('on');
+  
+  // 핀치 줌 이벤트 등록
+  const camBody = document.getElementById('cam-body');
+  camBody.addEventListener('touchstart', handleTouchStart, {passive: false});
+  camBody.addEventListener('touchmove', handleTouchMove, {passive: false});
+  camBody.addEventListener('touchend', handleTouchEnd);
+
   await startCam();
+}
+
+function handleTouchStart(e) {
+  if (e.touches.length === 2) {
+    e.preventDefault();
+    initialPinchDistance = Math.hypot(
+      e.touches[0].pageX - e.touches[1].clientX,
+      e.touches[0].pageY - e.touches[1].clientY
+    );
+    initialZoomOnPinch = curZoom;
+  }
+}
+
+function handleTouchMove(e) {
+  if (e.touches.length === 2 && initialPinchDistance !== null) {
+    e.preventDefault();
+    const currentDistance = Math.hypot(
+      e.touches[0].pageX - e.touches[1].clientX,
+      e.touches[0].pageY - e.touches[1].clientY
+    );
+    const zoomFactor = currentDistance / initialPinchDistance;
+    let newZoom = initialZoomOnPinch * zoomFactor;
+    
+    // 줌 범위 제한 (1배 ~ 10배)
+    newZoom = Math.min(Math.max(newZoom, 1), 10);
+    applyZoom(newZoom);
+  }
+}
+
+function handleTouchEnd() {
+  initialPinchDistance = null;
+}
+
+function applyZoom(z) {
+  curZoom = z;
+  document.getElementById('videoMain').style.transform = 'scale('+z+')';
+  
+  // 버튼 UI 업데이트 (정수 배율인 경우에만 불 들어오게 함)
+  document.querySelectorAll('.zb').forEach(function(b){ 
+    const val = parseFloat(b.textContent);
+    if(Math.abs(z - val) < 0.1) b.classList.add('on');
+    else b.classList.remove('on');
+  });
 }
 
 async function startCam(){
   try{
     if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream=null; }
+    // ★ 화질 개선: ideal 해상도를 높게 설정 (Full HD 급 이상 요청)
     var constraints = [
-      {video:{facingMode:facing,width:{ideal:1280},height:{ideal:720}},audio:false},
-      {video:{facingMode:facing},audio:false}
+      {video:{facingMode:facing, width:{ideal:4096}, height:{ideal:2160}}, audio:false},
+      {video:{facingMode:facing, width:{ideal:1920}, height:{ideal:1080}}, audio:false},
+      {video:{facingMode:facing}, audio:false}
     ];
     for(var i=0;i<constraints.length;i++){
       try{ stream=await navigator.mediaDevices.getUserMedia(constraints[i]); break; }
@@ -462,10 +518,7 @@ function flipCam(){
 }
 
 function setZoom(z, btn){
-  curZoom = z;
-  document.getElementById('videoMain').style.transform = 'scale('+z+')';
-  document.querySelectorAll('.zb').forEach(function(b){ b.classList.remove('on'); });
-  if(btn) btn.classList.add('on');
+  applyZoom(z);
 }
 
 function startCD(){
@@ -493,7 +546,7 @@ function startCD(){
 }
 
 // ═══════════════════════════════
-// 사진 촬영 및 저장 (최적화 적용)
+// 사진 촬영 및 저장 (화질 개선 적용)
 // ═══════════════════════════════
 function takePhoto(){
   var vid = document.getElementById('videoMain');
@@ -504,9 +557,18 @@ function takePhoto(){
   var canvas = document.getElementById('captureCanvas');
   var ctx = canvas.getContext('2d');
 
-  // 저장용 캔버스 크기 결정 (가로세로 비율 유지하며 최대 1280px 수준으로 캡처)
+  // ★ 화질 개선: 캡처 캔버스 크기를 비디오 원본 수준으로 키움 (최대 2560px)
   var drawW = isLandscape ? Math.max(vidW, vidH) : Math.min(vidW, vidH);
   var drawH = isLandscape ? Math.min(vidW, vidH) : Math.max(vidW, vidH);
+  
+  // 너무 과한 해상도는 브라우저를 멈추게 하므로 적절히 상향조정
+  const limit = 2048;
+  if(drawW > limit || drawH > limit) {
+    let ratio = Math.min(limit/drawW, limit/drawH);
+    drawW *= ratio;
+    drawH *= ratio;
+  }
+  
   canvas.width = drawW; canvas.height = drawH;
 
   ctx.save();
@@ -521,8 +583,8 @@ function takePhoto(){
   }
   ctx.restore();
 
-  // 촬영 직후 메모리 보호를 위해 즉시 리사이징
-  resizeImage(canvas.toDataURL('image/jpeg', 0.85), 1000, function(resizedData){
+  // ★ 촬영 직후 화질 확보를 위해 리사이징 한계치를 1600px로 상향 (품질 0.9)
+  resizeImage(canvas.toDataURL('image/jpeg', 0.95), 1600, function(resizedData){
     pendingData = resizedData;
     pendingIsLand = isLandscape;
     playShutter();
@@ -532,7 +594,7 @@ function takePhoto(){
   });
 }
 
-// 이미지 압축/리사이징 함수 (localStorage 5MB 제한 방지)
+// 이미지 압축/리사이징 함수 (화질 상향 조정)
 function resizeImage(dataUrl, maxDim, callback) {
   var img = new Image();
   img.onload = function() {
@@ -543,8 +605,13 @@ function resizeImage(dataUrl, maxDim, callback) {
     }
     var cvs = document.createElement('canvas');
     cvs.width = w; cvs.height = h;
-    cvs.getContext('2d').drawImage(img, 0, 0, w, h);
-    callback(cvs.toDataURL('image/jpeg', 0.75));
+    // 화질 개선을 위해 보간법 적용 효과 유도
+    const ctx = cvs.getContext('2d');
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(img, 0, 0, w, h);
+    // 품질을 0.9로 상향 (0.75보다 훨씬 선명함)
+    callback(cvs.toDataURL('image/jpeg', 0.9));
   };
   img.src = dataUrl;
 }
@@ -569,7 +636,8 @@ function savePhoto(){
   try {
     localStorage.setItem('photos', JSON.stringify(photos));
   } catch(e) {
-    alert('저장 공간이 부족해요! 불필요한 사진을 삭제해주세요.');
+    // 화질을 높였으므로 저장 공간 부족 안내 강화
+    alert('저장 공간(5MB)이 거의 다 찼습니다! 화질 개선으로 인해 사진 용량이 커졌으니, 불필요한 사진을 삭제하거나 선생님께 즉시 제출해 주세요.');
     photos.pop(); return;
   }
 
@@ -615,7 +683,6 @@ function delPh(id, e){
   toast('🗑️ 삭제했어요.');
 }
 
-// ★ 수정된 제출 함수 (목록 초기화 방지)
 async function submitAll(){
   var group = document.getElementById('grpNm').value.trim();
   var student = document.getElementById('stuNm').value.trim();
@@ -637,9 +704,6 @@ async function submitAll(){
     
     st.innerHTML = '✅ 제출 완료! 선생님께 잘 전달되었어요! 📝';
     toast('🎉 전송 성공!');
-    
-    // 사진 목록을 지우지 않고 그대로 유지합니다.
-    // 사용자가 직접 삭제하거나 새로 찍기 전까지는 목록이 사라지지 않습니다.
     
   } catch(err) {
     st.innerHTML = '❌ 전송 실패: 인터넷을 확인해주세요.';
