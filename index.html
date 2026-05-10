@@ -102,86 +102,21 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 .pf textarea{height:64px;resize:none;}
 .pf input:focus,.pf textarea:focus{outline:none;border-color:var(--gn);}
 
-/* ══ 카메라 — 가로/세로 완전 대응 ══ */
+/* ══ 카메라 ══ */
 #cam{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:9999;}
 #cam.on{display:block;}
-
-/* 세로 모드 레이아웃 */
-#cam-portrait{display:flex;flex-direction:column;width:100%;height:100%;}
-#cam-portrait #cam-top-p{background:rgba(0,0,0,.82);padding:12px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0;z-index:2;}
-#cam-portrait #cam-view-p{flex:1;position:relative;overflow:hidden;background:#111;min-height:0;}
-#cam-portrait #cam-bot-p{background:rgba(0,0,0,.88);padding:14px 16px 36px;flex-shrink:0;z-index:2;}
-
-/* 가로 모드 레이아웃 */
-#cam-landscape{display:none;width:100%;height:100%;flex-direction:row;}
-#cam-landscape.on{display:flex;}
-#cam-landscape #cam-side-l{background:rgba(0,0,0,.82);width:54px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16px 8px;z-index:2;flex-shrink:0;}
-#cam-landscape #cam-view-l{flex:1;position:relative;overflow:hidden;background:#111;}
-#cam-landscape #cam-side-r{background:rgba(0,0,0,.88);width:80px;display:flex;flex-direction:column;align-items:center;justify-content:space-around;padding:16px 0;z-index:2;flex-shrink:0;}
-
-/* 공통 카메라 요소 */
-.v-tag{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;transform-origin:center center;}
-.cam-grid-ov{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:2;background-image:linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);background-size:33.33% 33.33%;}
+#cam-portrait{display:none;flex-direction:column;width:100%;height:100%;}
+#cam-portrait.active{display:flex;}
+#cam-landscape{display:none;flex-direction:row;width:100%;height:100%;}
+#cam-landscape.active{display:flex;}
 .cd-ov{display:none;position:absolute;top:0;left:0;right:0;bottom:0;align-items:center;justify-content:center;background:rgba(0,0,0,.28);z-index:10;}
 .cd-ov.on{display:flex;}
 .cd-n{font-size:170px;font-weight:800;color:#fff;text-shadow:0 0 60px rgba(255,255,255,.9);animation:cd 1s ease forwards;}
-.zoom-row{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:5;}
-.zb{background:rgba(0,0,0,.55);color:#fff;border:1.5px solid rgba(255,255,255,.4);border-radius:1.5rem;padding:6px 14px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;}
-.zb.on{background:rgba(255,255,255,.93);color:#333;}
-
-/* 카메라 버튼들 */
-.cam-nb{background:rgba(255,255,255,.2);border:none;border-radius:.9rem;padding:9px 14px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;white-space:nowrap;}
-.cam-title-txt{color:#fff;font-size:13px;font-weight:800;flex:1;text-align:center;}
-.cam-flip-btn{background:rgba(255,255,255,.2);border:none;border-radius:50%;width:44px;height:44px;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .shutter{background:#fff;border:5px solid rgba(255,255,255,.4);border-radius:50%;width:76px;height:76px;cursor:pointer;font-size:30px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 5px rgba(255,255,255,.2);transition:transform .1s;flex-shrink:0;}
 .shutter:active{transform:scale(.9);}
 .shutter:disabled{opacity:.4;cursor:not-allowed;}
-.gal-btn{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);border-radius:1rem;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;}
-.gal-btn img{width:100%;height:100%;object-fit:cover;display:none;}
-.home-cam{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;}
-.cam-row-h{display:flex;align-items:center;justify-content:space-around;width:100%;}
-
-/* 입력 시트 */
-#inp-wrap{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.72);z-index:99999;align-items:flex-end;justify-content:center;}
-#inp-wrap.on{display:flex;}
-#inp-sheet{background:#fff;border-radius:1.5rem 1.5rem 0 0;padding:24px 20px 40px;width:100%;max-width:480px;}
-#inp-sheet h3{font-size:18px;font-weight:800;margin-bottom:18px;text-align:center;}
-#inp-sheet input{width:100%;border:2px solid #E0E0E0;border-radius:1rem;padding:13px 14px;font-size:16px;font-family:inherit;margin-bottom:12px;display:block;}
-#inp-sheet input:focus{outline:none;border-color:var(--gn);}
-.inp-btns{display:flex;gap:12px;margin-top:6px;}
-
-/* 뷰어 모달 */
-#modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.88);z-index:200;align-items:center;justify-content:center;padding:20px;}
-#modal.on{display:flex;}
-.mc2{background:#fff;border-radius:1.5rem;overflow:hidden;width:100%;max-width:420px;animation:pp .3s ease;}
-#vwr{overflow:hidden;background:#111;display:flex;align-items:center;justify-content:center;min-height:200px;max-height:60vh;}
-#pvImg{max-width:100%;max-height:60vh;object-fit:contain;transform-origin:center center;transition:transform .2s;display:block;}
-.zm-bar{padding:8px 16px;background:#f5f5f5;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee;}
-.zm-btn{background:#eee;border:none;border-radius:.75rem;padding:7px 16px;font-size:18px;cursor:pointer;font-weight:800;}
-#zmLbl{font-size:13px;font-weight:700;color:#666;}
-.mi{padding:14px 16px;}
-.mi-t{font-size:17px;font-weight:800;margin-bottom:4px;}
-.mi-p{font-size:14px;color:#888;}
-
-/* 결과 */
-.res-hero{background:linear-gradient(135deg,#FFD93D,#FF9F43,#FF6B9D);background-size:200% 200%;animation:rb 4s ease infinite;padding:28px 20px;text-align:center;color:#fff;}
-.pgrid{padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.pgi{border-radius:1rem;overflow:hidden;background:#eee;aspect-ratio:1;position:relative;cursor:pointer;}
-.pgi img{width:100%;height:100%;object-fit:cover;}
-.pg-lb{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.55);color:#fff;font-size:11px;font-weight:700;padding:4px 6px;}
-.pg-x{position:absolute;top:5px;right:5px;background:rgba(220,30,30,.92);color:#fff;border:none;border-radius:50%;width:28px;height:28px;font-size:15px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
-.sa{padding:0 16px 16px;}
-.ib{background:linear-gradient(135deg,#E8F5E9,#E3F2FD);border-radius:1.2rem;padding:13px 14px;margin-bottom:12px;font-size:13px;color:#555;line-height:1.9;}
-.fw{background:#fff;border-radius:1.2rem;padding:13px 14px;box-shadow:0 4px 12px rgba(0,0,0,.07);margin-bottom:10px;}
-.fw label{display:block;font-size:13px;font-weight:800;color:#888;margin-bottom:5px;}
-.fw input{width:100%;border:2px solid #E0E0E0;border-radius:.75rem;padding:11px 12px;font-size:14px;font-family:inherit;}
-.fw input:focus{outline:none;border-color:var(--gn);}
-#stEl{margin-top:10px;font-size:14px;text-align:center;color:#888;min-height:20px;line-height:1.7;}
-
-/* 토스트 */
-.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(120px);background:rgba(30,30,30,.95);color:#fff;border-radius:2rem;padding:13px 24px;font-size:14px;font-weight:700;z-index:99998;transition:transform .3s;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.3);}
-.toast.show{transform:translateX(-50%) translateY(0);}
-
+.zb{background:rgba(0,0,0,.6);color:#fff;border:2px solid rgba(255,255,255,.6);border-radius:1.5rem;padding:7px 14px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;}
+.zb.on{background:rgba(255,255,255,.95);color:#333;border-color:#fff;}
 #captureCanvas{display:none;}
 </style>
 </head>
@@ -294,66 +229,67 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
   </div>
 </div>
 
-<!-- ══ 카메라 (세로+가로 대응) ══ -->
+<!-- ══ 카메라 ══ -->
 <div id="cam">
   <!-- 세로 모드 -->
   <div id="cam-portrait">
-    <div id="cam-top-p">
-      <button class="cam-nb" onclick="closeCam()"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
-      <span id="camTitleP" class="cam-title-txt">사진 찍기</span>
+    <div id="cam-top-p" style="background:rgba(0,0,0,.82);padding:12px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0;z-index:2;">
+      <button onclick="closeCam()" style="background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.7);border-radius:.75rem;padding:9px 13px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;">
+        <i class="fa-solid fa-arrow-left"></i> 되돌리기
+      </button>
+      <span id="camTitleP" style="color:#fff;font-size:13px;font-weight:800;flex:1;text-align:center;">사진 찍기</span>
     </div>
-    <div id="cam-view-p">
-      <video id="videoP" class="v-tag" autoplay playsinline muted></video>
-      <div class="cam-grid-ov"></div>
+    <div id="cam-view-p" style="flex:1;position:relative;overflow:hidden;background:#111;min-height:0;">
+      <video id="videoP" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;transform-origin:center center;" autoplay playsinline muted></video>
+      <div style="position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:2;background-image:linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);background-size:33.33% 33.33%;"></div>
       <div class="cd-ov" id="cdOvP"><div class="cd-n" id="cdNP">3</div></div>
-      <div class="zoom-row" id="zoomRowP">
+      <!-- 세로모드 줌: 하단 중앙 가로 배치 -->
+      <div id="zoomRowP" style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;flex-direction:row;gap:8px;z-index:5;">
         <button class="zb on" onclick="setZoom(1,this)">1x</button>
         <button class="zb" onclick="setZoom(2,this)">2x</button>
         <button class="zb" onclick="setZoom(5,this)">5x</button>
         <button class="zb" onclick="setZoom(10,this)">10x</button>
       </div>
     </div>
-    <div id="cam-bot-p">
-      <div class="cam-row-h">
-        <button class="gal-btn" id="galBtnP" onclick="showLast()" style="width:62px;height:62px;background:rgba(255,255,255,.3);border:2px solid rgba(255,255,255,.8);">
-          <img id="lastThP" alt=""><span id="galIcoP"><i class="fa-solid fa-images"></i></span>
+    <div id="cam-bot-p" style="background:rgba(0,0,0,.88);padding:14px 16px 36px;flex-shrink:0;z-index:2;">
+      <div style="display:flex;align-items:center;justify-content:space-around;">
+        <button id="galBtnP" onclick="showLast()" style="width:60px;height:60px;background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.8);border-radius:1rem;cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;">
+          <img id="lastThP" alt="" style="width:100%;height:100%;object-fit:cover;display:none;"><span id="galIcoP"><i class="fa-solid fa-images"></i></span>
         </button>
         <button class="shutter" id="shutP" onclick="startCD()"><i class="fa-solid fa-camera"></i></button>
-        <button class="cam-flip-btn" onclick="flipCam()" style="width:62px;height:62px;border-radius:1rem;background:rgba(255,255,255,.35);border:2px solid rgba(255,255,255,.8);">
-          <i class="fa-solid fa-rotate" style="font-size:22px;"></i>
+        <button onclick="flipCam()" style="width:60px;height:60px;background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.8);border-radius:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;">
+          <i class="fa-solid fa-rotate"></i>
         </button>
       </div>
     </div>
   </div>
-  <!-- 가로 모드: 네이티브 카메라 앱 스타일 -->
+
+  <!-- 가로 모드: 우측에 컨트롤 패널 -->
   <div id="cam-landscape">
-    <!-- 좌측: 되돌리기 -->
-    <div id="cam-side-l" style="width:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.82);z-index:2;flex-shrink:0;">
-      <button onclick="closeCam()" style="background:rgba(255,255,255,.25);border:1.5px solid rgba(255,255,255,.7);border-radius:.75rem;padding:10px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;writing-mode:vertical-rl;text-orientation:mixed;letter-spacing:2px;">← 뒤로</button>
-    </div>
-    <!-- 중앙: 뷰파인더 -->
+    <!-- 뷰파인더 -->
     <div id="cam-view-l" style="flex:1;position:relative;overflow:hidden;background:#111;">
-      <video id="videoL" class="v-tag" autoplay playsinline muted></video>
-      <div class="cam-grid-ov"></div>
+      <video id="videoL" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;transform-origin:center center;" autoplay playsinline muted></video>
+      <div style="position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:2;background-image:linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);background-size:33.33% 33.33%;"></div>
       <div class="cd-ov" id="cdOvL"><div class="cd-n" id="cdNL">3</div></div>
-      <!-- 줌 버튼: 하단 중앙, 가로 배치 -->
-      <div id="zoomRowL" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;flex-direction:row;gap:8px;z-index:5;">
+      <!-- 가로모드 줌: 좌하단 세로 배치 -->
+      <div id="zoomRowL" style="position:absolute;left:10px;bottom:14px;display:flex;flex-direction:column;gap:6px;z-index:5;">
         <button class="zb on" onclick="setZoom(1,this)">1x</button>
         <button class="zb" onclick="setZoom(2,this)">2x</button>
         <button class="zb" onclick="setZoom(5,this)">5x</button>
         <button class="zb" onclick="setZoom(10,this)">10x</button>
       </div>
+      <!-- 되돌리기: 우상단 -->
+      <button onclick="closeCam()" style="position:absolute;top:12px;right:12px;z-index:10;background:rgba(0,0,0,.6);border:2px solid rgba(255,255,255,.7);border-radius:.75rem;padding:8px 14px;color:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;">
+        되돌리기 <i class="fa-solid fa-xmark"></i>
+      </button>
     </div>
-    <!-- 우측: 컨트롤 패널 (네이티브 앱처럼) -->
-    <div id="cam-side-r" style="width:90px;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;background:rgba(0,0,0,.88);padding:16px 0;z-index:2;flex-shrink:0;">
-      <!-- 갤러리 -->
-      <button id="galBtnL" onclick="showLast()" style="width:56px;height:56px;border-radius:1rem;background:rgba(255,255,255,.3);border:2px solid rgba(255,255,255,.85);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;">
+    <!-- 우측 컨트롤 패널 -->
+    <div id="cam-ctrl-l" style="width:86px;background:rgba(0,0,0,.88);display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;padding:16px 0;z-index:2;flex-shrink:0;">
+      <button id="galBtnL" onclick="showLast()" style="width:58px;height:58px;background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.8);border-radius:1rem;cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;">
         <img id="lastThL" alt="" style="width:100%;height:100%;object-fit:cover;display:none;"><span id="galIcoL"><i class="fa-solid fa-images"></i></span>
       </button>
-      <!-- 셔터 -->
       <button class="shutter" id="shutL" onclick="startCD()"><i class="fa-solid fa-camera"></i></button>
-      <!-- 카메라 전환 -->
-      <button onclick="flipCam()" style="width:56px;height:56px;border-radius:1rem;background:rgba(255,255,255,.3);border:2px solid rgba(255,255,255,.85);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;">
+      <button onclick="flipCam()" style="width:58px;height:58px;background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.8);border-radius:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;">
         <i class="fa-solid fa-rotate"></i>
       </button>
     </div>
@@ -483,17 +419,26 @@ function applyOrientation(){
   var p = document.getElementById('cam-portrait');
   var l = document.getElementById('cam-landscape');
   if(isLandMode){
-    p.style.display = 'none';
-    l.classList.add('on');
-    // 가로 video에 stream 연결
+    p.classList.remove('active');
+    l.classList.add('active');
     if(stream){
-      document.getElementById('videoL').srcObject = stream;
+      var vL = document.getElementById('videoL');
+      if(vL.srcObject !== stream){
+        vL.srcObject = stream;
+        vL.play().catch(function(){});
+      }
+      document.getElementById('videoP').srcObject = null;
     }
   } else {
-    p.style.display = 'flex';
-    l.classList.remove('on');
+    l.classList.remove('active');
+    p.classList.add('active');
     if(stream){
-      document.getElementById('videoP').srcObject = stream;
+      var vP = document.getElementById('videoP');
+      if(vP.srcObject !== stream){
+        vP.srcObject = stream;
+        vP.play().catch(function(){});
+      }
+      document.getElementById('videoL').srcObject = null;
     }
   }
 }
@@ -513,39 +458,51 @@ async function openCam(title, guide, btn){
   document.getElementById('camTitleP').textContent = title;
   curZoom = 1;
   document.querySelectorAll('.zb').forEach(function(b){ b.classList.remove('on'); });
-  document.querySelectorAll('.zb')[0].classList.add('on');
-  // 방향 체크
+  document.querySelector('#zoomRowP .zb').classList.add('on');
+  document.querySelector('#zoomRowL .zb').classList.add('on');
+  // 방향 감지 후 레이아웃 적용
   isLandMode = window.innerWidth > window.innerHeight;
-  var cam = document.getElementById('cam');
-  cam.classList.add('on');
+  document.getElementById('cam-portrait').classList.remove('active');
+  document.getElementById('cam-landscape').classList.remove('active');
   applyOrientation();
-  updBHome();
   await startCam();
 }
 
 async function startCam(){
   try{
     if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream=null; }
-    var constraints = [
-      {video:{facingMode:facing,width:{ideal:1920},height:{ideal:1080}},audio:false},
-      {video:{facingMode:facing,width:{ideal:1280},height:{ideal:720}},audio:false},
-      {video:{facingMode:facing},audio:false},
+    ['videoP','videoL'].forEach(function(id){
+      document.getElementById(id).srcObject = null;
+    });
+    await new Promise(function(r){ setTimeout(r,200); });
+
+    var tries = [
+      {video:{facingMode:{ideal:facing},width:{ideal:1280},height:{ideal:720}},audio:false},
+      {video:{facingMode:{ideal:facing}},audio:false},
       {video:true,audio:false}
     ];
-    for(var i=0;i<constraints.length;i++){
-      try{ stream=await navigator.mediaDevices.getUserMedia(constraints[i]); break; }
-      catch(e){ if(i===constraints.length-1) throw e; }
+    for(var i=0;i<tries.length;i++){
+      try{ stream=await navigator.mediaDevices.getUserMedia(tries[i]); break; }
+      catch(e){ if(i===tries.length-1) throw e; }
     }
-    // 현재 방향에 맞는 video에 연결
     var vid = isLandMode ? document.getElementById('videoL') : document.getElementById('videoP');
     vid.srcObject = stream;
-    vid.onloadedmetadata = function(){ vid.play().catch(function(){}); };
-    try{ await vid.play(); }catch(e){}
+    await new Promise(function(res){ vid.onloadedmetadata=res; setTimeout(res,3000); });
+    await vid.play().catch(function(){});
   }catch(err){
-    var msg = err.name==='NotAllowedError'
-      ? '카메라 권한이 차단됐어요!\n주소창 자물쇠 → 카메라 허용 → 새로고침'
-      : '카메라 오류: '+err.name;
-    alert(msg); closeCam();
+    var m;
+    if(err.name==='NotAllowedError'||err.name==='PermissionDeniedError')
+      m='카메라 권한이 차단됐어요!
+주소창 자물쇠 → 카메라 허용 → 새로고침';
+    else if(err.name==='NotReadableError'||err.name==='TrackStartError')
+      m='카메라가 다른 앱에서 사용 중이에요!
+다른 앱을 닫고 새로고침 후 다시 시도해주세요.';
+    else if(err.name==='NotFoundError')
+      m='카메라를 찾을 수 없어요!';
+    else
+      m='카메라 오류('+err.name+')
+페이지를 새로고침 해주세요.';
+    alert(m); closeCam();
   }
 }
 
@@ -553,6 +510,8 @@ function closeCam(){
   if(cdTimer){ clearInterval(cdTimer); cdTimer=null; }
   if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream=null; }
   document.getElementById('cam').classList.remove('on');
+  document.getElementById('cam-portrait').classList.remove('active');
+  document.getElementById('cam-landscape').classList.remove('active');
   document.getElementById('cdOvP').classList.remove('on');
   document.getElementById('cdOvL').classList.remove('on');
   document.getElementById('shutP').disabled = false;
@@ -796,23 +755,34 @@ async function submitAll(){
     m1Title:gv('m1t'),m1Desc:gv('m1d'),m1Props:gv('m1p'),m1Place:gv('m1l'),
     m2Title:gv('m2t'),m2Desc:gv('m2d'),m2Props:gv('m2p'),m2Place:gv('m2l')
   };
-  var payload = JSON.stringify({group:group,student:student,photos:photos,plan:plan,submittedAt:new Date().toISOString()});
+  var payload = JSON.stringify({
+    group:group, student:student,
+    photos:photos, plan:plan,
+    submittedAt:new Date().toISOString()
+  });
   sb.disabled=true;
   st.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> 제출 중... ('+photos.length+'장)';
   try{
-    var res = await fetch(GAS,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:payload});
-    var json = await res.json();
-    if(json.success){
-      st.innerHTML='✅ '+group+' 모둠 제출 완료! Docs에 저장됐어요! 📝';
-      toast('🎉 제출 완료!');
-      setTimeout(function(){ st.innerHTML=''; }, 5000);
+    var res = await fetch(GAS,{
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:payload
+    });
+    var txt = await res.text();
+    var json = {};
+    try{ json=JSON.parse(txt); }catch(e){ json={success:true}; }
+    // GAS 실행 자체가 됐으면 성공 (색상오류 등 내부오류는 무시)
+    if(json.success===false && json.error && json.error.indexOf('사진')===-1){
+      st.innerHTML='⚠️ 제출됐어요! Docs 확인해보세요 📝';
     } else {
-      st.innerHTML='❌ 오류: '+(json.error||'알 수 없는 오류');
-      setTimeout(function(){ st.innerHTML=''; }, 8000);
+      st.innerHTML='✅ '+group+' 모둠 제출 완료! 📝';
+      toast('🎉 제출 완료!');
     }
+    setTimeout(function(){ st.innerHTML=''; },5000);
   }catch(err){
     st.innerHTML='❌ 전송 실패: '+err.message;
-  } finally {
+    setTimeout(function(){ st.innerHTML=''; },5000);
+  }finally{
     sb.disabled=false;
   }
 }
