@@ -401,7 +401,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 var GAS = 'https://script.google.com/macros/s/AKfycbx62A4BnDMrK89YZItroFesQHgJudJipBRg3eSC3Xrx4nCNRNx8Q_a2eEPhpG6MKi8U2g/exec';
 
 var stream = null, facing = 'environment', cdTimer = null;
-var pendingData = null;
+var pendingData = null, pendingIsLand = false;
 var camMode = '', callerBtn = null, curZoom = 1;
 var isLandMode = false;
 var photos = [];
@@ -514,7 +514,6 @@ function closeCam(){
   document.getElementById('cdOvL').classList.remove('on');
   document.getElementById('shutP').disabled = false;
   document.getElementById('shutL').disabled = false;
-  // CSS zoom 초기화
   document.getElementById('videoP').style.transform = '';
   document.getElementById('videoL').style.transform = '';
   curZoom = 1;
@@ -530,7 +529,6 @@ function flipCam(){
 
 function setZoom(z, btn){
   curZoom = z;
-  // CSS transform은 미리보기용 — 실제 촬영은 videoWidth/Height 원본 사용
   var vid = isLandMode ? document.getElementById('videoL') : document.getElementById('videoP');
   vid.style.transform = 'scale('+z+')';
   document.querySelectorAll('.zb').forEach(function(b){ b.classList.remove('on'); });
@@ -571,70 +569,60 @@ function startCD(){
 }
 
 // ═══════════════════════════════
-// [버그 1 수정] 사진 촬영 — 가로모드 정확히 저장
+// 사진 촬영 — 기기 방향과 영상 방향이 다를 때 자동 회전
 // ═══════════════════════════════
 function takePhoto(){
   var vid = isLandMode ? document.getElementById('videoL') : document.getElementById('videoP');
-  if(vid.readyState < 2){
-    toast('카메라 준비 중이에요. 잠시 후 다시 눌러주세요!');
-    return;
-  }
+  if(vid.readyState < 2){ toast('카메라 준비 중이에요. 잠시 후 다시 눌러주세요!'); return; }
 
   var vw = vid.videoWidth  || 640;
   var vh = vid.videoHeight || 480;
-
-  // ★ 가로모드 판단: 실제 화면 방향 기준
-  // 스마트폰 카메라는 항상 가로(landscape) 기준으로 스트림을 줌
-  // → 화면이 가로모드(isLandMode)일 때는 videoWidth > videoHeight 가 정상
-  // → 화면이 세로모드인데 videoWidth > videoHeight 이면 그대로 써도 됨 (iOS 회전 처리됨)
-  // canvas에는 항상 video의 실제 픽셀 그대로 그려서 EXIF 없이도 올바른 방향으로 저장
 
   var MAX_DIM = 1920;
   var scale = Math.min(1, MAX_DIM / Math.max(vw, vh));
   var dw = Math.round(vw * scale);
   var dh = Math.round(vh * scale);
 
-  // ★ zoom 배율 적용: CSS transform은 미리보기용이고,
-  //   canvas에는 zoom 중심(center crop)으로 실제 픽셀 잘라서 그림
   var z = curZoom > 1 ? curZoom : 1;
-  // 줌 적용 시 중앙 crop 영역 계산
-  var srcW = Math.round(vw / z);
-  var srcH = Math.round(vh / z);
-  var srcX = Math.round((vw - srcW) / 2);
-  var srcY = Math.round((vh - srcH) / 2);
+  var srcW = Math.round(vw / z), srcH = Math.round(vh / z);
+  var srcX = Math.round((vw - srcW) / 2), srcY = Math.round((vh - srcH) / 2);
 
   var canvas = document.getElementById('captureCanvas');
-
-  // ★ 가로모드로 찍었으면 canvas도 가로로 (dw > dh 자연스럽게 유지)
-  // 세로모드는 그대로 → 방향 자동 보정
-  canvas.width  = dw;
-  canvas.height = dh;
-
   var ctx = canvas.getContext('2d');
-  ctx.save();
 
-  // 셀카(전면) 카메라일 때 좌우 반전 해제
-  if(facing === 'user'){
-    ctx.translate(dw, 0);
-    ctx.scale(-1, 1);
+  var needRotate = (isLandMode && vw < vh) || (!isLandMode && vw > vh);
+
+  if (needRotate) {
+    canvas.width  = dh;
+    canvas.height = dw;
+    pendingIsLand = (dh > dw); 
+  } else {
+    canvas.width  = dw;
+    canvas.height = dh;
+    pendingIsLand = (dw > dh); 
   }
 
-  // zoom crop → canvas 전체에 그리기
+  ctx.save();
+  if (needRotate) {
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate((isLandMode ? -90 : 90) * Math.PI / 180);
+    ctx.translate(-dw / 2, -dh / 2);
+  }
+  if(facing === 'user'){
+    ctx.translate(dw, 0); ctx.scale(-1, 1);
+  }
+
   ctx.drawImage(vid, srcX, srcY, srcW, srcH, 0, 0, dw, dh);
   ctx.restore();
 
-  // JPEG 품질 0.92 (가로 사진 선명도 개선)
   pendingData = canvas.toDataURL('image/jpeg', 0.92);
-
   playShutter();
 
-  // 플래시 효과
   var fl = document.createElement('div');
   fl.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:99999;opacity:.95;pointer-events:none;';
   document.body.appendChild(fl);
   setTimeout(function(){ fl.style.transition='opacity .15s'; fl.style.opacity='0'; setTimeout(function(){ fl.remove(); },150); },80);
 
-  // 입력 시트 표시
   document.getElementById('inpTitle').value='';
   document.getElementById('inpPlace').value='';
   document.getElementById('inp-wrap').classList.add('on');
@@ -677,17 +665,17 @@ function savePhoto(){
   if(!pendingData) return;
 
   var photo = {
-    id:Date.now(),
-    data:pendingData,        // base64 이미지 (제출 시 GAS로 전송)
-    title:title,
-    place:place,
-    timestamp:new Date().toLocaleString('ko-KR'),
-    mode:camMode
+    id: Date.now(),
+    data: pendingData,       
+    title: title,
+    place: place,
+    timestamp: new Date().toLocaleString('ko-KR'),
+    mode: camMode,
+    isLand: pendingIsLand 
   };
   photos.push(photo);
   try{ localStorage.setItem('photos',JSON.stringify(photos)); }catch(e){}
 
-  // 썸네일 갱신
   function setThumb(imgEl, icoEl){
     imgEl.src=pendingData; imgEl.style.display='block'; icoEl.style.display='none';
   }
@@ -695,8 +683,6 @@ function savePhoto(){
   setThumb(document.getElementById('lastThL'), document.getElementById('galIcoL'));
 
   document.getElementById('inp-wrap').classList.remove('on');
-
-  // ★ 로컬 다운로드 (기기 저장)
   dlSingle(pendingData, title+'_'+Date.now()+'.jpg');
 
   if(callerBtn){ callerBtn.disabled=false; callerBtn=null; }
@@ -763,7 +749,7 @@ function delPh(id,e){
 }
 
 // ═══════════════════════════════
-// [버그 2 수정] 제출 — data 필드만 전송 (중복 방지)
+// 결과 제출
 // ═══════════════════════════════
 async function submitAll(){
   var grpRaw = document.getElementById('grpNm').value.trim()||'미정';
@@ -777,26 +763,23 @@ async function submitAll(){
     m2Title:gv('m2t'),m2Desc:gv('m2d'),m2Props:gv('m2p'),m2Place:gv('m2l')
   };
 
-  // ★ [버그 2 수정] photos 배열에서 'data'(base64) 필드만 전송
-  //   → GAS가 이 data를 이미지 파일로 1번만 변환하게 함
-  //   → 기존엔 data + 다른 필드들을 통째로 보내다 GAS에서 중복 처리됐을 가능성
   var photosForSubmit = photos.map(function(p){
     return {
-      id:      p.id,
-      data:    p.data,       // base64 이미지 (GAS에서 파일로 변환)
-      title:   p.title,
-      place:   p.place,
+      id: p.id,
+      data: p.data,
+      title: p.title,
+      place: p.place,
       timestamp: p.timestamp,
-      mode:    p.mode
-      // ★ width/height 제거: GAS가 이를 별도 이미지로 오해하던 원인 차단
+      mode: p.mode,
+      isLand: p.isLand 
     };
   });
 
   var payload = JSON.stringify({
-    group:       group,
-    student:     student,
-    photos:      photosForSubmit,
-    plan:        plan,
+    group: group,
+    student: student,
+    photos: photosForSubmit,
+    plan: plan,
     submittedAt: new Date().toISOString()
   });
 
