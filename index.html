@@ -563,6 +563,10 @@ function takePhoto(){
 
   // 5. 이미지 추출
   pendingData = canvas.toDataURL('image/jpeg', 0.92);
+  
+  // ★ 여기에 추가! (찍힌 사진의 가로/세로 비율을 저장해둡니다)
+  window.pendingIsLand = (canvasW > canvasH);
+  
   playShutter();
 
   // 플래시 효과
@@ -612,7 +616,8 @@ function savePhoto(){
     title: title,
     place: place,
     timestamp: new Date().toLocaleString('ko-KR'),
-    mode: camMode
+    mode: camMode,
+    isLand: window.pendingIsLand // ★ 여기에 추가! (개별 사진 데이터에 isLand 속성 저장)
   };
   photos.push(photo);
   try{ localStorage.setItem('photos',JSON.stringify(photos)); }catch(e){}
@@ -703,7 +708,8 @@ async function submitAll(){
       title: p.title,
       place: p.place,
       timestamp: p.timestamp,
-      mode: p.mode
+      mode: p.mode,
+      isLand: p.isLand // ★ 여기에 추가! (서버로 isLand 값을 전송)
     };
   });
 
