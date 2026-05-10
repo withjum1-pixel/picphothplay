@@ -301,7 +301,6 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
     <div id="cam-top-p">
       <button class="cam-nb" onclick="closeCam()"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
       <span id="camTitleP" class="cam-title-txt">사진 찍기</span>
-      <button class="cam-flip-btn" onclick="flipCam()"><i class="fa-solid fa-rotate"></i></button>
     </div>
     <div id="cam-view-p">
       <video id="videoP" class="v-tag" autoplay playsinline muted></video>
@@ -311,15 +310,18 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
         <button class="zb on" onclick="setZoom(1,this)">1x</button>
         <button class="zb" onclick="setZoom(2,this)">2x</button>
         <button class="zb" onclick="setZoom(5,this)">5x</button>
+        <button class="zb" onclick="setZoom(10,this)">10x</button>
       </div>
     </div>
     <div id="cam-bot-p">
       <div class="cam-row-h">
-        <button class="gal-btn" id="galBtnP" onclick="showLast()" style="width:62px;height:62px;">
+        <button class="gal-btn" id="galBtnP" onclick="showLast()" style="width:62px;height:62px;background:rgba(255,255,255,.3);border:2px solid rgba(255,255,255,.8);">
           <img id="lastThP" alt=""><span id="galIcoP"><i class="fa-solid fa-images"></i></span>
         </button>
         <button class="shutter" id="shutP" onclick="startCD()"><i class="fa-solid fa-camera"></i></button>
-        <button class="home-cam" onclick="closeCam();go('pg-home')" style="width:62px;height:62px;"><i class="fa-solid fa-house"></i></button>
+        <button class="cam-flip-btn" onclick="flipCam()" style="width:62px;height:62px;border-radius:1rem;background:rgba(255,255,255,.35);border:2px solid rgba(255,255,255,.8);">
+          <i class="fa-solid fa-rotate" style="font-size:22px;"></i>
+        </button>
       </div>
     </div>
   </div>
@@ -327,24 +329,26 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
   <div id="cam-landscape">
     <div id="cam-side-l">
       <button class="cam-nb" onclick="closeCam()" style="writing-mode:vertical-rl;padding:12px 8px;"><i class="fa-solid fa-arrow-up"></i></button>
-      <button class="cam-flip-btn" onclick="flipCam()"><i class="fa-solid fa-rotate"></i></button>
     </div>
     <div id="cam-view-l">
       <video id="videoL" class="v-tag" autoplay playsinline muted></video>
       <div class="cam-grid-ov"></div>
       <div class="cd-ov" id="cdOvL"><div class="cd-n" id="cdNL">3</div></div>
-      <div class="zoom-row" id="zoomRowL">
+      <div id="zoomRowL" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:5;">
         <button class="zb on" onclick="setZoom(1,this)">1x</button>
         <button class="zb" onclick="setZoom(2,this)">2x</button>
         <button class="zb" onclick="setZoom(5,this)">5x</button>
+        <button class="zb" onclick="setZoom(10,this)">10x</button>
       </div>
     </div>
     <div id="cam-side-r">
-      <button class="gal-btn" id="galBtnL" onclick="showLast()" style="width:60px;height:60px;">
+      <button class="gal-btn" id="galBtnL" onclick="showLast()" style="width:60px;height:60px;background:rgba(255,255,255,.3);border:2px solid rgba(255,255,255,.8);">
         <img id="lastThL" alt=""><span id="galIcoL"><i class="fa-solid fa-images"></i></span>
       </button>
       <button class="shutter" id="shutL" onclick="startCD()"><i class="fa-solid fa-camera"></i></button>
-      <button class="home-cam" onclick="closeCam();go('pg-home')" style="width:60px;height:60px;"><i class="fa-solid fa-house"></i></button>
+      <button class="cam-flip-btn" onclick="flipCam()" style="width:60px;height:60px;border-radius:1rem;background:rgba(255,255,255,.35);border:2px solid rgba(255,255,255,.8);">
+        <i class="fa-solid fa-rotate" style="font-size:22px;"></i>
+      </button>
     </div>
   </div>
   <canvas id="captureCanvas"></canvas>
@@ -799,7 +803,7 @@ function dlSingle(dataUrl,filename){
 }
 function toast(msg){
   var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
-  setTimeout(function(){ t.classList.remove('show'); },2800);
+  setTimeout(function(){ t.classList.remove('show'); },1000);
 }
 updBHome();
 </script>
