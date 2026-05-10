@@ -107,7 +107,6 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 .v-tag { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:block; transform-origin:center center; transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 .cam-grid-ov { position:absolute; top:0; left:0; right:0; bottom:0; pointer-events:none; z-index:1000; background-image:linear-gradient(rgba(255,255,255,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.2) 1px,transparent 1px); background-size:33.33% 33.33%; opacity: 0.7; }
 
-/* 카운트다운 레이어는 비디오보다 위, 헤더보다 아래 */
 .cd-ov { display:none; position:absolute; top:0; left:0; right:0; bottom:0; align-items:center; justify-content:center; background:rgba(0,0,0,0); z-index:5000; pointer-events:none; }
 .cd-ov.on { display:flex; }
 .cd-n { font-size:170px; font-weight:800; color:#fff; text-shadow:0 0 60px rgba(0,0,0,0.8); animation:cd 1s ease forwards; }
@@ -135,13 +134,14 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
   .zoom-row { bottom: 16px; left: auto; right: 16px; transform: none; flex-direction: column; }
 }
 
-#inp-wrap{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.72);z-index:100000;align-items:flex-end;justify-content:center;}
-#inp-wrap.on{display:flex;}
-#inp-sheet{background:#fff;border-radius:1.5rem 1.5rem 0 0;padding:24px 20px 40px;width:100%;max-width:480px;}
-#inp-sheet h3{font-size:18px;font-weight:800;margin-bottom:18px;text-align:center;}
-#inp-sheet input{width:100%;border:2px solid #E0E0E0;border-radius:1rem;padding:13px 14px;font-size:16px;font-family:inherit;margin-bottom:12px;display:block;}
-#inp-sheet input:focus{outline:none;border-color:var(--gn);}
-.inp-btns{display:flex;gap:12px;margin-top:6px;}
+/* ★ 자판(키보드) 대응: 입력창을 중앙(Center)으로 변경 */
+#inp-wrap { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.72); z-index:100000; align-items:center; justify-content:center; padding: 20px; }
+#inp-wrap.on { display:flex; }
+#inp-sheet { background:#fff; border-radius:1.5rem; padding:24px 20px; width:100%; max-width:400px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); animation: pp 0.3s ease; }
+#inp-sheet h3 { font-size:18px; font-weight:800; margin-bottom:18px; text-align:center; color: var(--bl); }
+#inp-sheet input { width:100%; border:2px solid #E0E0E0; border-radius:1rem; padding:13px 14px; font-size:16px; font-family:inherit; margin-bottom:12px; display:block; }
+#inp-sheet input:focus { outline:none; border-color:var(--gn); background: #f9fff9; }
+.inp-btns { display:flex; gap:12px; margin-top:8px; }
 
 #modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.88);z-index:100001;align-items:center;justify-content:center;padding:20px;}
 #modal.on{display:flex;}
@@ -162,7 +162,6 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 .pg-lb{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.55);color:#fff;font-size:11px;font-weight:700;padding:4px 6px;}
 .pg-x{position:absolute;top:5px;right:5px;background:rgba(220,30,30,.92);color:#fff;border:none;border-radius:50%;width:28px;height:28px;font-size:15px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
 .sa{padding:0 16px 16px;}
-.ib{background:linear-gradient(135deg,#E8F5E9,#E3F2FD);border-radius:1.2rem;padding:13px 14px;margin-bottom:12px;font-size:13px;color:#555;line-height:1.9;}
 .fw{background:#fff;border-radius:1.2rem;padding:13px 14px;box-shadow:0 4px 12px rgba(0,0,0,.07);margin-bottom:10px;}
 .fw label{display:block;font-size:13px;font-weight:800;color:#888;margin-bottom:5px;}
 .fw input{width:100%;border:2px solid #E0E0E0;border-radius:.75rem;padding:11px 12px;font-size:14px;font-family:inherit;}
@@ -306,7 +305,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
   <canvas id="captureCanvas"></canvas>
 </div>
 
-<!-- 입력창 -->
+<!-- 입력창 (자판 대응 수정됨) -->
 <div id="inp-wrap">
   <div id="inp-sheet">
     <h3>📝 사진 정보 입력</h3>
@@ -489,7 +488,7 @@ function setZoom(z, btn){ applyZoom(z); }
 function flipCam(){ facing = facing === 'environment' ? 'user' : 'environment'; startCam(); }
 
 // ═══════════════════════════════
-// 카운트다운 및 사운드 (수정 완료)
+// 카운트다운 및 사운드
 // ═══════════════════════════════
 function playShutter(){
   try {
@@ -519,7 +518,6 @@ function startCD(){
   function show(n){
     nm.textContent = n;
     ov.classList.add('on');
-    // 애니메이션 초기화 로직 (강제 리플로우)
     nm.style.animation = 'none';
     void nm.offsetWidth; 
     nm.style.animation = 'cd 1s ease forwards';
@@ -538,13 +536,12 @@ function startCD(){
 }
 
 // ═══════════════════════════════
-// 사진 촬영 및 저장 (수정 완료)
+// 사진 촬영 및 저장
 // ═══════════════════════════════
 function takePhoto(){
   var vid = document.getElementById('videoMain');
   if(vid.readyState < 2){ toast('준비 중...'); return; }
 
-  // 셔터음 재생
   playShutter();
 
   var isLand = window.innerWidth > window.innerHeight;
@@ -561,7 +558,7 @@ function takePhoto(){
 
   ctx.save();
   if((isLand && vid.videoWidth < vid.videoHeight) || (!isLand && vid.videoWidth > vid.videoHeight)){
-    ctx.translate(drawW/2, drawH/2); ctx.rotate(90 * Math.PI / 180);
+    ctx.translate(canvas.width/2, canvas.height/2); ctx.rotate(90 * Math.PI / 180);
     if(facing==='user') ctx.scale(-1,1);
     ctx.drawImage(vid, -drawH/2, -drawW/2, drawH, drawW);
   } else {
@@ -570,7 +567,6 @@ function takePhoto(){
   }
   ctx.restore();
 
-  // 촬영 후 플래시 효과
   const flash = document.createElement('div');
   flash.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:200000;opacity:0.8;';
   document.body.appendChild(flash);
@@ -581,7 +577,6 @@ function takePhoto(){
     pendingIsLand = isLand;
     document.getElementById('inpTitle').value = '';
     document.getElementById('inpPlace').value = '';
-    // 입력창 표시
     document.getElementById('inp-wrap').classList.add('on');
   });
 }
@@ -605,7 +600,6 @@ function savePhoto(){
   photos.push({ id: Date.now(), data: pendingData, title: t, place: p, timestamp: new Date().toLocaleString('ko-KR'), mode: camMode, isLand: pendingIsLand });
   localStorage.setItem('photos', JSON.stringify(photos));
   
-  // 썸네일 업데이트
   const lastImg = document.getElementById('lastTh');
   lastImg.src = pendingData;
   lastImg.style.display = 'block';
