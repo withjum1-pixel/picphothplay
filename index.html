@@ -92,7 +92,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 .pf textarea{height:64px;resize:none;}
 .pf input:focus,.pf textarea:focus{outline:none;border-color:var(--gn);}
 
-/* ══ 카메라 앱 스타일 ══ */
+/* ══ 카메라 앱 스타일 (가로/세로 네이티브 반응형) ══ */
 #cam { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:9999; flex-direction:column; }
 #cam.on { display:flex; }
 
@@ -124,13 +124,13 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 
 /* ★ 가로 모드 대응 UI */
 @media (orientation: landscape) {
-  #cam { flex-direction: row; }
-  #cam-header { flex-direction: column; width: 70px; height: 100%; padding: 16px 0; padding-left: env(safe-area-inset-left); justify-content: flex-start; gap: 20px; }
-  #cam-header .cam-title-txt { writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 2px; margin-top: 10px; }
-  #cam-header .cam-nb { flex-direction: column; writing-mode: vertical-rl; text-orientation: mixed; padding: 12px 8px; gap:8px; border-radius: 0.9rem; }
-  #cam-header .cam-nb i { transform: rotate(-90deg); margin: 0; }
-  #cam-footer { flex-direction: column; width: 110px; height: 100%; padding: 0; padding-right: env(safe-area-inset-right); justify-content: space-evenly; }
-  .zoom-row { bottom: 16px; left: auto; right: 16px; transform: none; flex-direction: column; }
+  #cam { flex-direction: row; }
+  #cam-header { flex-direction: column; width: 70px; height: 100%; padding: 16px 0; padding-left: env(safe-area-inset-left); justify-content: flex-start; gap: 20px; }
+  #cam-header .cam-title-txt { writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 2px; margin-top: 10px; }
+  #cam-header .cam-nb { flex-direction: column; writing-mode: vertical-rl; text-orientation: mixed; padding: 12px 8px; gap:8px; border-radius: 0.9rem; }
+  #cam-header .cam-nb i { transform: rotate(-90deg); margin: 0; }
+  #cam-footer { flex-direction: column; width: 110px; height: 100%; padding: 0; padding-right: env(safe-area-inset-right); justify-content: space-evenly; }
+  .zoom-row { bottom: 16px; left: auto; right: 16px; transform: none; flex-direction: column; }
 }
 
 #inp-wrap{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.72);z-index:99999;align-items:flex-end;justify-content:center;}
@@ -177,194 +177,194 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 
 <!-- ══ 안전수칙 ══ -->
 <div id="pg-safety" class="pg on">
-  <div class="hero-safety">
-    <span class="em">📸</span>
-    <h1 style="font-size:23px;font-weight:800;margin-bottom:6px;">재미있는 사진 찍기</h1>
-    <p style="font-size:14px;opacity:.92;">시작 전, 안전 수칙을 꼭 확인해요!</p>
-  </div>
-  <div style="padding:32px 16px 0;">
-    <div style="font-size:17px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-shield-halved" style="color:var(--gn);"></i> 사진 찍기 안전 수칙</div>
-    <div class="si"><div class="si-ic"><i class="fa-solid fa-eye" style="color:var(--bl);"></i></div><div><div class="si-lb">주변을 잘 살펴요</div><div class="si-ds">사진에 집중하다 부딪히거나 넘어질 수 있어요. 항상 주변을 확인하며 이동해요.</div></div></div>
-    <div class="si"><div class="si-ic"><i class="fa-solid fa-triangle-exclamation" style="color:var(--og);"></i></div><div><div class="si-lb">위험한 곳에 가지 않아요</div><div class="si-ds">의자·책상·돌 등 위험한 곳에 올라가지 않아요. 화단에 들어가거나 화단 턱·돌 위에 올라가지 않아요.</div></div></div>
-    <div class="si"><div class="si-ic"><i class="fa-solid fa-handshake" style="color:var(--gn);"></i></div><div><div class="si-lb">친구의 허락을 받아요</div><div class="si-ds">친구를 찍을 때는 반드시 동의를 받아요. 동의 없는 촬영은 예의에 어긋나요.</div></div></div>
-    <div class="si"><div class="si-ic"><i class="fa-solid fa-ban" style="color:var(--rd);"></i></div><div><div class="si-lb">사진을 무단으로 올리지 않아요</div><div class="si-ds">찍은 사진을 허락 없이 SNS에 올리면 안 돼요. 개인정보를 소중히 해요.</div></div></div>
-    <div class="si"><div class="si-ic"><i class="fa-solid fa-school" style="color:var(--pp);"></i></div><div><div class="si-lb">학교 규칙을 지켜요</div><div class="si-ds">선생님께서 정해준 장소 내에서만 촬영하고, 허락 없이 다른 장소로 가지 않아요.</div></div></div>
-    <div class="si"><div class="si-ic"><i class="fa-solid fa-volume-xmark" style="color:#888;"></i></div><div><div class="si-lb">조용히 질서 있게</div><div class="si-ds">촬영 중 뛰거나 소란을 피우지 않아요.</div></div></div>
-  </div>
-  <div class="warn">
-    <h3><i class="fa-solid fa-circle-exclamation"></i> 모둠 활동 중지 경고!</h3>
-    <p>⛔ 친구 동의 없이 사진 찍기<br>⛔ 위험한 장소: 높은 곳·난간·턱·화단 안·구령대·놀이터 놀이기구 위<br>⛔ 찍은 사진 무단 유포<br>⛔ 촬영 중 장난·뛰기<br>⛔ 선생님의 정당한 교육적 지도에 불응하는 경우<br><br>→ 위 행동 적발 시 <strong>모둠 전체 활동 즉시 중지!</strong></p>
-  </div>
-  <div style="padding:16px;">
-    <div class="ag-row"><input type="checkbox" id="agCk"><label for="agCk"><i class="fa-solid fa-clipboard-check" style="color:var(--gn);"></i> 안전 수칙을 모두 읽고 지키겠습니다!</label></div>
-    <button class="btn btn-gn" id="agBtn" onclick="goHome()" disabled><i class="fa-solid fa-party-horn"></i> 시작하기!</button>
-  </div>
+  <div class="hero-safety">
+    <span class="em">📸</span>
+    <h1 style="font-size:23px;font-weight:800;margin-bottom:6px;">재미있는 사진 찍기</h1>
+    <p style="font-size:14px;opacity:.92;">시작 전, 안전 수칙을 꼭 확인해요!</p>
+  </div>
+  <div style="padding:32px 16px 0;">
+    <div style="font-size:17px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-shield-halved" style="color:var(--gn);"></i> 사진 찍기 안전 수칙</div>
+    <div class="si"><div class="si-ic"><i class="fa-solid fa-eye" style="color:var(--bl);"></i></div><div><div class="si-lb">주변을 잘 살펴요</div><div class="si-ds">사진에 집중하다 부딪히거나 넘어질 수 있어요. 항상 주변을 확인하며 이동해요.</div></div></div>
+    <div class="si"><div class="si-ic"><i class="fa-solid fa-triangle-exclamation" style="color:var(--og);"></i></div><div><div class="si-lb">위험한 곳에 가지 않아요</div><div class="si-ds">의자·책상·돌 등 위험한 곳에 올라가지 않아요. 화단에 들어가거나 화단 턱·돌 위에 올라가지 않아요.</div></div></div>
+    <div class="si"><div class="si-ic"><i class="fa-solid fa-handshake" style="color:var(--gn);"></i></div><div><div class="si-lb">친구의 허락을 받아요</div><div class="si-ds">친구를 찍을 때는 반드시 동의를 받아요. 동의 없는 촬영은 예의에 어긋나요.</div></div></div>
+    <div class="si"><div class="si-ic"><i class="fa-solid fa-ban" style="color:var(--rd);"></i></div><div><div class="si-lb">사진을 무단으로 올리지 않아요</div><div class="si-ds">찍은 사진을 허락 없이 SNS에 올리면 안 돼요. 개인정보를 소중히 해요.</div></div></div>
+    <div class="si"><div class="si-ic"><i class="fa-solid fa-school" style="color:var(--pp);"></i></div><div><div class="si-lb">학교 규칙을 지켜요</div><div class="si-ds">선생님께서 정해준 장소 내에서만 촬영하고, 허락 없이 다른 장소로 가지 않아요.</div></div></div>
+    <div class="si"><div class="si-ic"><i class="fa-solid fa-volume-xmark" style="color:#888;"></i></div><div><div class="si-lb">조용히 질서 있게</div><div class="si-ds">촬영 중 뛰거나 소란을 피우지 않아요.</div></div></div>
+  </div>
+  <div class="warn">
+    <h3><i class="fa-solid fa-circle-exclamation"></i> 모둠 활동 중지 경고!</h3>
+    <p>⛔ 친구 동의 없이 사진 찍기<br>⛔ 위험한 장소: 높은 곳·난간·턱·화단 안·구령대·놀이터 놀이기구 위<br>⛔ 찍은 사진 무단 유포<br>⛔ 촬영 중 장난·뛰기<br>⛔ 선생님의 정당한 교육적 지도에 불응하는 경우<br><br>→ 위 행동 적발 시 <strong>모둠 전체 활동 즉시 중지!</strong></p>
+  </div>
+  <div style="padding:16px;">
+    <div class="ag-row"><input type="checkbox" id="agCk"><label for="agCk"><i class="fa-solid fa-clipboard-check" style="color:var(--gn);"></i> 안전 수칙을 모두 읽고 지키겠습니다!</label></div>
+    <button class="btn btn-gn" id="agBtn" onclick="goHome()" disabled><i class="fa-solid fa-party-horn"></i> 시작하기!</button>
+  </div>
 </div>
 
 <!-- ══ 홈 ══ -->
 <div id="pg-home" class="pg">
-  <div class="hero-home">
-    <span class="cam">📷</span>
-    <h1 style="font-size:23px;font-weight:800;margin-bottom:5px;">재미있는 사진 찍기</h1>
-    <p style="font-size:14px;opacity:.92;">무엇을 할까요? 🎨</p>
-  </div>
-  <div class="mgrid">
-    <div class="mc c1" onclick="go('pg-practice')"><span class="me">🎯</span><h3>📚 사진<br>연습하기</h3></div>
-    <div class="mc c2" onclick="go('pg-mission')"><span class="me">🏆</span><h3>🌟 미션<br>도전하기</h3></div>
-    <div class="mc c3" onclick="go('pg-result')"><span class="me">🖼️</span><h3>📋 결과물<br>제출하기</h3></div>
-  </div>
-  <div style="margin:16px;padding:12px 16px;background:linear-gradient(135deg,#E8F4FD,#F0F8FF);border-radius:1.2rem;border-left:4px solid var(--bl);">
-    <p style="font-size:13px;color:#555;line-height:1.7;">💡 <strong style="color:var(--bl);">오늘의 팁!</strong> 📸 버튼을 누르면 3초 후 자동 촬영돼요! 폰을 돌리면 일반 카메라처럼 화면이 회전돼요!</p>
-  </div>
+  <div class="hero-home">
+    <span class="cam">📷</span>
+    <h1 style="font-size:23px;font-weight:800;margin-bottom:5px;">재미있는 사진 찍기</h1>
+    <p style="font-size:14px;opacity:.92;">무엇을 할까요? 🎨</p>
+  </div>
+  <div class="mgrid">
+    <div class="mc c1" onclick="go('pg-practice')"><span class="me">🎯</span><h3>📚 사진<br>연습하기</h3></div>
+    <div class="mc c2" onclick="go('pg-mission')"><span class="me">🏆</span><h3>🌟 미션<br>도전하기</h3></div>
+    <div class="mc c3" onclick="go('pg-result')"><span class="me">🖼️</span><h3>📋 결과물<br>제출하기</h3></div>
+  </div>
+  <div style="margin:16px;padding:12px 16px;background:linear-gradient(135deg,#E8F4FD,#F0F8FF);border-radius:1.2rem;border-left:4px solid var(--bl);">
+    <p style="font-size:13px;color:#555;line-height:1.7;">💡 <strong style="color:var(--bl);">오늘의 팁!</strong> 📸 버튼을 누르면 3초 후 자동 촬영돼요! 폰을 돌리면 일반 카메라처럼 화면이 회전돼요!</p>
+  </div>
 </div>
 
 <!-- ══ 사진 연습 ══ -->
 <div id="pg-practice" class="pg">
-  <div class="nav">
-    <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
-    <h2>📚 사진 연습하기</h2>
-    <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-house"></i></button>
-  </div>
-  <div class="hero-sub" style="background:linear-gradient(135deg,var(--yw),var(--og));">
-    <h1>6가지 촬영 방법!</h1><p>탭하면 팁 → 📸 버튼 → 3초 후 촬영!</p>
-  </div>
-  <div style="padding:32px 16px 0;">
-    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">⬆️</div><div class="pi-inf"><h3>위에서 찍기</h3><p>카메라를 아래로</p></div><div class="pi-bd" style="background:#FFD93D;color:#333;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 발판·계단 이용. 의자·책상·돌 위는 위험해요!</div><button class="pi-btn" style="background:linear-gradient(135deg,#FFD93D,#FF9F43);" onclick="openCam('위에서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
-    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">⬇️</div><div class="pi-inf"><h3>아래에서 찍기</h3><p>카메라를 위로</p></div><div class="pi-bd" style="background:#FF6B9D;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 바닥에 앉아 카메라를 위로! 건물이 크게 보여요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#FF6B9D,#C77DFF);" onclick="openCam('아래에서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
-    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">🔍</div><div class="pi-inf"><h3>가까이서 찍기</h3><p>크게 자세히</p></div><div class="pi-bd" style="background:#26de81;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 10~30cm 거리에서! 꽃, 표정 디테일이 살아나요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#26de81,#4D96FF);" onclick="openCam('가까이서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
-    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">🌅</div><div class="pi-inf"><h3>멀리서 찍기</h3><p>넓은 배경과 함께</p></div><div class="pi-bd" style="background:#4D96FF;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 5m 이상 거리! 배경이 넓게 담겨요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#4D96FF,#C77DFF);" onclick="openCam('멀리서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
-    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">😊</div><div class="pi-inf"><h3>앞에서 찍기</h3><p>정면 표정 담기</p></div><div class="pi-bd" style="background:#C77DFF;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 눈높이 맞추고 정면에서! 표정이 잘 나와요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#C77DFF,#FF6B9D);" onclick="openCam('앞에서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
-    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">🚶</div><div class="pi-inf"><h3>뒤에서 찍기</h3><p>뒷모습의 분위기</p></div><div class="pi-bd" style="background:#FF9F43;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 뒷모습은 신비로운 느낌! 풍경 앞 뒷모습을 찍어봐요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#FF9F43,#FF4757);" onclick="openCam('뒤에서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
-  </div>
+  <div class="nav">
+    <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
+    <h2>📚 사진 연습하기</h2>
+    <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-house"></i></button>
+  </div>
+  <div class="hero-sub" style="background:linear-gradient(135deg,var(--yw),var(--og));">
+    <h1>6가지 촬영 방법!</h1><p>탭하면 팁 → 📸 버튼 → 3초 후 촬영!</p>
+  </div>
+  <div style="padding:32px 16px 0;">
+    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">⬆️</div><div class="pi-inf"><h3>위에서 찍기</h3><p>카메라를 아래로</p></div><div class="pi-bd" style="background:#FFD93D;color:#333;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 발판·계단 이용. 의자·책상·돌 위는 위험해요!</div><button class="pi-btn" style="background:linear-gradient(135deg,#FFD93D,#FF9F43);" onclick="openCam('위에서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
+    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">⬇️</div><div class="pi-inf"><h3>아래에서 찍기</h3><p>카메라를 위로</p></div><div class="pi-bd" style="background:#FF6B9D;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 바닥에 앉아 카메라를 위로! 건물이 크게 보여요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#FF6B9D,#C77DFF);" onclick="openCam('아래에서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
+    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">🔍</div><div class="pi-inf"><h3>가까이서 찍기</h3><p>크게 자세히</p></div><div class="pi-bd" style="background:#26de81;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 10~30cm 거리에서! 꽃, 표정 디테일이 살아나요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#26de81,#4D96FF);" onclick="openCam('가까이서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
+    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">🌅</div><div class="pi-inf"><h3>멀리서 찍기</h3><p>넓은 배경과 함께</p></div><div class="pi-bd" style="background:#4D96FF;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 5m 이상 거리! 배경이 넓게 담겨요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#4D96FF,#C77DFF);" onclick="openCam('멀리서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
+    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">😊</div><div class="pi-inf"><h3>앞에서 찍기</h3><p>정면 표정 담기</p></div><div class="pi-bd" style="background:#C77DFF;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 눈높이 맞추고 정면에서! 표정이 잘 나와요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#C77DFF,#FF6B9D);" onclick="openCam('앞에서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
+    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">🚶</div><div class="pi-inf"><h3>뒤에서 찍기</h3><p>뒷모습의 분위기</p></div><div class="pi-bd" style="background:#FF9F43;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 뒷모습은 신비로운 느낌! 풍경 앞 뒷모습을 찍어봐요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#FF9F43,#FF4757);" onclick="openCam('뒤에서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
+  </div>
 </div>
 
 <!-- ══ 미션 ══ -->
 <div id="pg-mission" class="pg">
-  <div class="nav">
-    <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
-    <h2>🏆 미션 도전하기</h2>
-    <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-house"></i></button>
-  </div>
-  <div class="hero-sub" style="background:linear-gradient(135deg,var(--gn),var(--bl));">
-    <h1>인물 사진 미션!</h1><p>계획 세우고 → 📸 → 3초 후 촬영 🎯</p>
-  </div>
-  <div style="padding:32px 16px 0;">
-    <div class="mcard m1">
-      <div class="mhd"><span class="mbadge">미션 1</span><h3>배경과 잘 어울리는 사진</h3><span style="font-size:26px;">🌅</span></div>
-      <div class="mbody">
-        <div class="mdesc">배경과 인물이 자연스럽게 어우러지도록 구도를 잡아 찍어봐요!</div>
-        <div class="mtip"><i class="fa-solid fa-list-check" style="color:var(--gn);"></i> <strong>체크리스트</strong><br>📌 배경과 인물이 잘 어우러지나요?<br>📌 표정이 밝고 자연스럽나요?<br>📌 수평·수직이 잘 맞나요?</div>
-        <div class="plan">
-          <h4><i class="fa-solid fa-clipboard-list"></i> 미션 1 계획 세우기</h4>
-          <div class="pf"><label>작품 제목</label><input type="text" id="m1t" placeholder="예: 봄날의 우리 모둠"></div>
-          <div class="pf"><label>작품 설명</label><textarea id="m1d" placeholder="어떻게 찍을지..."></textarea></div>
-          <div class="pf"><label>필요한 소품</label><input type="text" id="m1p" placeholder="예: 꽃, 모자"></div>
-          <div class="pf"><label>촬영 장소</label><input type="text" id="m1l" placeholder="예: 학교 화단 앞"></div>
-        </div>
-        <button class="btn btn-yw" id="m1btn" onclick="openCam('미션1: 배경과 어울리는 사진 🌅',this)"><i class="fa-solid fa-camera"></i> 미션 1 — 3초 후 촬영!</button>
-      </div>
-    </div>
-    <div class="mcard m2">
-      <div class="mhd"><span class="mbadge">미션 2</span><h3>원근감을 활용한 사진</h3><span style="font-size:26px;">📐</span></div>
-      <div class="mbody">
-        <div class="mdesc"><strong>원근감</strong>을 활용해 재미있고 창의적인 사진을 찍어봐요!</div>
-        <div class="mtip"><i class="fa-solid fa-lightbulb" style="color:var(--bl);"></i> <strong>아이디어</strong><br>🏛️ 건물을 손으로 집는 척<br>🌳 나무를 손바닥으로 받치는 척<br>👆 작은 친구를 손가락으로 잡는 척!</div>
-        <div class="plan b">
-          <h4><i class="fa-solid fa-clipboard-list"></i> 미션 2 계획 세우기</h4>
-          <div class="pf"><label>작품 제목</label><input type="text" id="m2t" placeholder="예: 건물을 들어올리다"></div>
-          <div class="pf"><label>작품 설명</label><textarea id="m2d" placeholder="어떻게 찍을지..."></textarea></div>
-          <div class="pf"><label>필요한 소품</label><input type="text" id="m2p" placeholder="예: 없음"></div>
-          <div class="pf"><label>촬영 장소</label><input type="text" id="m2l" placeholder="예: 운동장"></div>
-        </div>
-        <button class="btn btn-gn" id="m2btn" onclick="openCam('미션2: 원근감 활용 사진 📐',this)"><i class="fa-solid fa-camera"></i> 미션 2 — 3초 후 촬영!</button>
-      </div>
-    </div>
-  </div>
+  <div class="nav">
+    <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
+    <h2>🏆 미션 도전하기</h2>
+    <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-house"></i></button>
+  </div>
+  <div class="hero-sub" style="background:linear-gradient(135deg,var(--gn),var(--bl));">
+    <h1>인물 사진 미션!</h1><p>계획 세우고 → 📸 → 3초 후 촬영 🎯</p>
+  </div>
+  <div style="padding:32px 16px 0;">
+    <div class="mcard m1">
+      <div class="mhd"><span class="mbadge">미션 1</span><h3>배경과 잘 어울리는 사진</h3><span style="font-size:26px;">🌅</span></div>
+      <div class="mbody">
+        <div class="mdesc">배경과 인물이 자연스럽게 어우러지도록 구도를 잡아 찍어봐요!</div>
+        <div class="mtip"><i class="fa-solid fa-list-check" style="color:var(--gn);"></i> <strong>체크리스트</strong><br>📌 배경과 인물이 잘 어우러지나요?<br>📌 표정이 밝고 자연스럽나요?<br>📌 수평·수직이 잘 맞나요?</div>
+        <div class="plan">
+          <h4><i class="fa-solid fa-clipboard-list"></i> 미션 1 계획 세우기</h4>
+          <div class="pf"><label>작품 제목</label><input type="text" id="m1t" placeholder="예: 봄날의 우리 모둠"></div>
+          <div class="pf"><label>작품 설명</label><textarea id="m1d" placeholder="어떻게 찍을지..."></textarea></div>
+          <div class="pf"><label>필요한 소품</label><input type="text" id="m1p" placeholder="예: 꽃, 모자"></div>
+          <div class="pf"><label>촬영 장소</label><input type="text" id="m1l" placeholder="예: 학교 화단 앞"></div>
+        </div>
+        <button class="btn btn-yw" id="m1btn" onclick="openCam('미션1: 배경과 어울리는 사진 🌅',this)"><i class="fa-solid fa-camera"></i> 미션 1 — 3초 후 촬영!</button>
+      </div>
+    </div>
+    <div class="mcard m2">
+      <div class="mhd"><span class="mbadge">미션 2</span><h3>원근감을 활용한 사진</h3><span style="font-size:26px;">📐</span></div>
+      <div class="mbody">
+        <div class="mdesc"><strong>원근감</strong>을 활용해 재미있고 창의적인 사진을 찍어봐요!</div>
+        <div class="mtip"><i class="fa-solid fa-lightbulb" style="color:var(--bl);"></i> <strong>아이디어</strong><br>🏛️ 건물을 손으로 집는 척<br>🌳 나무를 손바닥으로 받치는 척<br>👆 작은 친구를 손가락으로 잡는 척!</div>
+        <div class="plan b">
+          <h4><i class="fa-solid fa-clipboard-list"></i> 미션 2 계획 세우기</h4>
+          <div class="pf"><label>작품 제목</label><input type="text" id="m2t" placeholder="예: 건물을 들어올리다"></div>
+          <div class="pf"><label>작품 설명</label><textarea id="m2d" placeholder="어떻게 찍을지..."></textarea></div>
+          <div class="pf"><label>필요한 소품</label><input type="text" id="m2p" placeholder="예: 없음"></div>
+          <div class="pf"><label>촬영 장소</label><input type="text" id="m2l" placeholder="예: 운동장"></div>
+        </div>
+        <button class="btn btn-gn" id="m2btn" onclick="openCam('미션2: 원근감 활용 사진 📐',this)"><i class="fa-solid fa-camera"></i> 미션 2 — 3초 후 촬영!</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ══ 카메라 ══ -->
 <div id="cam">
-  <div id="cam-header">
-    <button class="cam-nb" onclick="closeCam()"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
-    <span id="camTitle" class="cam-title-txt">사진 찍기</span>
-  </div>
-  <div id="cam-body">
-    <video id="videoMain" class="v-tag" autoplay playsinline muted></video>
-    <div class="cam-grid-ov"></div>
-    <div class="cd-ov" id="cdOv"><div class="cd-n" id="cdN">3</div></div>
-    <div class="zoom-row" id="zoomRow">
-      <button class="zb on" onclick="setZoom(1,this)">1x</button>
-      <button class="zb" onclick="setZoom(2,this)">2x</button>
-      <button class="zb" onclick="setZoom(5,this)">5x</button>
-      <button class="zb" onclick="setZoom(10,this)">10x</button>
-    </div>
-  </div>
-  <div id="cam-footer">
-    <button class="cam-btn-icon" id="galBtn" onclick="showLast()">
-      <img id="lastTh" alt=""><span id="galIco"><i class="fa-solid fa-images"></i></span>
-    </button>
-    <button class="shutter" id="shutBtn" onclick="startCD()"><i class="fa-solid fa-camera"></i></button>
-    <button class="cam-btn-icon" onclick="flipCam()">
-      <i class="fa-solid fa-rotate"></i>
-    </button>
-  </div>
-  <canvas id="captureCanvas"></canvas>
+  <div id="cam-header">
+    <button class="cam-nb" onclick="closeCam()"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
+    <span id="camTitle" class="cam-title-txt">사진 찍기</span>
+  </div>
+  <div id="cam-body">
+    <video id="videoMain" class="v-tag" autoplay playsinline muted></video>
+    <div class="cam-grid-ov"></div>
+    <div class="cd-ov" id="cdOv"><div class="cd-n" id="cdN">3</div></div>
+    <div class="zoom-row" id="zoomRow">
+      <button class="zb on" onclick="setZoom(1,this)">1x</button>
+      <button class="zb" onclick="setZoom(2,this)">2x</button>
+      <button class="zb" onclick="setZoom(5,this)">5x</button>
+      <button class="zb" onclick="setZoom(10,this)">10x</button>
+    </div>
+  </div>
+  <div id="cam-footer">
+    <button class="cam-btn-icon" id="galBtn" onclick="showLast()">
+      <img id="lastTh" alt=""><span id="galIco"><i class="fa-solid fa-images"></i></span>
+    </button>
+    <button class="shutter" id="shutBtn" onclick="startCD()"><i class="fa-solid fa-camera"></i></button>
+    <button class="cam-btn-icon" onclick="flipCam()">
+      <i class="fa-solid fa-rotate"></i>
+    </button>
+  </div>
+  <canvas id="captureCanvas"></canvas>
 </div>
 
 <!-- ══ 입력 시트 ══ -->
 <div id="inp-wrap">
-  <div id="inp-sheet">
-    <h3><i class="fa-solid fa-pen-to-square" style="color:var(--bl);"></i> 사진 정보 입력</h3>
-    <input type="text" id="inpTitle" placeholder="📝 사진 제목을 입력하세요" maxlength="30">
-    <input type="text" id="inpPlace" placeholder="📍 촬영 장소를 입력하세요" maxlength="30">
-    <div class="inp-btns">
-      <button class="btn btn-rd btn-sm" onclick="discardPhoto()" style="flex:1;"><i class="fa-solid fa-trash"></i> 버리기</button>
-      <button class="btn btn-gn btn-sm" onclick="savePhoto()" style="flex:1.5;"><i class="fa-solid fa-floppy-disk"></i> 저장하기</button>
-    </div>
-  </div>
+  <div id="inp-sheet">
+    <h3><i class="fa-solid fa-pen-to-square" style="color:var(--bl);"></i> 사진 정보 입력</h3>
+    <input type="text" id="inpTitle" placeholder="📝 사진 제목을 입력하세요" maxlength="30">
+    <input type="text" id="inpPlace" placeholder="📍 촬영 장소를 입력하세요" maxlength="30">
+    <div class="inp-btns">
+      <button class="btn btn-rd btn-sm" onclick="discardPhoto()" style="flex:1;"><i class="fa-solid fa-trash"></i> 버리기</button>
+      <button class="btn btn-gn btn-sm" onclick="savePhoto()" style="flex:1.5;"><i class="fa-solid fa-floppy-disk"></i> 저장하기</button>
+    </div>
+  </div>
 </div>
 
 <!-- ══ 뷰어 모달 ══ -->
 <div id="modal">
-  <div class="mc2">
-    <div id="vwr"><img id="pvImg" src="" alt=""></div>
-    <div class="zm-bar">
-      <button class="zm-btn" onclick="zm(-1)">－</button>
-      <span id="zmLbl">100%</span>
-      <button class="zm-btn" onclick="zm(1)">＋</button>
-    </div>
-    <div class="mi">
-      <div class="mi-t" id="pvTitle">📸</div>
-      <div class="mi-p"><i class="fa-solid fa-location-dot" style="color:var(--rd);"></i> <span id="pvPlace"></span></div>
-    </div>
-    <div style="display:flex;gap:10px;padding:0 16px 16px;">
-      <button class="btn btn-gy btn-sm" onclick="closeModal()" style="flex:1;"><i class="fa-solid fa-xmark"></i> 닫기</button>
-    </div>
-  </div>
+  <div class="mc2">
+    <div id="vwr"><img id="pvImg" src="" alt=""></div>
+    <div class="zm-bar">
+      <button class="zm-btn" onclick="zm(-1)">－</button>
+      <span id="zmLbl">100%</span>
+      <button class="zm-btn" onclick="zm(1)">＋</button>
+    </div>
+    <div class="mi">
+      <div class="mi-t" id="pvTitle">📸</div>
+      <div class="mi-p"><i class="fa-solid fa-location-dot" style="color:var(--rd);"></i> <span id="pvPlace"></span></div>
+    </div>
+    <div style="display:flex;gap:10px;padding:0 16px 16px;">
+      <button class="btn btn-gy btn-sm" onclick="closeModal()" style="flex:1;"><i class="fa-solid fa-xmark"></i> 닫기</button>
+    </div>
+  </div>
 </div>
 
 <!-- ══ 결과·제출 ══ -->
 <div id="pg-result" class="pg">
-  <div class="nav">
-    <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
-    <h2>📋 결과물 제출하기</h2>
-    <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-house"></i></button>
-  </div>
-  <div class="res-hero">
-    <div style="font-size:54px;margin-bottom:8px;">🎉</div>
-    <h1 style="font-size:21px;font-weight:800;margin-bottom:5px;">찍은 사진 모아보기!</h1>
-    <p id="pcnt" style="font-size:14px;">아직 찍은 사진이 없어요.</p>
-  </div>
-  <div class="pgrid" id="pgrid"></div>
-  <div class="sa">
-    <div style="font-size:17px;font-weight:800;padding:0 0 10px;display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-cloud-arrow-up" style="color:var(--bl);"></i> 선생님께 제출하기</div>
-    <div class="ib"><i class="fa-solid fa-circle-info" style="color:var(--bl);"></i> 마음에 안 드는 사진은 <strong>✕</strong>로 삭제 후 제출하세요!</div>
-    <div class="fw"><label><i class="fa-solid fa-people-group" style="color:var(--pp);"></i> 모둠 이름</label><input type="text" id="grpNm" placeholder="예: 1모둠"></div>
-    <div class="fw"><label><i class="fa-solid fa-user-group" style="color:var(--gn);"></i> 모둠원 이름</label><input type="text" id="stuNm" placeholder="예: 홍길동, 김철수, 이영희"></div>
-    <button class="btn btn-bl" id="subBtn" onclick="submitAll()" style="margin-bottom:10px;"><i class="fa-solid fa-paper-plane"></i> 선생님께 제출하기!</button>
-    <button class="btn btn-yw" onclick="dlAll()"><i class="fa-solid fa-download"></i> 내 기기에 전체 저장</button>
-    <div id="stEl"></div>
-  </div>
+  <div class="nav">
+    <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
+    <h2>📋 결과물 제출하기</h2>
+    <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-house"></i></button>
+  </div>
+  <div class="res-hero">
+    <div style="font-size:54px;margin-bottom:8px;">🎉</div>
+    <h1 style="font-size:21px;font-weight:800;margin-bottom:5px;">찍은 사진 모아보기!</h1>
+    <p id="pcnt" style="font-size:14px;">아직 찍은 사진이 없어요.</p>
+  </div>
+  <div class="pgrid" id="pgrid"></div>
+  <div class="sa">
+    <div style="font-size:17px;font-weight:800;padding:0 0 10px;display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-cloud-arrow-up" style="color:var(--bl);"></i> 선생님께 제출하기</div>
+    <div class="ib"><i class="fa-solid fa-circle-info" style="color:var(--bl);"></i> 마음에 안 드는 사진은 <strong>✕</strong>로 삭제 후 제출하세요!</div>
+    <div class="fw"><label><i class="fa-solid fa-people-group" style="color:var(--pp);"></i> 모둠 이름</label><input type="text" id="grpNm" placeholder="예: 1모둠"></div>
+    <div class="fw"><label><i class="fa-solid fa-user-group" style="color:var(--gn);"></i> 모둠원 이름</label><input type="text" id="stuNm" placeholder="예: 홍길동, 김철수, 이영희"></div>
+    <button class="btn btn-bl" id="subBtn" onclick="submitAll()" style="margin-bottom:10px;"><i class="fa-solid fa-paper-plane"></i> 선생님께 제출하기!</button>
+    <button class="btn btn-yw" onclick="dlAll()"><i class="fa-solid fa-download"></i> 내 기기에 전체 저장</button>
+    <div id="stEl"></div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -381,304 +381,305 @@ var camMode = '', callerBtn = null, curZoom = 1;
 var photos = [];
 
 // ★ 앱 시작 시 저장된 사진 불러오기 로직 강화
-try { 
-  var saved = localStorage.getItem('photos');
-  if(saved) photos = JSON.parse(saved);
+try { 
+  var saved = localStorage.getItem('photos');
+  if(saved) photos = JSON.parse(saved);
 } catch(e){ photos = []; }
 
 // ═══════════════════════════════
 // 기본 기능
 // ═══════════════════════════════
 document.getElementById('agCk').addEventListener('change', function(){
-  document.getElementById('agBtn').disabled = !this.checked;
+  document.getElementById('agBtn').disabled = !this.checked;
 });
 function goHome(){
-  if(!document.getElementById('agCk').checked){ toast('안전 수칙에 동의해야 해요! ✅'); return; }
-  go('pg-home');
+  if(!document.getElementById('agCk').checked){ toast('안전 수칙에 동의해야 해요! ✅'); return; }
+  go('pg-home');
 }
 
 function go(id){
-  document.querySelectorAll('.pg').forEach(function(p){ p.classList.remove('on'); });
-  var t = document.getElementById(id);
-  if(t) t.classList.add('on');
-  if(id==='pg-result') renderResult(); // ★ 결과 페이지 갈 때 무조건 새로고침
-  window.scrollTo(0,0);
+  document.querySelectorAll('.pg').forEach(function(p){ p.classList.remove('on'); });
+  var t = document.getElementById(id);
+  if(t) t.classList.add('on');
+  if(id==='pg-result') renderResult(); // ★ 결과 페이지 갈 때 무조건 새로고침
+  window.scrollTo(0,0);
 }
 function tipTog(hd){
-  var t = hd.parentElement.querySelector('.pi-tip');
-  if(t) t.style.display = t.style.display==='block' ? 'none' : 'block';
+  var t = hd.parentElement.querySelector('.pi-tip');
+  if(t) t.style.display = t.style.display==='block' ? 'none' : 'block';
 }
 
 // ═══════════════════════════════
 // 카메라 제어
 // ═══════════════════════════════
 async function openCam(title, btn){
-  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
-    alert('카메라를 지원하지 않아요.\nhttps:// 주소로 열어야 해요!'); return;
-  }
-  if(btn){ btn.disabled = true; callerBtn = btn; }
-  document.querySelectorAll('.pg').forEach(function(p){ p.classList.remove('on'); });
-  camMode = title;
-  document.getElementById('camTitle').textContent = title;
-  curZoom = 1;
-  document.querySelectorAll('.zb').forEach(function(b){ b.classList.remove('on'); });
-  document.querySelectorAll('.zb')[0].classList.add('on');
-  document.getElementById('cam').classList.add('on');
-  await startCam();
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+    alert('카메라를 지원하지 않아요.\nhttps:// 주소로 열어야 해요!'); return;
+  }
+  if(btn){ btn.disabled = true; callerBtn = btn; }
+  document.querySelectorAll('.pg').forEach(function(p){ p.classList.remove('on'); });
+  camMode = title;
+  document.getElementById('camTitle').textContent = title;
+  curZoom = 1;
+  document.querySelectorAll('.zb').forEach(function(b){ b.classList.remove('on'); });
+  document.querySelectorAll('.zb')[0].classList.add('on');
+  document.getElementById('cam').classList.add('on');
+  await startCam();
 }
 
 async function startCam(){
-  try{
-    if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream=null; }
-    var constraints = [
-      {video:{facingMode:facing,width:{ideal:1280},height:{ideal:720}},audio:false},
-      {video:{facingMode:facing},audio:false}
-    ];
-    for(var i=0;i<constraints.length;i++){
-      try{ stream=await navigator.mediaDevices.getUserMedia(constraints[i]); break; }
-      catch(e){ if(i===constraints.length-1) throw e; }
-    }
-    var vid = document.getElementById('videoMain');
-    vid.srcObject = stream;
-    vid.style.transform = 'scale('+curZoom+')';
-    vid.onloadedmetadata = function(){ vid.play().catch(function(){}); };
-  }catch(err){
-    alert('카메라 오류: ' + err.name); closeCam();
-  }
+  try{
+    if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream=null; }
+    var constraints = [
+      {video:{facingMode:facing,width:{ideal:1280},height:{ideal:720}},audio:false},
+      {video:{facingMode:facing},audio:false}
+    ];
+    for(var i=0;i<constraints.length;i++){
+      try{ stream=await navigator.mediaDevices.getUserMedia(constraints[i]); break; }
+      catch(e){ if(i===constraints.length-1) throw e; }
+    }
+    var vid = document.getElementById('videoMain');
+    vid.srcObject = stream;
+    vid.style.transform = 'scale('+curZoom+')';
+    vid.onloadedmetadata = function(){ vid.play().catch(function(){}); };
+  }catch(err){
+    alert('카메라 오류: ' + err.name); closeCam();
+  }
 }
 
 function closeCam(){
-  if(cdTimer){ clearInterval(cdTimer); cdTimer=null; }
-  if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream=null; }
-  document.getElementById('cam').classList.remove('on');
-  if(callerBtn){ callerBtn.disabled=false; callerBtn=null; }
-  go('pg-home');
+  if(cdTimer){ clearInterval(cdTimer); cdTimer=null; }
+  if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream=null; }
+  document.getElementById('cam').classList.remove('on');
+  if(callerBtn){ callerBtn.disabled=false; callerBtn=null; }
+  go('pg-home');
 }
 
 function flipCam(){
-  facing = facing==='environment'?'user':'environment';
-  startCam();
-  toast(facing==='user'?'셀카 모드! 😊':'후면 카메라! 📸');
+  facing = facing==='environment'?'user':'environment';
+  startCam();
+  toast(facing==='user'?'셀카 모드! 😊':'후면 카메라! 📸');
 }
 
 function setZoom(z, btn){
-  curZoom = z;
-  document.getElementById('videoMain').style.transform = 'scale('+z+')';
-  document.querySelectorAll('.zb').forEach(function(b){ b.classList.remove('on'); });
-  if(btn) btn.classList.add('on');
+  curZoom = z;
+  document.getElementById('videoMain').style.transform = 'scale('+z+')';
+  document.querySelectorAll('.zb').forEach(function(b){ b.classList.remove('on'); });
+  if(btn) btn.classList.add('on');
 }
 
 function startCD(){
-  if(cdTimer) return;
-  document.getElementById('shutBtn').disabled = true;
-  var ov = document.getElementById('cdOv');
-  var nm = document.getElementById('cdN');
-  var cnt = 3;
-  function show(n){
-    nm.textContent = n;
-    ov.classList.add('on');
-    nm.style.animation='none'; void nm.offsetWidth;
-    nm.style.animation='cd 1s ease forwards';
-  }
-  show(cnt);
-  cdTimer = setInterval(function(){
-    cnt--;
-    if(cnt<=0){
-      clearInterval(cdTimer); cdTimer=null;
-      ov.classList.remove('on');
-      takePhoto();
-      document.getElementById('shutBtn').disabled=false;
-    } else { show(cnt); }
-  },1000);
+  if(cdTimer) return;
+  document.getElementById('shutBtn').disabled = true;
+  var ov = document.getElementById('cdOv');
+  var nm = document.getElementById('cdN');
+  var cnt = 3;
+  function show(n){
+    nm.textContent = n;
+    ov.classList.add('on');
+    nm.style.animation='none'; void nm.offsetWidth;
+    nm.style.animation='cd 1s ease forwards';
+  }
+  show(cnt);
+  cdTimer = setInterval(function(){
+    cnt--;
+    if(cnt<=0){
+      clearInterval(cdTimer); cdTimer=null;
+      ov.classList.remove('on');
+      takePhoto();
+      document.getElementById('shutBtn').disabled=false;
+    } else { show(cnt); }
+  },1000);
 }
 
 // ═══════════════════════════════
 // 사진 촬영 및 저장 (최적화 적용)
 // ═══════════════════════════════
 function takePhoto(){
-  var vid = document.getElementById('videoMain');
-  if(vid.readyState < 2){ toast('카메라 준비 중이에요!'); return; }
+  var vid = document.getElementById('videoMain');
+  if(vid.readyState < 2){ toast('카메라 준비 중이에요!'); return; }
 
-  var isLandscape = window.innerWidth > window.innerHeight;
-  var vidW = vid.videoWidth, vidH = vid.videoHeight;
-  var canvas = document.getElementById('captureCanvas');
-  var ctx = canvas.getContext('2d');
+  var isLandscape = window.innerWidth > window.innerHeight;
+  var vidW = vid.videoWidth, vidH = vid.videoHeight;
+  var canvas = document.getElementById('captureCanvas');
+  var ctx = canvas.getContext('2d');
 
-  // 저장용 캔버스 크기 결정 (가로세로 비율 유지하며 최대 1280px 수준으로 캡처)
-  var drawW = isLandscape ? Math.max(vidW, vidH) : Math.min(vidW, vidH);
-  var drawH = isLandscape ? Math.min(vidW, vidH) : Math.max(vidW, vidH);
-  canvas.width = drawW; canvas.height = drawH;
+  // 저장용 캔버스 크기 결정 (가로세로 비율 유지하며 최대 1280px 수준으로 캡처)
+  var drawW = isLandscape ? Math.max(vidW, vidH) : Math.min(vidW, vidH);
+  var drawH = isLandscape ? Math.min(vidW, vidH) : Math.max(vidW, vidH);
+  canvas.width = drawW; canvas.height = drawH;
 
-  ctx.save();
-  if ((isLandscape && vidW < vidH) || (!isLandscape && vidW > vidH)) {
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.rotate(90 * Math.PI / 180);
-    if (facing === 'user') ctx.scale(-1, 1);
-    ctx.drawImage(vid, -drawH / 2, -drawW / 2, drawH, drawW);
-  } else {
-    if (facing === 'user') { ctx.translate(canvas.width, 0); ctx.scale(-1, 1); }
-    ctx.drawImage(vid, 0, 0, drawW, drawH);
-  }
-  ctx.restore();
+  ctx.save();
+  if ((isLandscape && vidW < vidH) || (!isLandscape && vidW > vidH)) {
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate(90 * Math.PI / 180);
+    if (facing === 'user') ctx.scale(-1, 1);
+    ctx.drawImage(vid, -drawH / 2, -drawW / 2, drawH, drawW);
+  } else {
+    if (facing === 'user') { ctx.translate(canvas.width, 0); ctx.scale(-1, 1); }
+    ctx.drawImage(vid, 0, 0, drawW, drawH);
+  }
+  ctx.restore();
 
-  // ★ 촬영 직후 메모리 보호를 위해 즉시 리사이징
-  resizeImage(canvas.toDataURL('image/jpeg', 0.85), 1000, function(resizedData){
-    pendingData = resizedData;
-    pendingIsLand = isLandscape;
-    playShutter();
-    document.getElementById('inpTitle').value='';
-    document.getElementById('inpPlace').value='';
-    document.getElementById('inp-wrap').classList.add('on');
-  });
+  // 촬영 직후 메모리 보호를 위해 즉시 리사이징
+  resizeImage(canvas.toDataURL('image/jpeg', 0.85), 1000, function(resizedData){
+    pendingData = resizedData;
+    pendingIsLand = isLandscape;
+    playShutter();
+    document.getElementById('inpTitle').value='';
+    document.getElementById('inpPlace').value='';
+    document.getElementById('inp-wrap').classList.add('on');
+  });
 }
 
-// ★ 이미지 압축/리사이징 함수 (localStorage 5MB 제한 방지)
+// 이미지 압축/리사이징 함수 (localStorage 5MB 제한 방지)
 function resizeImage(dataUrl, maxDim, callback) {
-  var img = new Image();
-  img.onload = function() {
-    var w = img.width, h = img.height;
-    if (w > maxDim || h > maxDim) {
-      if (w > h) { h *= maxDim / w; w = maxDim; }
-      else { w *= maxDim / h; h = maxDim; }
-    }
-    var cvs = document.createElement('canvas');
-    cvs.width = w; cvs.height = h;
-    cvs.getContext('2d').drawImage(img, 0, 0, w, h);
-    callback(cvs.toDataURL('image/jpeg', 0.75));
-  };
-  img.src = dataUrl;
+  var img = new Image();
+  img.onload = function() {
+    var w = img.width, h = img.height;
+    if (w > maxDim || h > maxDim) {
+      if (w > h) { h *= maxDim / w; w = maxDim; }
+      else { w *= maxDim / h; h = maxDim; }
+    }
+    var cvs = document.createElement('canvas');
+    cvs.width = w; cvs.height = h;
+    cvs.getContext('2d').drawImage(img, 0, 0, w, h);
+    callback(cvs.toDataURL('image/jpeg', 0.75));
+  };
+  img.src = dataUrl;
 }
 
 function savePhoto(){
-  var title = document.getElementById('inpTitle').value.trim();
-  var place = document.getElementById('inpPlace').value.trim();
-  if(!title || !place){ toast('제목과 장소를 입력해주세요! 📝'); return; }
-  if(!pendingData) return;
+  var title = document.getElementById('inpTitle').value.trim();
+  var place = document.getElementById('inpPlace').value.trim();
+  if(!title || !place){ toast('제목과 장소를 입력해주세요! 📝'); return; }
+  if(!pendingData) return;
 
-  var photo = {
-    id: Date.now(),
-    data: pendingData,
-    title: title,
-    place: place,
-    timestamp: new Date().toLocaleString('ko-KR'),
-    mode: camMode,
-    isLand: pendingIsLand
-  };
-  
-  photos.push(photo);
-  try {
-    localStorage.setItem('photos', JSON.stringify(photos));
-  } catch(e) {
-    alert('저장 공간이 부족해요! 불필요한 사진을 삭제해주세요.');
-    photos.pop(); return;
-  }
+  var photo = {
+    id: Date.now(),
+    data: pendingData,
+    title: title,
+    place: place,
+    timestamp: new Date().toLocaleString('ko-KR'),
+    mode: camMode,
+    isLand: pendingIsLand
+  };
+  
+  photos.push(photo);
+  try {
+    localStorage.setItem('photos', JSON.stringify(photos));
+  } catch(e) {
+    alert('저장 공간이 부족해요! 불필요한 사진을 삭제해주세요.');
+    photos.pop(); return;
+  }
 
-  document.getElementById('lastTh').src = pendingData;
-  document.getElementById('lastTh').style.display = 'block';
-  document.getElementById('galIco').style.display = 'none';
-  
-  document.getElementById('inp-wrap').classList.remove('on');
-  pendingData = null;
-  toast('✅ 저장 완료! 📱');
+  document.getElementById('lastTh').src = pendingData;
+  document.getElementById('lastTh').style.display = 'block';
+  document.getElementById('galIco').style.display = 'none';
+  
+  document.getElementById('inp-wrap').classList.remove('on');
+  pendingData = null;
+  toast('✅ 저장 완료! 📱');
 }
 
 // ═══════════════════════════════
 // 결과 확인 및 제출
 // ═══════════════════════════════
 function renderResult(){
-  var g = document.getElementById('pgrid');
-  var cnt = document.getElementById('pcnt');
-  g.innerHTML = '';
-  
-  if(!photos || photos.length === 0){
-    cnt.textContent = '아직 찍은 사진이 없어요.';
-    g.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#aaa;">사진이 없어요. 📸</div>';
-    return;
-  }
-  
-  cnt.textContent = '총 ' + photos.length + '장 찍었어요! 🎉';
-  photos.forEach(function(p){
-    var d = document.createElement('div');
-    d.className = 'pgi';
-    d.innerHTML = '<img src="'+p.data+'"><div class="pg-lb">'+p.title+'</div><button class="pg-x" onclick="delPh('+p.id+',event)">✕</button>';
-    d.onclick = function(){ openModal(p); };
-    g.appendChild(d);
-  });
+  var g = document.getElementById('pgrid');
+  var cnt = document.getElementById('pcnt');
+  g.innerHTML = '';
+  
+  if(!photos || photos.length === 0){
+    cnt.textContent = '아직 찍은 사진이 없어요.';
+    g.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#aaa;">사진이 없어요. 📸</div>';
+    return;
+  }
+  
+  cnt.textContent = '총 ' + photos.length + '장 찍었어요! 🎉';
+  photos.forEach(function(p){
+    var d = document.createElement('div');
+    d.className = 'pgi';
+    d.innerHTML = '<img src="'+p.data+'"><div class="pg-lb">'+p.title+'</div><button class="pg-x" onclick="delPh('+p.id+',event)">✕</button>';
+    d.onclick = function(){ openModal(p); };
+    g.appendChild(d);
+  });
 }
 
 function delPh(id, e){
-  e.stopPropagation();
-  if(!confirm('이 사진을 삭제할까요?')) return;
-  photos = photos.filter(function(p){ return p.id !== id; });
-  localStorage.setItem('photos', JSON.stringify(photos));
-  renderResult();
-  toast('🗑️ 삭제했어요.');
+  e.stopPropagation();
+  if(!confirm('이 사진을 삭제할까요?')) return;
+  photos = photos.filter(function(p){ return p.id !== id; });
+  localStorage.setItem('photos', JSON.stringify(photos));
+  renderResult();
+  toast('🗑️ 삭제했어요.');
 }
 
+// ★ 수정된 제출 함수 (목록 초기화 방지)
 async function submitAll(){
-  var group = document.getElementById('grpNm').value.trim();
-  var student = document.getElementById('stuNm').value.trim();
-  var st = document.getElementById('stEl');
-  
-  if(!photos.length){ toast('제출할 사진이 없어요!'); return; }
-  if(!group || !student){ toast('모둠 이름과 이름을 입력해주세요!'); return; }
+  var group = document.getElementById('grpNm').value.trim();
+  var student = document.getElementById('stuNm').value.trim();
+  var st = document.getElementById('stEl');
+  
+  if(!photos.length){ toast('제출할 사진이 없어요!'); return; }
+  if(!group || !student){ toast('모둠 이름과 이름을 입력해주세요!'); return; }
 
-  document.getElementById('subBtn').disabled = true;
-  st.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 선생님께 전송 중...';
+  document.getElementById('subBtn').disabled = true;
+  st.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 선생님께 전송 중...';
 
-  var payload = JSON.stringify({
-    group: group, student: student,
-    photos: photos, submittedAt: new Date().toISOString()
-  });
+  var payload = JSON.stringify({
+    group: group, student: student,
+    photos: photos, submittedAt: new Date().toISOString()
+  });
 
-  try {
-    await fetch(GAS, { method: 'POST', mode: 'no-cors', body: payload });
-    
-    st.innerHTML = '✅ 제출 완료! 선생님께 잘 전달되었어요! 📝';
-    if(confirm('제출에 성공했습니다!\n목록을 비우고 처음으로 돌아갈까요?')){
-      photos = [];
-      localStorage.removeItem('photos');
-      go('pg-home');
-    }
-  } catch(err) {
-    st.innerHTML = '❌ 전송 실패: 인터넷을 확인해주세요.';
-  } finally {
-    document.getElementById('subBtn').disabled = false;
-  }
+  try {
+    await fetch(GAS, { method: 'POST', mode: 'no-cors', body: payload });
+    
+    st.innerHTML = '✅ 제출 완료! 선생님께 잘 전달되었어요! 📝';
+    toast('🎉 전송 성공!');
+    
+    // 사진 목록을 지우지 않고 그대로 유지합니다.
+    // 사용자가 직접 삭제하거나 새로 찍기 전까지는 목록이 사라지지 않습니다.
+    
+  } catch(err) {
+    st.innerHTML = '❌ 전송 실패: 인터넷을 확인해주세요.';
+  } finally {
+    document.getElementById('subBtn').disabled = false;
+  }
 }
 
 // ═══════════════════════════════
 // 기타 유틸리티
 // ═══════════════════════════════
 function playShutter(){
-  try{
-    var ctx = new(window.AudioContext||window.webkitAudioContext)();
-    var osc = ctx.createOscillator();
-    var gain = ctx.createGain();
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.start(); gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1);
-    osc.stop(ctx.currentTime + 0.1);
-  }catch(e){}
+  try{
+    var ctx = new(window.AudioContext||window.webkitAudioContext)();
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(); gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1);
+    osc.stop(ctx.currentTime + 0.1);
+  }catch(e){}
 }
 function discardPhoto(){
-  pendingData=null; document.getElementById('inp-wrap').classList.remove('on');
-  if(callerBtn) callerBtn.disabled=false; toast('🗑️ 버렸어요.');
+  pendingData=null; document.getElementById('inp-wrap').classList.remove('on');
+  if(callerBtn) callerBtn.disabled=false; toast('🗑️ 버렸어요.');
 }
 function openModal(p){
-  document.getElementById('pvImg').src=p.data;
-  document.getElementById('pvTitle').textContent='📸 '+p.title;
-  document.getElementById('pvPlace').textContent=p.place;
-  document.getElementById('modal').classList.add('on');
+  document.getElementById('pvImg').src=p.data;
+  document.getElementById('pvTitle').textContent='📸 '+p.title;
+  document.getElementById('pvPlace').textContent=p.place;
+  document.getElementById('modal').classList.add('on');
 }
 function closeModal(){ document.getElementById('modal').classList.remove('on'); }
 function toast(msg){
-  var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
-  setTimeout(function(){ t.classList.remove('show'); },1500);
+  var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); },1500);
 }
 function dlAll(){
-  photos.forEach(function(p,i){ 
-    var a=document.createElement('a'); a.href=p.data; a.download=p.title+'.jpg'; a.click();
-  });
+  photos.forEach(function(p,i){ 
+    var a=document.createElement('a'); a.href=p.data; a.download=p.title+'.jpg'; a.click();
+  });
 }
 function showLast(){ if(photos.length) openModal(photos[photos.length-1]); }
 </script>
