@@ -434,16 +434,24 @@ function tipTog(hd){
 }
 
 // ═══════════════════════════════
-// 가로/세로 감지 및 재생 (버그 수정 완료!)
+// 가로/세로 감지 및 재생 (센서 기반 감지 강화 + 줌 유지)
 // ═══════════════════════════════
 function checkOrientation(){
   var land = window.innerWidth > window.innerHeight;
+  // ★ 추가된 로직: 모바일 기기의 실제 센서 방향을 가장 최우선으로 확인
+  if (window.screen && window.screen.orientation && window.screen.orientation.type) {
+    land = window.screen.orientation.type.includes('landscape');
+  } else if (typeof window.orientation !== 'undefined') {
+    land = (Math.abs(window.orientation) === 90);
+  }
+
   if(land === isLandMode) return;
   isLandMode = land;
   var camOn = document.getElementById('cam').classList.contains('on');
   if(!camOn) return;
   applyOrientation();
 }
+
 function applyOrientation(){
   var p = document.getElementById('cam-portrait');
   var l = document.getElementById('cam-landscape');
@@ -453,7 +461,8 @@ function applyOrientation(){
     if(stream){ 
       var vL = document.getElementById('videoL');
       vL.srcObject = stream; 
-      vL.play().catch(function(){}); // ★ 가로 모드 전환 시 재생 강제 실행
+      vL.style.transform = 'scale('+curZoom+')';
+      vL.play().catch(function(){}); 
     }
   } else {
     p.style.display = 'flex';
@@ -461,7 +470,8 @@ function applyOrientation(){
     if(stream){ 
       var vP = document.getElementById('videoP');
       vP.srcObject = stream; 
-      vP.play().catch(function(){}); // ★ 세로 모드 전환 시 재생 강제 실행
+      vP.style.transform = 'scale('+curZoom+')';
+      vP.play().catch(function(){}); 
     }
   }
 }
@@ -482,7 +492,15 @@ async function openCam(title, guide, btn){
   curZoom = 1;
   document.querySelectorAll('.zb').forEach(function(b){ b.classList.remove('on'); });
   document.querySelectorAll('.zb')[0].classList.add('on');
+  
   isLandMode = window.innerWidth > window.innerHeight;
+  // ★ 추가된 로직: 카메라 열 때도 센서를 기준으로 명확히 판단
+  if (window.screen && window.screen.orientation && window.screen.orientation.type) {
+    isLandMode = window.screen.orientation.type.includes('landscape');
+  } else if (typeof window.orientation !== 'undefined') {
+    isLandMode = (Math.abs(window.orientation) === 90);
+  }
+
   var cam = document.getElementById('cam');
   cam.classList.add('on');
   applyOrientation();
@@ -574,7 +592,7 @@ function startCD(){
 }
 
 // ═══════════════════════════════
-// 사진 촬영 (회전 로직 강화)
+// 사진 촬영 (회전 및 저장 로직 완벽 수정)
 // ═══════════════════════════════
 function takePhoto(){
   var vid = isLandMode ? document.getElementById('videoL') : document.getElementById('videoP');
@@ -585,9 +603,12 @@ function takePhoto(){
 
   var MAX_DIM = 1920;
   var scale = Math.min(1, MAX_DIM / Math.max(vw, vh));
+  
+  // 소스 이미지의 최종 크기
   var dw = Math.round(vw * scale);
   var dh = Math.round(vh * scale);
 
+  // 크롭 및 줌 적용 계산
   var z = curZoom > 1 ? curZoom : 1;
   var srcW = Math.round(vw / z), srcH = Math.round(vh / z);
   var srcX = Math.round((vw - srcW) / 2), srcY = Math.round((vh - srcH) / 2);
@@ -595,10 +616,12 @@ function takePhoto(){
   var canvas = document.getElementById('captureCanvas');
   var ctx = canvas.getContext('2d');
 
+  // 디바이스 가로/세로와 비디오 소스의 가로/세로가 다르면 90도 회전 필요
   var needRotate = (isLandMode && vw < vh) || (!isLandMode && vw > vh);
 
+  // 캔버스 크기를 회전 여부에 따라 정확히 설정
   if (needRotate) {
-    canvas.width  = dh;
+    canvas.width  = dh; // 너비와 높이를 바꿈
     canvas.height = dw;
     pendingIsLand = (dh > dw); 
   } else {
@@ -608,21 +631,30 @@ function takePhoto(){
   }
 
   ctx.save();
+  
+  // ★ 좌표계 에러 원천 차단: 캔버스의 정중앙으로 원점을 옮김
+  ctx.translate(canvas.width / 2, canvas.height / 2);
+
+  // 기기 방향에 맞게 회전 보정
   if (needRotate) {
-    ctx.translate(canvas.width / 2, canvas.height / 2);
     ctx.rotate((isLandMode ? -90 : 90) * Math.PI / 180);
-    ctx.translate(-dw / 2, -dh / 2);
-  }
-  if(facing === 'user'){
-    ctx.translate(dw, 0); ctx.scale(-1, 1);
   }
 
-  ctx.drawImage(vid, srcX, srcY, srcW, srcH, 0, 0, dw, dh);
+  // 전면 카메라인 경우 좌우 반전
+  if (facing === 'user') {
+    ctx.scale(-1, 1);
+  }
+
+  // 원점이 중심이므로 절반 크기만큼 빼서(-dw/2, -dh/2)부터 그리기 시작
+  ctx.drawImage(vid, srcX, srcY, srcW, srcH, -dw / 2, -dh / 2, dw, dh);
+  
   ctx.restore();
 
+  // 캔버스의 이미지를 추출 (저장 준비)
   pendingData = canvas.toDataURL('image/jpeg', 0.92);
   playShutter();
 
+  // 플래시 효과
   var fl = document.createElement('div');
   fl.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:99999;opacity:.95;pointer-events:none;';
   document.body.appendChild(fl);
@@ -742,7 +774,7 @@ function delPh(id,e){
 }
 
 // ═══════════════════════════════
-// 결과 제출 (오류 무시 및 중복 전송 원천 차단)
+// 결과 제출
 // ═══════════════════════════════
 async function submitAll(){
   var grpRaw = document.getElementById('grpNm').value.trim()||'미정';
@@ -780,7 +812,6 @@ async function submitAll(){
   st.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> 선생님께 제출 중입니다...';
   
   try {
-    // ★ 핵심 포인트: no-cors 모드로 보내서 브라우저의 억지 "실패" 에러를 무시합니다.
     await fetch(GAS, {
       method: 'POST',
       mode: 'no-cors', 
@@ -788,19 +819,15 @@ async function submitAll(){
       body: payload
     });
     
-    // 이 줄이 실행되면 100% 전송 성공한 것입니다!
     st.innerHTML='✅ '+group+' 모둠 제출 완료! 선생님께 전달되었어요! 📝';
     toast('🎉 제출 완료!');
     
-    // ★ 핵심 포인트: 제출 성공 후 화면에 남은 사진 목록을 깔끔하게 지워버립니다. 
-    // 그래야 다음에 또 눌러도 중복 전송되지 않습니다.
     photos = [];
     try{ localStorage.removeItem('photos'); } catch(e){}
     renderResult();
     
     setTimeout(function(){ st.innerHTML=''; }, 5000);
   } catch(err) {
-    // 인터넷이 끊긴 등 진짜 오류가 발생했을 때만 여기가 실행됩니다.
     st.innerHTML='❌ 전송 실패: 인터넷 연결을 확인해주세요.';
   } finally {
     sb.disabled=false;
