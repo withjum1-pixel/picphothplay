@@ -325,29 +325,36 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
       </div>
     </div>
   </div>
-  <!-- 가로 모드 -->
+  <!-- 가로 모드: 네이티브 카메라 앱 스타일 -->
   <div id="cam-landscape">
-    <div id="cam-side-l">
-      <button class="cam-nb" onclick="closeCam()" style="writing-mode:vertical-rl;padding:12px 8px;"><i class="fa-solid fa-arrow-up"></i></button>
+    <!-- 좌측: 되돌리기 -->
+    <div id="cam-side-l" style="width:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.82);z-index:2;flex-shrink:0;">
+      <button onclick="closeCam()" style="background:rgba(255,255,255,.25);border:1.5px solid rgba(255,255,255,.7);border-radius:.75rem;padding:10px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;writing-mode:vertical-rl;text-orientation:mixed;letter-spacing:2px;">← 뒤로</button>
     </div>
-    <div id="cam-view-l">
+    <!-- 중앙: 뷰파인더 -->
+    <div id="cam-view-l" style="flex:1;position:relative;overflow:hidden;background:#111;">
       <video id="videoL" class="v-tag" autoplay playsinline muted></video>
       <div class="cam-grid-ov"></div>
       <div class="cd-ov" id="cdOvL"><div class="cd-n" id="cdNL">3</div></div>
-      <div id="zoomRowL" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:5;">
+      <!-- 줌 버튼: 하단 중앙, 가로 배치 -->
+      <div id="zoomRowL" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;flex-direction:row;gap:8px;z-index:5;">
         <button class="zb on" onclick="setZoom(1,this)">1x</button>
         <button class="zb" onclick="setZoom(2,this)">2x</button>
         <button class="zb" onclick="setZoom(5,this)">5x</button>
         <button class="zb" onclick="setZoom(10,this)">10x</button>
       </div>
     </div>
-    <div id="cam-side-r">
-      <button class="gal-btn" id="galBtnL" onclick="showLast()" style="width:60px;height:60px;background:rgba(255,255,255,.3);border:2px solid rgba(255,255,255,.8);">
-        <img id="lastThL" alt=""><span id="galIcoL"><i class="fa-solid fa-images"></i></span>
+    <!-- 우측: 컨트롤 패널 (네이티브 앱처럼) -->
+    <div id="cam-side-r" style="width:90px;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;background:rgba(0,0,0,.88);padding:16px 0;z-index:2;flex-shrink:0;">
+      <!-- 갤러리 -->
+      <button id="galBtnL" onclick="showLast()" style="width:56px;height:56px;border-radius:1rem;background:rgba(255,255,255,.3);border:2px solid rgba(255,255,255,.85);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;">
+        <img id="lastThL" alt="" style="width:100%;height:100%;object-fit:cover;display:none;"><span id="galIcoL"><i class="fa-solid fa-images"></i></span>
       </button>
+      <!-- 셔터 -->
       <button class="shutter" id="shutL" onclick="startCD()"><i class="fa-solid fa-camera"></i></button>
-      <button class="cam-flip-btn" onclick="flipCam()" style="width:60px;height:60px;border-radius:1rem;background:rgba(255,255,255,.35);border:2px solid rgba(255,255,255,.8);">
-        <i class="fa-solid fa-rotate" style="font-size:22px;"></i>
+      <!-- 카메라 전환 -->
+      <button onclick="flipCam()" style="width:56px;height:56px;border-radius:1rem;background:rgba(255,255,255,.3);border:2px solid rgba(255,255,255,.85);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;">
+        <i class="fa-solid fa-rotate"></i>
       </button>
     </div>
   </div>
