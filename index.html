@@ -473,6 +473,11 @@ function checkOrientation(){
   var camOn = document.getElementById('cam').classList.contains('on');
   if(!camOn) return;
   applyOrientation();
+  // 줌 버튼 방향도 전환
+  var zP = document.getElementById('zoomRowP');
+  var zL = document.getElementById('zoomRowL');
+  if(zP) zP.style.display = land ? 'none' : 'flex';
+  if(zL) zL.style.display = land ? 'flex' : 'none';
 }
 function applyOrientation(){
   var p = document.getElementById('cam-portrait');
@@ -607,7 +612,6 @@ function startCD(){
 }
 
 function takePhoto(){
-  // 현재 활성 video 가져오기
   var vid = isLandMode ? document.getElementById('videoL') : document.getElementById('videoP');
   if(vid.readyState < 2){
     toast('카메라 준비 중이에요. 잠시 후 다시 눌러주세요!');
@@ -615,24 +619,38 @@ function takePhoto(){
   }
   var vw = vid.videoWidth  || 640;
   var vh = vid.videoHeight || 480;
+
+  // ★ 가로모드: canvas 무조건 가로 (width > height)
+  // ★ 세로모드: canvas 무조건 세로 (height > width)
+  var canvasW = isLandMode ? Math.max(vw,vh) : Math.min(vw,vh);
+  var canvasH = isLandMode ? Math.min(vw,vh) : Math.max(vw,vh);
+
+  // 최대 1280px 제한 (전송 용량)
+  var sc = Math.min(1, 1280 / Math.max(canvasW, canvasH));
+  var dw = Math.round(canvasW * sc);
+  var dh = Math.round(canvasH * sc);
+
   var canvas = document.getElementById('captureCanvas');
-  // ★ 최대 해상도 제한 (노트북 고해상도 → 전송 실패 방지)
-  var MAX_DIM = 1280;
-  var scale = Math.min(1, MAX_DIM / Math.max(vw, vh));
-  var dw = Math.round(vw * scale);
-  var dh = Math.round(vh * scale);
   canvas.width  = dw;
   canvas.height = dh;
   var ctx = canvas.getContext('2d');
   ctx.save();
-  if(facing==='user'){ ctx.translate(dw,0); ctx.scale(-1,1); }
-  ctx.drawImage(vid, 0, 0, dw, dh);
+
+  if(isLandMode && vh > vw){
+    // 모바일 가로 촬영인데 video stream이 세로로 옴 → 90도 회전 보정
+    ctx.translate(dw/2, dh/2);
+    ctx.rotate(-Math.PI/2);
+    var sr = Math.min(dw/vh, dh/vw);
+    ctx.drawImage(vid, -vw*sr/2, -vh*sr/2, vw*sr, vh*sr);
+  } else {
+    if(facing==='user'){ ctx.translate(dw,0); ctx.scale(-1,1); }
+    ctx.drawImage(vid, 0, 0, dw, dh);
+  }
   ctx.restore();
-  // ★ JPEG 품질 0.75 (용량 대폭 줄임, 화질은 충분)
-  pendingData = canvas.toDataURL('image/jpeg', 0.75);
-  pendingW = dw;  // ★ 실제 저장 크기 (가로/세로 판단용)
+  pendingData = canvas.toDataURL('image/jpeg', 0.82);
+  pendingW = dw;
   pendingH = dh;
-  console.log('촬영:', dw+'x'+dh, '가로?', dw>dh, '데이터크기:', Math.round(pendingData.length/1024)+'KB');
+  console.log('촬영:', dw+'x'+dh, isLandMode?'가로':'세로', Math.round(pendingData.length/1024)+'KB');
   playShutter();
   // 플래시
   var fl = document.createElement('div');
