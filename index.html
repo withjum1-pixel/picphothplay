@@ -159,7 +159,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
     <p>⛔ 친구 동의 없이 사진 찍기<br>⛔ 위험한 장소: 높은 곳·난간·턱·화단 안·구령대·놀이터 놀이기구 위<br>⛔ 찍은 사진 무단 유포<br>⛔ 촬영 중 장난·뛰기<br>⛔ 선생님의 정당한 교육적 지도에 불응하는 경우<br><br>→ 위 행동 적발 시 <strong>모둠 전체 활동 즉시 중지!</strong></p>
   </div>
   <div style="padding:16px;">
-    <div class="ag-row"><input type="checkbox" id="agCk"><label for="agCk"><i class="fa-solid fa-clipboard-check" style="color:var(--gn);"></i> 안전 수칙을 모두 읽고 지키겠습니다!</label></div>
+    <div class="ag-row"><input type="checkbox" id="agCk" onchange="onAgreeChange()" onclick="onAgreeChange()"><label for="agCk"><i class="fa-solid fa-clipboard-check" style="color:var(--gn);"></i> 안전 수칙을 모두 읽고 지키겠습니다!</label></div>
     <button class="btn btn-gn" id="agBtn" onclick="goHome()" disabled><i class="fa-solid fa-party-horn"></i> 시작하기!</button>
   </div>
 </div>
@@ -388,9 +388,17 @@ try { photos = JSON.parse(localStorage.getItem('photos')||'[]'); } catch(e){}
 // ═══════════════════════════════
 // 안전수칙
 // ═══════════════════════════════
-document.getElementById('agCk').addEventListener('change', function(){
-  document.getElementById('agBtn').disabled = !this.checked;
-});
+// 체크박스 → 시작버튼 활성화
+function onAgreeChange(){
+  var chk = document.getElementById('agCk');
+  var btn = document.getElementById('agBtn');
+  if(chk && btn) btn.disabled = !chk.checked;
+}
+var agCkEl = document.getElementById('agCk');
+if(agCkEl){
+  agCkEl.addEventListener('change', onAgreeChange);
+  agCkEl.addEventListener('click', onAgreeChange);
+}
 function goHome(){
   if(!document.getElementById('agCk').checked){ toast('안전 수칙에 동의해야 해요! ✅'); return; }
   go('pg-home');
@@ -508,16 +516,13 @@ async function startCam(){
   }catch(err){
     var m;
     if(err.name==='NotAllowedError'||err.name==='PermissionDeniedError')
-      m='카메라 권한이 차단됐어요!
-주소창 자물쇠 → 카메라 허용 → 새로고침';
+      m='카메라 권한이 차단됐어요! 주소창 자물쇠 → 카메라 허용 → 새로고침';
     else if(err.name==='NotReadableError'||err.name==='TrackStartError')
-      m='카메라가 다른 앱에서 사용 중이에요!
-다른 앱을 닫고 새로고침 후 다시 시도해주세요.';
+      m='카메라가 다른 앱에서 사용 중이에요! 다른 앱을 닫고 새로고침 후 다시 시도해주세요.';
     else if(err.name==='NotFoundError')
       m='카메라를 찾을 수 없어요!';
     else
-      m='카메라 오류('+err.name+')
-페이지를 새로고침 해주세요.';
+      m='카메라 오류('+err.name+') 페이지를 새로고침 해주세요.';
     alert(m); closeCam();
   }
 }
