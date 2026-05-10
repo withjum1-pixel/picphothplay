@@ -340,4 +340,287 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
       </div>
     </div>
     <div class="mcard m2">
-      <div class="mhd"><span class="mbadge">미션 2</span><h3>원근
+      <div class="mhd"><span class="mbadge">미션 2</span><h3>원근감을 활용한 사진</h3><span style="font-size:26px;">📐</span></div>
+      <div class="mbody">
+        <div class="mdesc"><strong>원근감</strong>을 활용해 재미있고 창의적인 사진을 찍어봐요!</div>
+        <div class="mtip"><i class="fa-solid fa-list-check" style="color:var(--mint);"></i> <strong>체크리스트</strong><br>📌 원근감으로 재미있는 효과가 나타나나요?<br>📌 배경이 적절하게 선택됐나요?<br>📌 구도가 독창적인가요?</div>
+        <div class="mtip" style="background:#E8F5FF;"><i class="fa-solid fa-lightbulb" style="color:var(--blue);"></i> <strong>아이디어</strong><br>🏛️ 건물을 손으로 집는 척<br>🌳 나무를 손바닥으로 받치는 척<br>👆 작은 친구를 손가락으로 잡는 척!</div>
+        <div class="plan b">
+          <h4><i class="fa-solid fa-clipboard-list"></i> 미션 2 계획 세우기</h4>
+          <div class="pf"><label><i class="fa-solid fa-pen"></i> 작품 제목</label><input type="text" id="m2t" placeholder="예: 건물을 들어올리다"></div>
+          <div class="pf"><label><i class="fa-solid fa-align-left"></i> 작품 설명</label><textarea id="m2d" placeholder="어떻게 찍을지 설명해봐요..."></textarea></div>
+          <div class="pf"><label><i class="fa-solid fa-bag-shopping"></i> 필요한 소품</label><input type="text" id="m2p" placeholder="예: 없음"></div>
+          <div class="pf"><label><i class="fa-solid fa-location-dot"></i> 촬영 장소</label><input type="text" id="m2l" placeholder="예: 운동장"></div>
+        </div>
+        <button class="btn btn-green" id="m2-cam-btn" onclick="openCam('미션2: 원근감 활용 사진 📐','원근감을 활용해 창의적으로',this)"><i class="fa-solid fa-camera"></i> 미션 2 — 3초 후 촬영!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="cam-screen">
+  <div id="cam-top">
+    <button id="cam-back" onclick="closeCam()"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
+    <span id="cam-title">사진 찍기</span>
+  </div>
+  <div id="cam-view">
+    <video id="video" autoplay playsinline muted></video>
+    <div class="cam-grid"></div>
+    <div id="cd-overlay"><div id="cd-num">3</div></div>
+    <div id="zoom-btns">
+      <button class="zoom-btn active" onclick="setZoom(1,this)">1x</button>
+      <button class="zoom-btn" onclick="setZoom(2,this)">2x</button>
+      <button class="zoom-btn" onclick="setZoom(5,this)">5x</button>
+      <button class="zoom-btn" onclick="setZoom(10,this)">10x</button>
+    </div>
+  </div>
+  <div id="cam-bottom">
+    <div class="cam-row">
+      <button id="gallery-btn" onclick="showLast()">
+        <img id="lastThumb" alt=""><span id="galleryIco"><i class="fa-solid fa-images"></i></span>
+      </button>
+      <button id="shutter-btn" onclick="startCD()"><i class="fa-solid fa-camera"></i></button>
+      <button id="cam-flip-bottom" onclick="flipCam()"><i class="fa-solid fa-rotate"></i></button>
+    </div>
+  </div>
+  <canvas id="captureCanvas"></canvas>
+</div>
+
+<div id="input-wrap">
+  <div id="input-sheet">
+    <h3><i class="fa-solid fa-pen-to-square" style="color:var(--blue);"></i> 사진 정보 입력</h3>
+    <input type="text" id="inp-title" placeholder="📝 사진 제목을 입력하세요" maxlength="30">
+    <input type="text" id="inp-place" placeholder="📍 촬영 장소를 입력하세요" maxlength="30">
+    <div class="input-btns">
+      <button class="btn btn-red btn-sm" onclick="discardPhoto()" style="flex:1;"><i class="fa-solid fa-trash"></i> 버리기</button>
+      <button class="btn btn-green btn-sm" onclick="savePhoto()" style="flex:1.5;"><i class="fa-solid fa-floppy-disk"></i> 저장하기</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal">
+  <div class="modal-card">
+    <div id="img-viewer" style="overflow:hidden;position:relative;background:#111;max-height:60vh;display:flex;align-items:center;justify-content:center;cursor:zoom-in;">
+      <img id="previewImg" src="" alt="" style="max-width:100%;max-height:60vh;object-fit:contain;transform-origin:center center;transition:transform .2s;user-select:none;">
+    </div>
+    <div style="padding:8px 16px;background:#f5f5f5;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee;">
+      <button onclick="zoomImg(-1)" style="background:#eee;border:none;border-radius:.75rem;padding:7px 16px;font-size:18px;cursor:pointer;font-weight:800;">－</button>
+      <span id="zoomLabel" style="font-size:13px;font-weight:700;color:#666;">100%</span>
+      <button onclick="zoomImg(1)" style="background:#eee;border:none;border-radius:.75rem;padding:7px 16px;font-size:18px;cursor:pointer;font-weight:800;">＋</button>
+    </div>
+    <div class="modal-info">
+      <div class="m-title" id="prev-title">📸</div>
+      <div class="m-place"><i class="fa-solid fa-location-dot" style="color:var(--red);"></i> <span id="prev-place"></span></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-gray btn-sm" onclick="closeModal()" style="flex:1;"><i class="fa-solid fa-xmark"></i> 닫기</button>
+    </div>
+  </div>
+</div>
+
+<div id="sc-result" class="screen">
+  <div class="topnav"><button class="nav-btn" onclick="go('sc-home')"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button><h2>📋 결과물 제출하기</h2><button class="nav-btn" onclick="go('sc-home')"><i class="fa-solid fa-house"></i></button></div>
+  <div class="result-hero">
+    <div style="font-size:54px;margin-bottom:8px;">🎉</div>
+    <h1 style="font-size:21px;font-weight:800;margin-bottom:5px;">찍은 사진 모아보기!</h1>
+    <p id="photoCount" style="font-size:14px;">아직 찍은 사진이 없어요.</p>
+  </div>
+  <div class="pg" id="photoGrid"></div>
+  <div class="sub-area">
+    <div style="font-size:17px;font-weight:800;padding:0 0 10px;display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-cloud-arrow-up" style="color:var(--blue);"></i> 선생님께 제출하기</div>
+    <div class="info-box"><i class="fa-solid fa-circle-info" style="color:var(--blue);"></i> 마음에 안 드는 사진은 <strong>✕</strong>로 삭제 후 제출하세요!</div>
+    <div class="fw"><label><i class="fa-solid fa-people-group" style="color:var(--purple);"></i> 모둠 이름</label><input type="text" id="groupName" placeholder="예: 1모둠"></div>
+    <div class="fw"><label><i class="fa-solid fa-user-group" style="color:var(--mint);"></i> 모둠원 이름</label><input type="text" id="studentName" placeholder="예: 홍길동, 김철수, 이영희"></div>
+    <button class="btn btn-blue" id="submitBtn" onclick="submitGAS()" style="margin-bottom:10px;"><i class="fa-solid fa-paper-plane"></i> 선생님께 제출하기!</button>
+    <button class="btn btn-yellow" onclick="downloadAll()"><i class="fa-solid fa-download"></i> 내 기기에 전체 저장</button>
+    <div id="submitStatus"></div>
+  </div>
+</div>
+
+<div id="bottomHome"><button onclick="go('sc-home')"><i class="fa-solid fa-house"></i> 처음으로</button></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var GAS_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbzsB5j_xxPKZ9jgRTuXJ2hDvsfzaUDN9MRHkX8o1mY_3y4P-3DWMmYn2PY-Pw7RMhSIqw/exec';
+function getUrl(){ return localStorage.getItem('gasUrl') || GAS_URL_DEFAULT; }
+
+var stream = null, facing = 'environment', cdTimer = null;
+var pendingData = null, camMode = '', callerBtn = null;
+var curZoom = 1;
+var photos = [];
+try { photos = JSON.parse(localStorage.getItem('photos') || '[]'); } catch(e){ photos=[]; }
+
+document.getElementById('agreeChk').addEventListener('change', function(){
+  document.getElementById('agreeBtn').disabled = !this.checked;
+});
+function goHome(){
+  if(!document.getElementById('agreeChk').checked){ toast('안전 수칙에 동의해야 시작할 수 있어요! ✅'); return; }
+  go('sc-home');
+}
+function go(id){
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('on'); });
+  var t = document.getElementById(id); if(t) t.classList.add('on');
+  if(id === 'sc-result') renderResult();
+  window.scrollTo(0, 0); updateBottomHome();
+}
+function updateBottomHome(){
+  var bh = document.getElementById('bottomHome'), cs = document.getElementById('cam-screen'), safe = document.getElementById('sc-safety');
+  bh.style.display = (cs.classList.contains('on') || safe.classList.contains('on')) ? 'none' : 'flex';
+}
+function tipToggle(hd){
+  var tip = hd.parentElement.querySelector('.pi-tip');
+  if(tip) tip.style.display = tip.style.display === 'block' ? 'none' : 'block';
+}
+
+async function openCam(title, guide, btn){
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ alert('카메라를 지원하지 않아요.\nhttps:// 주소로 열어야 해요!'); return; }
+  if(btn){ btn.disabled = true; callerBtn = btn; }
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('on'); });
+  var cs = document.getElementById('cam-screen'); cs.classList.add('on');
+  document.getElementById('cam-title').textContent = title; camMode = title;
+  document.getElementById('bottomHome').style.display = 'none';
+  curZoom = 1; document.getElementById('video').style.transform = 'scale(1)';
+  document.querySelectorAll('.zoom-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelector('.zoom-btn').classList.add('active');
+  setTimeout(async function(){ await startCam(); }, 80);
+}
+async function startCam(){
+  try{
+    if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream = null; }
+    var tries = [
+      {video:{facingMode:facing, width:{ideal:1920}, height:{ideal:1080}}, audio:false},
+      {video:{facingMode:facing, width:{ideal:1280}, height:{ideal:720}}, audio:false},
+      {video:{facingMode:facing}, audio:false},
+      {video:true, audio:false}
+    ];
+    for(var i=0; i<tries.length; i++){
+      try{ stream = await navigator.mediaDevices.getUserMedia(tries[i]); break; }
+      catch(e){ if(i===tries.length-1) throw e; }
+    }
+    var v = document.getElementById('video');
+    v.srcObject = null; v.srcObject = stream;
+    v.onloadedmetadata = function(){ v.play().catch(function(){}); };
+    try{ await v.play(); }catch(e){}
+  }catch(err){
+    var msg = err.name==='NotAllowedError' ? '카메라 권한이 차단됐어요!\n주소창 자물쇠 🔒 → 카메라 허용 → 새로고침' : '카메라 오류: ' + err.name;
+    alert(msg); closeCam();
+  }
+}
+function closeCam(){
+  if(cdTimer){ clearInterval(cdTimer); cdTimer = null; }
+  if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream = null; }
+  document.getElementById('cam-screen').classList.remove('on');
+  document.getElementById('cd-overlay').style.display = 'none';
+  document.getElementById('shutter-btn').disabled = false;
+  document.getElementById('video').style.transform = 'scale(1)';
+  if(callerBtn){ callerBtn.disabled = false; callerBtn = null; }
+  go('sc-home');
+}
+function flipCam(){ facing = facing==='environment' ? 'user' : 'environment'; startCam(); toast(facing==='user' ? '셀카 모드! 😊' : '후면 카메라! 📸'); }
+function setZoom(z, btn){ curZoom = z; document.getElementById('video').style.transform = 'scale('+z+')'; document.querySelectorAll('.zoom-btn').forEach(function(b){ b.classList.remove('active'); }); if(btn) btn.classList.add('active'); }
+
+(function(){
+  var ld=0, bz=1, box = document.getElementById('cam-view');
+  box.addEventListener('touchstart', function(e){ if(e.touches.length===2){ var dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY; ld=Math.sqrt(dx*dx+dy*dy); bz=curZoom; } },{passive:true});
+  box.addEventListener('touchmove', function(e){ if(e.touches.length===2){ var dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY, d=Math.sqrt(dx*dx+dy*dy); curZoom = Math.min(10, Math.max(1, Math.round(bz*(d/ld)*10)/10)); document.getElementById('video').style.transform = 'scale('+curZoom+')'; } },{passive:true});
+})();
+
+function startCD(){
+  if(cdTimer) return;
+  var sb = document.getElementById('shutter-btn'); sb.disabled = true;
+  var ov = document.getElementById('cd-overlay'), nm = document.getElementById('cd-num'), cnt = 3;
+  function show(n){ nm.textContent = n; ov.style.display = 'flex'; nm.style.animation = 'none'; void nm.offsetWidth; nm.style.animation = 'cdPop 1s ease forwards'; }
+  show(cnt);
+  cdTimer = setInterval(function(){ cnt--; if(cnt<=0){ clearInterval(cdTimer); cdTimer = null; ov.style.display = 'none'; takePhoto(); sb.disabled = false; } else { show(cnt); } }, 1000);
+}
+
+function takePhoto(){
+  var video  = document.getElementById('video'), canvas = document.getElementById('captureCanvas');
+  if(video.readyState < 2){ toast('카메라가 준비되지 않았어요. 잠시 후 다시 눌러주세요!'); document.getElementById('shutter-btn').disabled = false; return; }
+  var vw = video.videoWidth || 640, vh = video.videoHeight || 480, maxDim = 1280, sc = Math.min(1, maxDim / Math.max(vw, vh));
+  vw = Math.round(vw * sc); vh = Math.round(vh * sc);
+  canvas.width = vw; canvas.height = vh;
+  var ctx = canvas.getContext('2d'); ctx.save();
+  if(facing === 'user'){ ctx.translate(vw, 0); ctx.scale(-1, 1); }
+  ctx.drawImage(video, 0, 0, vw, vh); ctx.restore();
+  pendingData = canvas.toDataURL('image/jpeg', 0.9);
+  playShutter();
+  var fl = document.createElement('div'); fl.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:99999;opacity:.95;pointer-events:none;transition:opacity .15s;';
+  document.body.appendChild(fl); setTimeout(function(){ fl.style.opacity='0'; setTimeout(function(){ fl.remove(); },150); }, 80);
+  document.getElementById('inp-title').value = ''; document.getElementById('inp-place').value = ''; document.getElementById('input-wrap').classList.add('on');
+}
+
+function playShutter(){
+  try{
+    var ctx = new(window.AudioContext||window.webkitAudioContext)(), sr = ctx.sampleRate, now = ctx.currentTime;
+    var b1 = ctx.createBuffer(1,Math.floor(sr*.08),sr), d1 = b1.getChannelData(0);
+    for(var i=0;i<d1.length;i++){ var t=i/sr, env = i<d1.length*.1 ? (i/(d1.length*.1)) : Math.exp(-(t-.008)*15); d1[i] = (Math.sin(2*Math.PI*7000*t)*.5+Math.sin(2*Math.PI*5000*t)*.3+Math.sin(2*Math.PI*9000*t)*.2)*env*2.5; }
+    var s1=ctx.createBufferSource(), c1=ctx.createDynamicsCompressor(); s1.buffer=b1; c1.threshold.value=-6; c1.ratio.value=4; s1.connect(c1); c1.connect(ctx.destination); s1.start(now);
+    var b2 = ctx.createBuffer(1,Math.floor(sr*.05),sr), d2 = b2.getChannelData(0);
+    for(var j=0;j<d2.length;j++){ var t2=j/sr, env2 = j<d2.length*.05 ? (j/(d2.length*.05)) : Math.exp(-(t2-.0025)*60); d2[j] = (Math.sin(2*Math.PI*3000*t2)*.4+Math.sin(2*Math.PI*1500*t2)*.4+Math.sin(2*Math.PI*800*t2)*.2)*env2*3.0; }
+    var s2=ctx.createBufferSource(), c2=ctx.createDynamicsCompressor(); s2.buffer=b2; c2.threshold.value=-3; c2.ratio.value=6; s2.connect(c2); c2.connect(ctx.destination); s2.start(now+.08);
+  }catch(e){}
+}
+
+function discardPhoto(){ pendingData = null; document.getElementById('input-wrap').classList.remove('on'); if(callerBtn){ callerBtn.disabled = false; callerBtn = null; } toast('🗑️ 버렸어요.'); }
+
+function savePhoto(){
+  var title = document.getElementById('inp-title').value.trim(), place = document.getElementById('inp-place').value.trim();
+  if(!title){ toast('사진 제목을 입력해주세요! 📝'); document.getElementById('inp-title').focus(); return; }
+  if(!place){ toast('촬영 장소를 입력해주세요! 📍'); document.getElementById('inp-place').focus(); return; }
+  if(!pendingData) return;
+  var canvas = document.getElementById('captureCanvas'), cw = canvas.width > 0 ? canvas.width : 640, ch = canvas.height > 0 ? canvas.height : 480;
+  var photo = { id: Date.now(), data: pendingData, title: title, place: place, timestamp: new Date().toLocaleString('ko-KR'), mode: camMode, width: cw, height: ch };
+  photos.push(photo);
+  try{ localStorage.setItem('photos', JSON.stringify(photos)); }catch(e){}
+  var th = document.getElementById('lastThumb'); th.src = pendingData; th.style.display = 'block'; document.getElementById('galleryIco').style.display = 'none';
+  document.getElementById('input-wrap').classList.remove('on');
+  dl(pendingData, title+'_'+Date.now()+'.jpg');
+  if(callerBtn){ callerBtn.disabled = false; callerBtn = null; }
+  pendingData = null;
+  // toast('✅ 저장됐어요! 갤러리를 확인해봐요 📱'); /* 알림 팝업 삭제 */
+}
+
+function showLast(){
+  if(!photos.length){ toast('아직 찍은 사진이 없어요!'); return; }
+  var p = photos[photos.length-1]; imgZoom = 1; document.getElementById('previewImg').src = p.data; document.getElementById('previewImg').style.transform = 'scale(1)'; document.getElementById('zoomLabel').textContent = '100%'; document.getElementById('prev-title').textContent = '📸 '+p.title; document.getElementById('prev-place').textContent = p.place; document.getElementById('modal').classList.add('on');
+}
+function closeModal(){ document.getElementById('modal').classList.remove('on'); imgZoom = 1; document.getElementById('previewImg').style.transform = 'scale(1)'; document.getElementById('zoomLabel').textContent = '100%'; }
+
+function renderResult(){
+  var grid = document.getElementById('photoGrid'); document.getElementById('photoCount').textContent = photos.length > 0 ? '총 '+photos.length+'장 찍었어요! 🎉' : '아직 찍은 사진이 없어요.'; grid.innerHTML = '';
+  if(!photos.length){ grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:#aaa;font-size:14px;">사진이 없어요.<br>먼저 찍어봐요! 📸</div>'; return; }
+  photos.forEach(function(p){
+    var d = document.createElement('div'); d.className = 'pg-item'; d.innerHTML = '<img src="'+p.data+'" alt="'+p.title+'"><div class="pg-label">'+p.title+'</div><button class="pg-del" onclick="delPhoto('+p.id+',event)">✕</button>';
+    d.querySelector('img').onclick = function(){ imgZoom = 1; document.getElementById('previewImg').src = p.data; document.getElementById('previewImg').style.transform = 'scale(1)'; document.getElementById('zoomLabel').textContent = '100%'; document.getElementById('prev-title').textContent = '📸 '+p.title; document.getElementById('prev-place').textContent = p.place; document.getElementById('modal').classList.add('on'); }; grid.appendChild(d);
+  });
+}
+function delPhoto(id, e){ e.stopPropagation(); photos = photos.filter(function(p){ return p.id !== id; }); try{ localStorage.setItem('photos', JSON.stringify(photos)); }catch(e){} renderResult(); toast('🗑️ 삭제했어요.'); }
+
+async function submitGAS(){
+  var url = getUrl(), grpRaw = document.getElementById('groupName').value.trim() || '미정', student = document.getElementById('studentName').value.trim() || '', st = document.getElementById('submitStatus'), submitBtn = document.getElementById('submitBtn');
+  if(!photos.length){ toast('찍은 사진이 없어요!'); return; }
+  var group = grpRaw.replace(/모둠\s*$/, '').trim(), plan = { m1Title: gv('m1t'), m1Desc: gv('m1d'), m1Props: gv('m1p'), m1Place: gv('m1l'), m2Title: gv('m2t'), m2Desc: gv('m2d'), m2Props: gv('m2p'), m2Place: gv('m2l') };
+  var payload = JSON.stringify({ group: group, student: student, photos: photos, plan: plan, members: [], submittedAt: new Date().toISOString() });
+  submitBtn.disabled = true; st.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 제출 중...';
+  try { st.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 전송 중... (' + photos.length + '장)'; var res  = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: payload }); var json = await res.json(); if(json.success){ st.innerHTML = '✅ ' + group + ' 모둠 제출 완료! Docs에 저장됐어요! 📝'; toast('🎉 제출 완료!'); setTimeout(function(){ st.innerHTML=''; }, 5000); } else { st.innerHTML = '⚠️ ' + (json.error || '오류가 발생했어요. Docs를 확인해주세요.'); setTimeout(function(){ st.innerHTML=''; }, 5000); } } catch(err) { st.innerHTML = '❌ 전송 실패. 인터넷 연결을 확인해주세요.'; setTimeout(function(){ st.innerHTML=''; }, 5000); } finally { submitBtn.disabled = false; }
+}
+function gv(id){ var el=document.getElementById(id); return el?(el.value||'-'):'-'; }
+function downloadAll(){ if(!photos.length){ toast('저장할 사진이 없어요!'); return; } photos.forEach(function(p,i){ setTimeout(function(){ dl(p.data,'사진_'+p.title+'_'+(i+1)+'.jpg'); }, i*500); }); toast('📥 '+photos.length+'장 다운로드 시작!'); }
+function dl(dataUrl, filename){ var a = document.createElement('a'); a.href=dataUrl; a.download=filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); }
+
+var imgZoom = 1;
+function zoomImg(dir){ imgZoom = Math.max(0.5, Math.min(5, imgZoom + dir * 0.5)); document.getElementById('previewImg').style.transform = 'scale('+imgZoom+')'; document.getElementById('zoomLabel').textContent = Math.round(imgZoom*100)+'%'; }
+(function(){
+  var lastTap = 0, viewer = document.getElementById('img-viewer'); if(!viewer) return;
+  viewer.addEventListener('touchend', function(e){ var now = Date.now(); if(now - lastTap < 300){ imgZoom = imgZoom > 1 ? 1 : 2.5; document.getElementById('previewImg').style.transform = 'scale('+imgZoom+')'; document.getElementById('zoomLabel').textContent = Math.round(imgZoom*100)+'%'; } lastTap = now; });
+  viewer.addEventListener('dblclick', function(){ imgZoom = imgZoom > 1 ? 1 : 2.5; document.getElementById('previewImg').style.transform = 'scale('+imgZoom+')'; document.getElementById('zoomLabel').textContent = Math.round(imgZoom*100)+'%'; });
+  var ld2=0, bz2=1; viewer.addEventListener('touchstart', function(e){ if(e.touches.length===2){ var dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY; ld2=Math.sqrt(dx*dx+dy*dy); bz2=imgZoom; } },{passive:true});
+  viewer.addEventListener('touchmove', function(e){ if(e.touches.length===2){ e.preventDefault(); var dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY, d=Math.sqrt(dx*dx+dy*dy); imgZoom = Math.max(0.5, Math.min(5, Math.round(bz2*(d/ld2)*10)/10)); document.getElementById('previewImg').style.transform = 'scale('+imgZoom+')'; document.getElementById('zoomLabel').textContent = Math.round(imgZoom*100)+'%'; } },{passive:false});
+})();
+function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 1000); }
+updateBottomHome();
+</script>
+</body>
+</html>
