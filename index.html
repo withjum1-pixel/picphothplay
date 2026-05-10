@@ -134,14 +134,17 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
   .zoom-row { bottom: 16px; left: auto; right: 16px; transform: none; flex-direction: column; }
 }
 
-/* ★ 자판(키보드) 대응: 입력창을 중앙(Center)으로 변경 */
-#inp-wrap { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.72); z-index:100000; align-items:center; justify-content:center; padding: 20px; }
+/* ★ 자판 대응: 입력창을 화면 최상단(Top)으로 배치 */
+#inp-wrap { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.72); z-index:100000; align-items: flex-start; justify-content:center; padding: 15px; overflow-y: auto; }
 #inp-wrap.on { display:flex; }
-#inp-sheet { background:#fff; border-radius:1.5rem; padding:24px 20px; width:100%; max-width:400px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); animation: pp 0.3s ease; }
-#inp-sheet h3 { font-size:18px; font-weight:800; margin-bottom:18px; text-align:center; color: var(--bl); }
-#inp-sheet input { width:100%; border:2px solid #E0E0E0; border-radius:1rem; padding:13px 14px; font-size:16px; font-family:inherit; margin-bottom:12px; display:block; }
+#inp-sheet { background:#fff; border-radius:1.5rem; padding:20px; width:100%; max-width:400px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); animation: fu 0.3s ease; margin-top: 10px; }
+#inp-sheet h3 { font-size:17px; font-weight:800; margin-bottom:15px; text-align:center; color: var(--bl); }
+
+/* 저장 버튼을 입력창 상단으로 배치 */
+.inp-btns { display:flex; gap:10px; margin-bottom:15px; }
+
+#inp-sheet input { width:100%; border:2px solid #E0E0E0; border-radius:1rem; padding:12px 14px; font-size:16px; font-family:inherit; margin-bottom:10px; display:block; }
 #inp-sheet input:focus { outline:none; border-color:var(--gn); background: #f9fff9; }
-.inp-btns { display:flex; gap:12px; margin-top:8px; }
 
 #modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.88);z-index:100001;align-items:center;justify-content:center;padding:20px;}
 #modal.on{display:flex;}
@@ -162,6 +165,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 .pg-lb{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.55);color:#fff;font-size:11px;font-weight:700;padding:4px 6px;}
 .pg-x{position:absolute;top:5px;right:5px;background:rgba(220,30,30,.92);color:#fff;border:none;border-radius:50%;width:28px;height:28px;font-size:15px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
 .sa{padding:0 16px 16px;}
+.ib{background:linear-gradient(135deg,#E8F5E9,#E3F2FD);border-radius:1.2rem;padding:13px 14px;margin-bottom:12px;font-size:13px;color:#555;line-height:1.9;}
 .fw{background:#fff;border-radius:1.2rem;padding:13px 14px;box-shadow:0 4px 12px rgba(0,0,0,.07);margin-bottom:10px;}
 .fw label{display:block;font-size:13px;font-weight:800;color:#888;margin-bottom:5px;}
 .fw input{width:100%;border:2px solid #E0E0E0;border-radius:.75rem;padding:11px 12px;font-size:14px;font-family:inherit;}
@@ -305,16 +309,19 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
   <canvas id="captureCanvas"></canvas>
 </div>
 
-<!-- 입력창 (자판 대응 수정됨) -->
+<!-- 입력창 (상단 고정 및 버튼 상위 배치) -->
 <div id="inp-wrap">
   <div id="inp-sheet">
     <h3>📝 사진 정보 입력</h3>
+    
+    <!-- 저장 버튼을 위로 올림 -->
+    <div class="inp-btns">
+      <button class="btn btn-rd btn-sm" onclick="discardPhoto()" style="flex:1;"><i class="fa-solid fa-trash"></i> 버리기</button>
+      <button class="btn btn-gn btn-sm" onclick="savePhoto()" style="flex:1.8;"><i class="fa-solid fa-floppy-disk"></i> 저장하기</button>
+    </div>
+
     <input type="text" id="inpTitle" placeholder="사진 제목을 입력하세요">
     <input type="text" id="inpPlace" placeholder="촬영 장소를 입력하세요">
-    <div class="inp-btns">
-      <button class="btn btn-rd btn-sm" onclick="discardPhoto()" style="flex:1;">버리기</button>
-      <button class="btn btn-gn btn-sm" onclick="savePhoto()" style="flex:1.5;">저장하기</button>
-    </div>
   </div>
 </div>
 
@@ -424,7 +431,6 @@ async function openCam(title, btn){
   applyZoom(1);
   document.getElementById('cam').classList.add('on');
 
-  // 전체 화면 자동 시도
   try {
     if (!document.fullscreenElement) {
         if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
