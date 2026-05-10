@@ -92,40 +92,48 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 .pf textarea{height:64px;resize:none;}
 .pf input:focus,.pf textarea:focus{outline:none;border-color:var(--gn);}
 
-/* ══ 카메라 ══ */
-#cam{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:9999;}
-#cam.on{display:block;}
+/* ══ 카메라 앱 스타일 (가로/세로 네이티브 반응형) ══ */
+#cam { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:9999; flex-direction:column; }
+#cam.on { display:flex; }
 
-#cam-portrait{display:flex;flex-direction:column;width:100%;height:100%;}
-#cam-portrait #cam-top-p{background:rgba(0,0,0,.82);padding:12px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0;z-index:2;}
-#cam-portrait #cam-view-p{flex:1;position:relative;overflow:hidden;background:#111;min-height:0;}
-#cam-portrait #cam-bot-p{background:rgba(0,0,0,.88);padding:14px 16px 36px;flex-shrink:0;z-index:2;}
+#cam-header { background:rgba(0,0,0,.82); padding:12px 14px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; z-index:2; height: 64px; transition: all 0.3s ease; }
+#cam-body { flex:1; position:relative; overflow:hidden; background:#111; display:flex; align-items:center; justify-content:center; }
+#cam-footer { background:rgba(0,0,0,.88); padding:14px 16px 36px; display:flex; align-items:center; justify-content:space-around; flex-shrink:0; z-index:2; height: 120px; transition: all 0.3s ease; padding-bottom: env(safe-area-inset-bottom); }
 
-#cam-landscape{display:none;width:100%;height:100%;flex-direction:row;}
-#cam-landscape.on{display:flex;}
-#cam-landscape #cam-side-l{background:rgba(0,0,0,.82);width:54px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16px 8px;z-index:2;flex-shrink:0;}
-#cam-landscape #cam-view-l{flex:1;position:relative;overflow:hidden;background:#111;}
-#cam-landscape #cam-side-r{background:rgba(0,0,0,.88);width:80px;display:flex;flex-direction:column;align-items:center;justify-content:space-around;padding:16px 0;z-index:2;flex-shrink:0;}
+.cam-nb { background:rgba(255,255,255,.2); border:none; border-radius:.9rem; padding:9px 14px; color:#fff; font-size:14px; font-weight:800; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:6px; white-space:nowrap; transition: background 0.2s; }
+.cam-nb:active { background:rgba(255,255,255,.4); }
+.cam-title-txt { color:#fff; font-size:14px; font-weight:800; text-align:center; flex:1; }
 
-.v-tag{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;transform-origin:center center;}
-.cam-grid-ov{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:2;background-image:linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);background-size:33.33% 33.33%;}
-.cd-ov{display:none;position:absolute;top:0;left:0;right:0;bottom:0;align-items:center;justify-content:center;background:rgba(0,0,0,.28);z-index:10;}
-.cd-ov.on{display:flex;}
-.cd-n{font-size:170px;font-weight:800;color:#fff;text-shadow:0 0 60px rgba(255,255,255,.9);animation:cd 1s ease forwards;}
-.zoom-row{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:5;}
-.zb{background:rgba(0,0,0,.55);color:#fff;border:1.5px solid rgba(255,255,255,.4);border-radius:1.5rem;padding:6px 14px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;}
-.zb.on{background:rgba(255,255,255,.93);color:#333;}
+.v-tag { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:block; transform-origin:center center; transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.cam-grid-ov { position:absolute; top:0; left:0; right:0; bottom:0; pointer-events:none; z-index:2; background-image:linear-gradient(rgba(255,255,255,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.2) 1px,transparent 1px); background-size:33.33% 33.33%; opacity: 0.7; }
+.cd-ov { display:none; position:absolute; top:0; left:0; right:0; bottom:0; align-items:center; justify-content:center; background:rgba(0,0,0,.28); z-index:10; }
+.cd-ov.on { display:flex; }
+.cd-n { font-size:170px; font-weight:800; color:#fff; text-shadow:0 0 60px rgba(255,255,255,.9); animation:cd 1s ease forwards; }
 
-.cam-nb{background:rgba(255,255,255,.2);border:none;border-radius:.9rem;padding:9px 14px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;white-space:nowrap;}
-.cam-title-txt{color:#fff;font-size:13px;font-weight:800;flex:1;text-align:center;}
-.cam-flip-btn{background:rgba(255,255,255,.2);border:none;border-radius:50%;width:44px;height:44px;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.shutter{background:#fff;border:5px solid rgba(255,255,255,.4);border-radius:50%;width:76px;height:76px;cursor:pointer;font-size:30px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 5px rgba(255,255,255,.2);transition:transform .1s;flex-shrink:0;}
-.shutter:active{transform:scale(.9);}
-.shutter:disabled{opacity:.4;cursor:not-allowed;}
-.gal-btn{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);border-radius:1rem;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;}
-.gal-btn img{width:100%;height:100%;object-fit:cover;display:none;}
-.home-cam{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;}
-.cam-row-h{display:flex;align-items:center;justify-content:space-around;width:100%;}
+.zoom-row { position:absolute; bottom:16px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:5; background: rgba(0,0,0,0.3); padding: 4px; border-radius: 2rem; backdrop-filter: blur(4px); }
+.zb { background:transparent; color:#fff; border:none; border-radius:1.5rem; padding:8px 14px; font-size:14px; font-weight:800; cursor:pointer; font-family:inherit; transition: all 0.2s; }
+.zb.on { background:rgba(255,255,255,.93); color:#333; }
+
+.cam-btn-icon { width:62px; height:62px; border-radius:1.2rem; background:rgba(255,255,255,.2); border:2px solid rgba(255,255,255,.6); display:flex; align-items:center; justify-content:center; color:#fff; font-size:24px; cursor:pointer; overflow:hidden; position: relative; transition: transform 0.15s; }
+.cam-btn-icon:active { transform: scale(0.9); }
+.cam-btn-icon img { width:100%; height:100%; object-fit:cover; display:none; position: absolute; top:0; left:0; }
+
+.shutter { background:#fff; border:6px solid rgba(255,255,255,.4); border-radius:50%; width:80px; height:80px; cursor:pointer; font-size:32px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px rgba(255,255,255,.2); transition:transform .1s; flex-shrink:0; color: #333; }
+.shutter:active { transform:scale(.9); }
+.shutter:disabled { opacity:.4; cursor:not-allowed; }
+
+/* ★ 핵심: 가로 모드일 때 네이티브 앱처럼 부드럽게 UI 재배치 */
+@media (orientation: landscape) {
+  #cam { flex-direction: row; }
+  #cam-header { flex-direction: column; width: 70px; height: 100%; padding: 16px 0; padding-left: env(safe-area-inset-left); justify-content: flex-start; gap: 20px; }
+  #cam-header .cam-title-txt { writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 2px; margin-top: 10px; }
+  #cam-header .cam-nb { flex-direction: column; writing-mode: vertical-rl; text-orientation: mixed; padding: 12px 8px; gap:8px; border-radius: 0.9rem; }
+  #cam-header .cam-nb i { transform: rotate(-90deg); margin: 0; }
+  
+  #cam-footer { flex-direction: column; width: 110px; height: 100%; padding: 0; padding-right: env(safe-area-inset-right); justify-content: space-evenly; }
+  
+  .zoom-row { bottom: 16px; left: auto; right: 16px; transform: none; flex-direction: column; }
+}
 
 #inp-wrap{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.72);z-index:99999;align-items:flex-end;justify-content:center;}
 #inp-wrap.on{display:flex;}
@@ -208,7 +216,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
     <div class="mc c3" onclick="go('pg-result')"><span class="me">🖼️</span><h3>📋 결과물<br>제출하기</h3></div>
   </div>
   <div style="margin:16px;padding:12px 16px;background:linear-gradient(135deg,#E8F4FD,#F0F8FF);border-radius:1.2rem;border-left:4px solid var(--bl);">
-    <p style="font-size:13px;color:#555;line-height:1.7;">💡 <strong style="color:var(--bl);">오늘의 팁!</strong> 📸 버튼을 누르면 3초 후 자동 촬영돼요! 폰을 돌리면 가로 모드로 전환돼요!</p>
+    <p style="font-size:13px;color:#555;line-height:1.7;">💡 <strong style="color:var(--bl);">오늘의 팁!</strong> 📸 버튼을 누르면 3초 후 자동 촬영돼요! 폰을 돌리면 일반 카메라처럼 화면이 회전돼요!</p>
   </div>
 </div>
 
@@ -223,12 +231,12 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
     <h1>6가지 촬영 방법!</h1><p>탭하면 팁 → 📸 버튼 → 3초 후 촬영!</p>
   </div>
   <div style="padding:32px 16px 0;">
-    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">⬆️</div><div class="pi-inf"><h3>위에서 찍기</h3><p>카메라를 아래로</p></div><div class="pi-bd" style="background:#FFD93D;color:#333;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 발판·계단 이용. 의자·책상·돌 위는 위험해요!</div><button class="pi-btn" style="background:linear-gradient(135deg,#FFD93D,#FF9F43);" onclick="openCam('위에서 찍기 📸','카메라를 위에서 아래로',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
-    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">⬇️</div><div class="pi-inf"><h3>아래에서 찍기</h3><p>카메라를 위로</p></div><div class="pi-bd" style="background:#FF6B9D;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 바닥에 앉아 카메라를 위로! 건물이 크게 보여요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#FF6B9D,#C77DFF);" onclick="openCam('아래에서 찍기 📸','카메라를 위로',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
-    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">🔍</div><div class="pi-inf"><h3>가까이서 찍기</h3><p>크게 자세히</p></div><div class="pi-bd" style="background:#26de81;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 10~30cm 거리에서! 꽃, 표정 디테일이 살아나요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#26de81,#4D96FF);" onclick="openCam('가까이서 찍기 📸','대상 바로 앞에서',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
-    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">🌅</div><div class="pi-inf"><h3>멀리서 찍기</h3><p>넓은 배경과 함께</p></div><div class="pi-bd" style="background:#4D96FF;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 5m 이상 거리! 배경이 넓게 담겨요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#4D96FF,#C77DFF);" onclick="openCam('멀리서 찍기 📸','멀리서 넓게',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
-    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">😊</div><div class="pi-inf"><h3>앞에서 찍기</h3><p>정면 표정 담기</p></div><div class="pi-bd" style="background:#C77DFF;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 눈높이 맞추고 정면에서! 표정이 잘 나와요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#C77DFF,#FF6B9D);" onclick="openCam('앞에서 찍기 📸','정면에서',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
-    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">🚶</div><div class="pi-inf"><h3>뒤에서 찍기</h3><p>뒷모습의 분위기</p></div><div class="pi-bd" style="background:#FF9F43;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 뒷모습은 신비로운 느낌! 풍경 앞 뒷모습을 찍어봐요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#FF9F43,#FF4757);" onclick="openCam('뒤에서 찍기 📸','뒷모습을',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
+    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">⬆️</div><div class="pi-inf"><h3>위에서 찍기</h3><p>카메라를 아래로</p></div><div class="pi-bd" style="background:#FFD93D;color:#333;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 발판·계단 이용. 의자·책상·돌 위는 위험해요!</div><button class="pi-btn" style="background:linear-gradient(135deg,#FFD93D,#FF9F43);" onclick="openCam('위에서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
+    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">⬇️</div><div class="pi-inf"><h3>아래에서 찍기</h3><p>카메라를 위로</p></div><div class="pi-bd" style="background:#FF6B9D;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 바닥에 앉아 카메라를 위로! 건물이 크게 보여요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#FF6B9D,#C77DFF);" onclick="openCam('아래에서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
+    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">🔍</div><div class="pi-inf"><h3>가까이서 찍기</h3><p>크게 자세히</p></div><div class="pi-bd" style="background:#26de81;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 10~30cm 거리에서! 꽃, 표정 디테일이 살아나요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#26de81,#4D96FF);" onclick="openCam('가까이서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
+    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">🌅</div><div class="pi-inf"><h3>멀리서 찍기</h3><p>넓은 배경과 함께</p></div><div class="pi-bd" style="background:#4D96FF;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 5m 이상 거리! 배경이 넓게 담겨요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#4D96FF,#C77DFF);" onclick="openCam('멀리서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
+    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">😊</div><div class="pi-inf"><h3>앞에서 찍기</h3><p>정면 표정 담기</p></div><div class="pi-bd" style="background:#C77DFF;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 눈높이 맞추고 정면에서! 표정이 잘 나와요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#C77DFF,#FF6B9D);" onclick="openCam('앞에서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
+    <div class="pi"><div class="pi-hd" onclick="tipTog(this)"><div class="pi-em">🚶</div><div class="pi-inf"><h3>뒤에서 찍기</h3><p>뒷모습의 분위기</p></div><div class="pi-bd" style="background:#FF9F43;color:#fff;"><i class="fa-solid fa-lightbulb"></i> 팁</div></div><div class="pi-tip">💡 뒷모습은 신비로운 느낌! 풍경 앞 뒷모습을 찍어봐요.</div><button class="pi-btn" style="background:linear-gradient(135deg,#FF9F43,#FF4757);" onclick="openCam('뒤에서 찍기 📸',this)"><i class="fa-solid fa-camera"></i> 3초 후 촬영</button></div>
   </div>
 </div>
 
@@ -255,7 +263,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
           <div class="pf"><label>필요한 소품</label><input type="text" id="m1p" placeholder="예: 꽃, 모자"></div>
           <div class="pf"><label>촬영 장소</label><input type="text" id="m1l" placeholder="예: 학교 화단 앞"></div>
         </div>
-        <button class="btn btn-yw" id="m1btn" onclick="openCam('미션1: 배경과 어울리는 사진 🌅','배경과 인물이 어우러지게',this)"><i class="fa-solid fa-camera"></i> 미션 1 — 3초 후 촬영!</button>
+        <button class="btn btn-yw" id="m1btn" onclick="openCam('미션1: 배경과 어울리는 사진 🌅',this)"><i class="fa-solid fa-camera"></i> 미션 1 — 3초 후 촬영!</button>
       </div>
     </div>
     <div class="mcard m2">
@@ -270,68 +278,37 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
           <div class="pf"><label>필요한 소품</label><input type="text" id="m2p" placeholder="예: 없음"></div>
           <div class="pf"><label>촬영 장소</label><input type="text" id="m2l" placeholder="예: 운동장"></div>
         </div>
-        <button class="btn btn-gn" id="m2btn" onclick="openCam('미션2: 원근감 활용 사진 📐','원근감을 활용해 창의적으로',this)"><i class="fa-solid fa-camera"></i> 미션 2 — 3초 후 촬영!</button>
+        <button class="btn btn-gn" id="m2btn" onclick="openCam('미션2: 원근감 활용 사진 📐',this)"><i class="fa-solid fa-camera"></i> 미션 2 — 3초 후 촬영!</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══ 카메라 (세로+가로 대응) ══ -->
+<!-- ══ 카메라 (단일 반응형 레이아웃 도입) ══ -->
 <div id="cam">
-  <!-- 세로 모드 -->
-  <div id="cam-portrait">
-    <div id="cam-top-p">
-      <button class="cam-nb" onclick="closeCam()"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
-      <span id="camTitleP" class="cam-title-txt">사진 찍기</span>
-    </div>
-    <div id="cam-view-p">
-      <video id="videoP" class="v-tag" autoplay playsinline muted></video>
-      <div class="cam-grid-ov"></div>
-      <div class="cd-ov" id="cdOvP"><div class="cd-n" id="cdNP">3</div></div>
-      <div class="zoom-row" id="zoomRowP">
-        <button class="zb on" onclick="setZoom(1,this)">1x</button>
-        <button class="zb" onclick="setZoom(2,this)">2x</button>
-        <button class="zb" onclick="setZoom(5,this)">5x</button>
-        <button class="zb" onclick="setZoom(10,this)">10x</button>
-      </div>
-    </div>
-    <div id="cam-bot-p">
-      <div class="cam-row-h">
-        <button class="gal-btn" id="galBtnP" onclick="showLast()" style="width:62px;height:62px;background:rgba(255,255,255,.3);border:2px solid rgba(255,255,255,.8);">
-          <img id="lastThP" alt=""><span id="galIcoP"><i class="fa-solid fa-images"></i></span>
-        </button>
-        <button class="shutter" id="shutP" onclick="startCD()"><i class="fa-solid fa-camera"></i></button>
-        <button class="cam-flip-btn" onclick="flipCam()" style="width:62px;height:62px;border-radius:1rem;background:rgba(255,255,255,.35);border:2px solid rgba(255,255,255,.8);">
-          <i class="fa-solid fa-rotate" style="font-size:22px;"></i>
-        </button>
-      </div>
+  <div id="cam-header">
+    <button class="cam-nb" onclick="closeCam()"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
+    <span id="camTitle" class="cam-title-txt">사진 찍기</span>
+  </div>
+  <div id="cam-body">
+    <video id="videoMain" class="v-tag" autoplay playsinline muted></video>
+    <div class="cam-grid-ov"></div>
+    <div class="cd-ov" id="cdOv"><div class="cd-n" id="cdN">3</div></div>
+    <div class="zoom-row" id="zoomRow">
+      <button class="zb on" onclick="setZoom(1,this)">1x</button>
+      <button class="zb" onclick="setZoom(2,this)">2x</button>
+      <button class="zb" onclick="setZoom(5,this)">5x</button>
+      <button class="zb" onclick="setZoom(10,this)">10x</button>
     </div>
   </div>
-  <!-- 가로 모드 -->
-  <div id="cam-landscape">
-    <div id="cam-side-l" style="width:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.82);z-index:2;flex-shrink:0;">
-      <button onclick="closeCam()" style="background:rgba(255,255,255,.25);border:1.5px solid rgba(255,255,255,.7);border-radius:.75rem;padding:10px 6px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;writing-mode:vertical-rl;text-orientation:mixed;letter-spacing:2px;">← 뒤로</button>
-    </div>
-    <div id="cam-view-l" style="flex:1;position:relative;overflow:hidden;background:#111;">
-      <video id="videoL" class="v-tag" autoplay playsinline muted></video>
-      <div class="cam-grid-ov"></div>
-      <div class="cd-ov" id="cdOvL"><div class="cd-n" id="cdNL">3</div></div>
-      <div id="zoomRowL" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;flex-direction:row;gap:8px;z-index:5;">
-        <button class="zb on" onclick="setZoom(1,this)">1x</button>
-        <button class="zb" onclick="setZoom(2,this)">2x</button>
-        <button class="zb" onclick="setZoom(5,this)">5x</button>
-        <button class="zb" onclick="setZoom(10,this)">10x</button>
-      </div>
-    </div>
-    <div id="cam-side-r" style="width:90px;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;background:rgba(0,0,0,.88);padding:16px 0;z-index:2;flex-shrink:0;">
-      <button id="galBtnL" onclick="showLast()" style="width:56px;height:56px;border-radius:1rem;background:rgba(255,255,255,.3);border:2px solid rgba(255,255,255,.85);cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;">
-        <img id="lastThL" alt="" style="width:100%;height:100%;object-fit:cover;display:none;"><span id="galIcoL"><i class="fa-solid fa-images"></i></span>
-      </button>
-      <button class="shutter" id="shutL" onclick="startCD()"><i class="fa-solid fa-camera"></i></button>
-      <button onclick="flipCam()" style="width:56px;height:56px;border-radius:1rem;background:rgba(255,255,255,.3);border:2px solid rgba(255,255,255,.85);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;">
-        <i class="fa-solid fa-rotate"></i>
-      </button>
-    </div>
+  <div id="cam-footer">
+    <button class="cam-btn-icon" id="galBtn" onclick="showLast()">
+      <img id="lastTh" alt=""><span id="galIco"><i class="fa-solid fa-images"></i></span>
+    </button>
+    <button class="shutter" id="shutBtn" onclick="startCD()"><i class="fa-solid fa-camera"></i></button>
+    <button class="cam-btn-icon" onclick="flipCam()">
+      <i class="fa-solid fa-rotate"></i>
+    </button>
   </div>
   <canvas id="captureCanvas"></canvas>
 </div>
@@ -401,14 +378,13 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 var GAS = 'https://script.google.com/macros/s/AKfycbx62A4BnDMrK89YZItroFesQHgJudJipBRg3eSC3Xrx4nCNRNx8Q_a2eEPhpG6MKi8U2g/exec';
 
 var stream = null, facing = 'environment', cdTimer = null;
-var pendingData = null, pendingIsLand = false;
+var pendingData = null;
 var camMode = '', callerBtn = null, curZoom = 1;
-var isLandMode = false;
 var photos = [];
 try { photos = JSON.parse(localStorage.getItem('photos')||'[]'); } catch(e){}
 
 // ═══════════════════════════════
-// 안전수칙
+// 안전수칙 & 화면 전환
 // ═══════════════════════════════
 document.getElementById('agCk').addEventListener('change', function(){
   document.getElementById('agBtn').disabled = !this.checked;
@@ -418,9 +394,6 @@ function goHome(){
   go('pg-home');
 }
 
-// ═══════════════════════════════
-// 화면 전환
-// ═══════════════════════════════
 function go(id){
   document.querySelectorAll('.pg').forEach(function(p){ p.classList.remove('on'); });
   var t = document.getElementById(id);
@@ -434,76 +407,22 @@ function tipTog(hd){
 }
 
 // ═══════════════════════════════
-// 가로/세로 감지 및 재생 (센서 기반 감지 강화 + 줌 유지)
+// 카메라 (비디오 단일화)
 // ═══════════════════════════════
-function checkOrientation(){
-  var land = window.innerWidth > window.innerHeight;
-  // ★ 추가된 로직: 모바일 기기의 실제 센서 방향을 가장 최우선으로 확인
-  if (window.screen && window.screen.orientation && window.screen.orientation.type) {
-    land = window.screen.orientation.type.includes('landscape');
-  } else if (typeof window.orientation !== 'undefined') {
-    land = (Math.abs(window.orientation) === 90);
-  }
-
-  if(land === isLandMode) return;
-  isLandMode = land;
-  var camOn = document.getElementById('cam').classList.contains('on');
-  if(!camOn) return;
-  applyOrientation();
-}
-
-function applyOrientation(){
-  var p = document.getElementById('cam-portrait');
-  var l = document.getElementById('cam-landscape');
-  if(isLandMode){
-    p.style.display = 'none';
-    l.classList.add('on');
-    if(stream){ 
-      var vL = document.getElementById('videoL');
-      vL.srcObject = stream; 
-      vL.style.transform = 'scale('+curZoom+')';
-      vL.play().catch(function(){}); 
-    }
-  } else {
-    p.style.display = 'flex';
-    l.classList.remove('on');
-    if(stream){ 
-      var vP = document.getElementById('videoP');
-      vP.srcObject = stream; 
-      vP.style.transform = 'scale('+curZoom+')';
-      vP.play().catch(function(){}); 
-    }
-  }
-}
-window.addEventListener('resize', checkOrientation);
-window.addEventListener('orientationchange', function(){ setTimeout(checkOrientation, 300); });
-
-// ═══════════════════════════════
-// 카메라
-// ═══════════════════════════════
-async function openCam(title, guide, btn){
+async function openCam(title, btn){
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
     alert('카메라를 지원하지 않아요.\nhttps:// 주소로 열어야 해요!'); return;
   }
   if(btn){ btn.disabled = true; callerBtn = btn; }
   document.querySelectorAll('.pg').forEach(function(p){ p.classList.remove('on'); });
   camMode = title;
-  document.getElementById('camTitleP').textContent = title;
+  document.getElementById('camTitle').textContent = title;
   curZoom = 1;
   document.querySelectorAll('.zb').forEach(function(b){ b.classList.remove('on'); });
   document.querySelectorAll('.zb')[0].classList.add('on');
   
-  isLandMode = window.innerWidth > window.innerHeight;
-  // ★ 추가된 로직: 카메라 열 때도 센서를 기준으로 명확히 판단
-  if (window.screen && window.screen.orientation && window.screen.orientation.type) {
-    isLandMode = window.screen.orientation.type.includes('landscape');
-  } else if (typeof window.orientation !== 'undefined') {
-    isLandMode = (Math.abs(window.orientation) === 90);
-  }
-
   var cam = document.getElementById('cam');
   cam.classList.add('on');
-  applyOrientation();
   await startCam();
 }
 
@@ -520,8 +439,9 @@ async function startCam(){
       try{ stream=await navigator.mediaDevices.getUserMedia(constraints[i]); break; }
       catch(e){ if(i===constraints.length-1) throw e; }
     }
-    var vid = isLandMode ? document.getElementById('videoL') : document.getElementById('videoP');
+    var vid = document.getElementById('videoMain');
     vid.srcObject = stream;
+    vid.style.transform = 'scale('+curZoom+')';
     vid.onloadedmetadata = function(){ vid.play().catch(function(){}); };
     try{ await vid.play(); }catch(e){}
   }catch(err){
@@ -536,12 +456,10 @@ function closeCam(){
   if(cdTimer){ clearInterval(cdTimer); cdTimer=null; }
   if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream=null; }
   document.getElementById('cam').classList.remove('on');
-  document.getElementById('cdOvP').classList.remove('on');
-  document.getElementById('cdOvL').classList.remove('on');
-  document.getElementById('shutP').disabled = false;
-  document.getElementById('shutL').disabled = false;
-  document.getElementById('videoP').style.transform = '';
-  document.getElementById('videoL').style.transform = '';
+  document.getElementById('cdOv').classList.remove('on');
+  document.getElementById('shutBtn').disabled = false;
+  var vid = document.getElementById('videoMain');
+  vid.style.transform = '';
   curZoom = 1;
   if(callerBtn){ callerBtn.disabled=false; callerBtn=null; }
   go('pg-home');
@@ -555,7 +473,7 @@ function flipCam(){
 
 function setZoom(z, btn){
   curZoom = z;
-  var vid = isLandMode ? document.getElementById('videoL') : document.getElementById('videoP');
+  var vid = document.getElementById('videoMain');
   vid.style.transform = 'scale('+z+')';
   document.querySelectorAll('.zb').forEach(function(b){ b.classList.remove('on'); });
   if(btn) btn.classList.add('on');
@@ -563,94 +481,87 @@ function setZoom(z, btn){
 
 function startCD(){
   if(cdTimer) return;
-  document.getElementById('shutP').disabled = true;
-  document.getElementById('shutL').disabled = true;
-  var ovP = document.getElementById('cdOvP');
-  var ovL = document.getElementById('cdOvL');
-  var nmP = document.getElementById('cdNP');
-  var nmL = document.getElementById('cdNL');
+  document.getElementById('shutBtn').disabled = true;
+  var ov = document.getElementById('cdOv');
+  var nm = document.getElementById('cdN');
   var cnt = 3;
   function show(n){
-    nmP.textContent = n; nmL.textContent = n;
-    ovP.classList.add('on'); ovL.classList.add('on');
-    [nmP,nmL].forEach(function(nm){
-      nm.style.animation='none'; void nm.offsetWidth;
-      nm.style.animation='cd 1s ease forwards';
-    });
+    nm.textContent = n;
+    ov.classList.add('on');
+    nm.style.animation='none'; void nm.offsetWidth;
+    nm.style.animation='cd 1s ease forwards';
   }
   show(cnt);
   cdTimer = setInterval(function(){
     cnt--;
     if(cnt<=0){
       clearInterval(cdTimer); cdTimer=null;
-      ovP.classList.remove('on'); ovL.classList.remove('on');
+      ov.classList.remove('on');
       takePhoto();
-      document.getElementById('shutP').disabled=false;
-      document.getElementById('shutL').disabled=false;
+      document.getElementById('shutBtn').disabled=false;
     } else { show(cnt); }
   },1000);
 }
 
 // ═══════════════════════════════
-// 사진 촬영 (회전 및 저장 로직 완벽 수정)
+// 사진 촬영 (회전/비율 완벽 호환 캡처 로직)
 // ═══════════════════════════════
 function takePhoto(){
-  var vid = isLandMode ? document.getElementById('videoL') : document.getElementById('videoP');
+  var vid = document.getElementById('videoMain');
   if(vid.readyState < 2){ toast('카메라 준비 중이에요. 잠시 후 다시 눌러주세요!'); return; }
 
-  var vw = vid.videoWidth  || 640;
-  var vh = vid.videoHeight || 480;
-
-  var MAX_DIM = 1920;
-  var scale = Math.min(1, MAX_DIM / Math.max(vw, vh));
+  // 1. 화면에 보이는 비디오의 레이아웃 크기 (CSS 적용 후)
+  var viewW = vid.clientWidth;
+  var viewH = vid.clientHeight;
   
-  // 소스 이미지의 최종 크기
-  var dw = Math.round(vw * scale);
-  var dh = Math.round(vh * scale);
-
-  // 크롭 및 줌 적용 계산
-  var z = curZoom > 1 ? curZoom : 1;
-  var srcW = Math.round(vw / z), srcH = Math.round(vh / z);
-  var srcX = Math.round((vw - srcW) / 2), srcY = Math.round((vh - srcH) / 2);
+  // 2. 비디오 원본 자체의 크기 (기기 센서가 알려주는 값)
+  var vidW = vid.videoWidth;
+  var vidH = vid.videoHeight;
 
   var canvas = document.getElementById('captureCanvas');
   var ctx = canvas.getContext('2d');
 
-  // 디바이스 가로/세로와 비디오 소스의 가로/세로가 다르면 90도 회전 필요
-  var needRotate = (isLandMode && vw < vh) || (!isLandMode && vw > vh);
-
-  // 캔버스 크기를 회전 여부에 따라 정확히 설정
-  if (needRotate) {
-    canvas.width  = dh; // 너비와 높이를 바꿈
-    canvas.height = dw;
-    pendingIsLand = (dh > dw); 
+  // 3. 고해상도 저장을 위해 화면 비율을 유지하면서 캔버스 크기 뻥튀기 (최대 1920px)
+  var MAX_DIM = 1920;
+  var viewAspect = viewW / viewH;
+  var canvasW, canvasH;
+  if (viewW > viewH) {
+    canvasW = Math.min(viewW * 3, MAX_DIM);
+    canvasH = canvasW / viewAspect;
   } else {
-    canvas.width  = dw;
-    canvas.height = dh;
-    pendingIsLand = (dw > dh); 
+    canvasH = Math.min(viewH * 3, MAX_DIM);
+    canvasW = canvasH * viewAspect;
   }
+
+  canvas.width = canvasW;
+  canvas.height = canvasH;
+
+  // 4. object-fit: cover 로직 수식 계산 (화면에 꽉 차게 잘라내는 비율)
+  // curZoom(확대 배율)을 곱해주어 줌 한 것도 그대로 반영
+  var scale = Math.max(viewW / vidW, viewH / vidH) * (curZoom > 1 ? curZoom : 1);
+  var drawW = vidW * scale;
+  var drawH = vidH * scale;
+
+  // 화면 정중앙에 그리기 위한 시작 좌표
+  var startX = (viewW - drawW) / 2;
+  var startY = (viewH - drawH) / 2;
 
   ctx.save();
-  
-  // ★ 좌표계 에러 원천 차단: 캔버스의 정중앙으로 원점을 옮김
-  ctx.translate(canvas.width / 2, canvas.height / 2);
+  // 캔버스 크기에 맞게 스케일 조정
+  var outScale = canvasW / viewW;
+  ctx.scale(outScale, outScale);
 
-  // 기기 방향에 맞게 회전 보정
-  if (needRotate) {
-    ctx.rotate((isLandMode ? -90 : 90) * Math.PI / 180);
-  }
-
-  // 전면 카메라인 경우 좌우 반전
+  // 셀카(전면 카메라)일 경우 좌우 반전
   if (facing === 'user') {
+    ctx.translate(viewW, 0);
     ctx.scale(-1, 1);
   }
 
-  // 원점이 중심이므로 절반 크기만큼 빼서(-dw/2, -dh/2)부터 그리기 시작
-  ctx.drawImage(vid, srcX, srcY, srcW, srcH, -dw / 2, -dh / 2, dw, dh);
-  
+  // 화면 픽셀 기준으로 그리기
+  ctx.drawImage(vid, startX, startY, drawW, drawH);
   ctx.restore();
 
-  // 캔버스의 이미지를 추출 (저장 준비)
+  // 5. 이미지 추출
   pendingData = canvas.toDataURL('image/jpeg', 0.92);
   playShutter();
 
@@ -701,17 +612,14 @@ function savePhoto(){
     title: title,
     place: place,
     timestamp: new Date().toLocaleString('ko-KR'),
-    mode: camMode,
-    isLand: pendingIsLand 
+    mode: camMode
   };
   photos.push(photo);
   try{ localStorage.setItem('photos',JSON.stringify(photos)); }catch(e){}
 
-  function setThumb(imgEl, icoEl){
-    imgEl.src=pendingData; imgEl.style.display='block'; icoEl.style.display='none';
-  }
-  setThumb(document.getElementById('lastThP'), document.getElementById('galIcoP'));
-  setThumb(document.getElementById('lastThL'), document.getElementById('galIcoL'));
+  var imgEl = document.getElementById('lastTh');
+  var icoEl = document.getElementById('galIco');
+  imgEl.src=pendingData; imgEl.style.display='block'; icoEl.style.display='none';
 
   document.getElementById('inp-wrap').classList.remove('on');
   dlSingle(pendingData, title+'_'+Date.now()+'.jpg');
@@ -795,8 +703,7 @@ async function submitAll(){
       title: p.title,
       place: p.place,
       timestamp: p.timestamp,
-      mode: p.mode,
-      isLand: p.isLand 
+      mode: p.mode
     };
   });
 
