@@ -99,9 +99,9 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 #cam-body { flex:1; position:relative; overflow:hidden; background:#111; display:flex; align-items:center; justify-content:center; touch-action: none; }
 #cam-footer { background:rgba(0,0,0,.88); padding:14px 16px 36px; display:flex; align-items:center; justify-content:space-around; flex-shrink:0; z-index:10001; height: 120px; transition: all 0.3s ease; padding-bottom: env(safe-area-inset-bottom); }
 
-.cam-nb { background:rgba(255,255,255,.2); border:none; border-radius:.9rem; padding:9px 14px; color:#fff; font-size:14px; font-weight:800; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:6px; white-space:nowrap; transition: background 0.2s; }
+.cam-nb { background:rgba(255,255,255,.2); border:none; border-radius:.9rem; padding:9px 13px; color:#fff; font-size:14px; font-weight:800; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:6px; white-space:nowrap; transition: background 0.2s; }
 .cam-nb:active { background:rgba(255,255,255,.4); }
-.cam-title-txt { color:#fff; font-size:14px; font-weight:800; text-align:center; flex:1; }
+.cam-title-txt { color:#fff; font-size:14px; font-weight:800; text-align:center; flex:1; margin: 0 10px; overflow: hidden; text-overflow: ellipsis; }
 
 .v-tag { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:block; transform-origin:center center; transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 .cam-grid-ov { position:absolute; top:0; left:0; right:0; bottom:0; pointer-events:none; z-index:1000; background-image:linear-gradient(rgba(255,255,255,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.2) 1px,transparent 1px); background-size:33.33% 33.33%; opacity: 0.7; }
@@ -124,8 +124,8 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 
 @media (orientation: landscape) {
   #cam { flex-direction: row; }
-  #cam-header { flex-direction: column; width: 70px; height: 100%; padding: 16px 0; padding-left: env(safe-area-inset-left); justify-content: flex-start; gap: 20px; }
-  #cam-header .cam-title-txt { writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 2px; margin-top: 10px; }
+  #cam-header { flex-direction: column; width: 80px; height: 100%; padding: 16px 0; padding-left: env(safe-area-inset-left); justify-content: space-evenly; gap: 10px; }
+  #cam-header .cam-title-txt { writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 2px; transform: rotate(180deg); flex: 0; }
   #cam-header .cam-nb { flex-direction: column; writing-mode: vertical-rl; text-orientation: mixed; padding: 12px 8px; gap:8px; border-radius: 0.9rem; }
   #cam-header .cam-nb i { transform: rotate(-90deg); margin: 0; }
   #cam-footer { flex-direction: column; width: 110px; height: 100%; padding: 0; padding-right: env(safe-area-inset-right); justify-content: space-evenly; }
@@ -140,7 +140,6 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 #inp-sheet input { width:100%; border:2px solid #E0E0E0; border-radius:1rem; padding:12px 14px; font-size:16px; font-family:inherit; margin-bottom:10px; display:block; }
 #inp-sheet input:focus { outline:none; border-color:var(--gn); background: #f9fff9; }
 
-/* ★ 뷰어 모달 최적화 (사진만 보이기) */
 #modal { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.95); z-index:200000; align-items:center; justify-content:center; }
 #modal.on { display:flex; }
 .mc2 { position: relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center; flex-direction: column; }
@@ -148,7 +147,6 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 #pvImg { max-width:100%; max-height:100%; object-fit:contain; transform-origin:center center; transition:transform 0.1s ease-out; }
 .modal-close-btn { position: absolute; top: 20px; right: 20px; width: 44px; height: 44px; background: rgba(255,255,255,0.2); border: none; border-radius: 50%; color: #fff; font-size: 24px; z-index: 200001; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-/* ★ 결과 페이지 사진 격자 (텍스트 제거) */
 .res-hero{background:linear-gradient(135deg,#FFD93D,#FF9F43,#FF6B9D);background-size:200% 200%;animation:rb 4s ease infinite;padding:28px 20px;text-align:center;color:#fff;}
 .pgrid{padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .pgi{border-radius:1rem;overflow:hidden;background:#333;aspect-ratio:1;position:relative;cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
@@ -170,6 +168,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 </head>
 <body>
 
+<!-- 안전수칙 페이지 -->
 <div id="pg-safety" class="pg on">
   <div class="hero-safety">
     <span class="em">📸</span>
@@ -194,6 +193,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
   </div>
 </div>
 
+<!-- 홈 메인 페이지 (Practice, Mission, Result) -->
 <div id="pg-home" class="pg">
   <div class="hero-home">
     <span class="cam">📷</span>
@@ -207,6 +207,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
   </div>
 </div>
 
+<!-- 연습 페이지 -->
 <div id="pg-practice" class="pg">
   <div class="nav">
     <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
@@ -226,6 +227,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
   </div>
 </div>
 
+<!-- 미션 페이지 -->
 <div id="pg-mission" class="pg">
   <div class="nav">
     <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
@@ -270,9 +272,13 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 <!-- 카메라 UI -->
 <div id="cam">
   <div id="cam-header">
+    <!-- 되돌리기는 미션 화면으로 이동 -->
     <button class="cam-nb" onclick="closeCam()"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
+    <!-- 홈 버튼은 첫 화면으로 이동 -->
+    <button class="cam-nb" onclick="goHomeFromCam()"><i class="fa-solid fa-house"></i> 홈</button>
     <button class="cam-nb" onclick="toggleFullscreen()" id="fsBtn"><i class="fa-solid fa-expand"></i> 전체화면</button>
-    <span id="camTitle" class="cam-title-txt">사진 찍기</span>
+    <!-- 제목 텍스트는 공간 확보를 위해 필요 시 숨기거나 작게 유지 -->
+    <span id="camTitle" class="cam-title-txt" style="display:none;">사진 찍기</span>
   </div>
   <div id="cam-body">
     <video id="videoMain" class="v-tag" autoplay playsinline muted></video>
@@ -316,6 +322,7 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
   </div>
 </div>
 
+<!-- 결과물 제출 페이지 -->
 <div id="pg-result" class="pg">
   <div class="nav">
     <button class="nb" onclick="go('pg-home')"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
@@ -349,18 +356,19 @@ try {
   if(saved) photos = JSON.parse(saved);
 } catch(e){ photos = []; }
 
-// 핀치 줌 변수 (카메라 및 뷰어 공용)
 let startDist = 0, initialZoom = 1;
 let modalZoom = 1;
 
 // ═══════════════════════════════
-// 기본 기능 및 전체화면
+// 기본 화면 전환 로직
 // ═══════════════════════════════
 document.getElementById('agCk').addEventListener('change', function(){ document.getElementById('agBtn').disabled = !this.checked; });
 function goHome(){ if(!document.getElementById('agCk').checked) return; go('pg-home'); }
+
 function go(id){
   document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
-  document.getElementById(id).classList.add('on');
+  const target = document.getElementById(id);
+  if(target) target.classList.add('on');
   if(id==='pg-result') renderResult();
   window.scrollTo(0,0);
 }
@@ -372,25 +380,19 @@ function tipTog(hd){
 async function toggleFullscreen() {
   if (!document.fullscreenElement) {
     try {
-      if (document.documentElement.requestFullscreen) {
-        await document.documentElement.requestFullscreen();
-      } else if (document.documentElement.webkitRequestFullscreen) {
-        await document.documentElement.webkitRequestFullscreen();
-      }
+      if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
+      else if (document.documentElement.webkitRequestFullscreen) await document.documentElement.webkitRequestFullscreen();
       document.getElementById('fsBtn').innerHTML = '<i class="fa-solid fa-compress"></i> 화면축소';
     } catch (err) { toast('전체화면 전환 실패'); }
   } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    }
+    if (document.exitFullscreen) document.exitFullscreen();
+    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
     document.getElementById('fsBtn').innerHTML = '<i class="fa-solid fa-expand"></i> 전체화면';
   }
 }
 
 // ═══════════════════════════════
-// 카메라 & 줌 기능
+// 카메라 제어
 // ═══════════════════════════════
 async function openCam(title, btn){
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ alert('카메라를 지원하지 않습니다.'); return; }
@@ -439,10 +441,11 @@ async function startCam(){
     var vid = document.getElementById('videoMain');
     vid.srcObject = stream;
     vid.onloadedmetadata = () => vid.play();
-  }catch(e){ alert('카메라 시작 불가'); closeCam(); }
+  }catch(e){ alert('카메라 시작 불가'); stopCamAndExit(); go('pg-mission'); }
 }
 
-function closeCam(){
+// 카메라 종료 공통 로직
+function stopCamAndExit() {
   if(stream){ stream.getTracks().forEach(t => t.stop()); stream=null; }
   document.getElementById('cam').classList.remove('on');
   if(callerBtn) callerBtn.disabled = false;
@@ -450,6 +453,17 @@ function closeCam(){
       if (document.exitFullscreen) document.exitFullscreen();
       else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
   }
+}
+
+// 1. 카메라에서 되돌리기 버튼 -> 미션 도전하기 화면으로
+function closeCam(){
+  stopCamAndExit();
+  go('pg-mission');
+}
+
+// 2. 카메라에서 홈 버튼 -> 첫 화면으로
+function goHomeFromCam() {
+  stopCamAndExit();
   go('pg-home');
 }
 
@@ -464,7 +478,7 @@ function setZoom(z, btn){ applyZoom(z); }
 function flipCam(){ facing = facing === 'environment' ? 'user' : 'environment'; startCam(); }
 
 // ═══════════════════════════════
-// 카운트다운 및 사운드
+// 촬영 로직
 // ═══════════════════════════════
 function playShutter(){
   try {
@@ -509,9 +523,6 @@ function startCD(){
   }, 1000);
 }
 
-// ═══════════════════════════════
-// 사진 촬영 및 저장
-// ═══════════════════════════════
 function takePhoto(){
   var vid = document.getElementById('videoMain');
   if(vid.readyState < 2){ toast('준비 중...'); return; }
@@ -576,7 +587,7 @@ function savePhoto(){
 function discardPhoto(){ document.getElementById('inp-wrap').classList.remove('on'); toast('🗑️ 버렸습니다.'); }
 
 // ═══════════════════════════════
-// 결과 및 유틸리티 (제목 제거 최적화)
+// 결과 확인 및 제출
 // ═══════════════════════════════
 function renderResult(){
   var g = document.getElementById('pgrid');
@@ -584,7 +595,6 @@ function renderResult(){
   g.innerHTML = photos.length ? '' : '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#aaa;">사진이 없습니다. 📸</div>';
   photos.forEach(p => {
     var d = document.createElement('div'); d.className='pgi';
-    // ★ 텍스트 태그를 제거하고 사진만 보여줌
     d.innerHTML = `<img src="${p.data}"><button class="pg-x" onclick="delPh(${p.id},event)">✕</button>`;
     d.onclick = () => openModal(p);
     g.appendChild(d);
@@ -616,9 +626,6 @@ async function submitAll(){
   } finally { btn.disabled = false; }
 }
 
-// ═══════════════════════════════
-// 상세 보기 모달 & 핀치 줌 (수정 완료)
-// ═══════════════════════════════
 function openModal(p){
   const img = document.getElementById('pvImg');
   img.src = p.data;
@@ -627,38 +634,31 @@ function openModal(p){
   document.getElementById('modal').classList.add('on');
 }
 
-function closeModal(){ 
-  document.getElementById('modal').classList.remove('on'); 
-}
+function closeModal(){ document.getElementById('modal').classList.remove('on'); }
 
 function applyModalZoom(){
   const img = document.getElementById('pvImg');
   img.style.transform = `scale(${modalZoom})`;
 }
 
-// 상세 보기 핀치 줌 및 더블 탭 기능
 (function initModalZoom() {
   const vwr = document.getElementById('vwr');
   let lastTap = 0;
-  
   vwr.addEventListener('touchstart', e => {
     if(e.touches.length === 2){
       startDist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY);
       initialZoom = modalZoom;
     }
   }, {passive: false});
-
   vwr.addEventListener('touchmove', e => {
     if(e.touches.length === 2){
       e.preventDefault();
       let dist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY);
       let zoom = initialZoom * (dist / startDist);
-      modalZoom = Math.min(Math.max(zoom, 1), 5); // 최대 5배
+      modalZoom = Math.min(Math.max(zoom, 1), 5);
       applyModalZoom();
     }
   }, {passive: false});
-
-  // 더블 탭 줌
   vwr.addEventListener('touchend', e => {
     let now = Date.now();
     if (now - lastTap < 300) {
