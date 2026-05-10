@@ -275,6 +275,8 @@ body{font-family:'Nanum Round Square',sans-serif;background:var(--bg);color:#333
 <div id="cam">
   <div id="cam-header">
     <button class="cam-nb" onclick="closeCam()"><i class="fa-solid fa-arrow-left"></i> 되돌리기</button>
+    <!-- 전체화면 토글 버튼 추가 -->
+    <button class="cam-nb" onclick="toggleFullscreen()" id="fsBtn"><i class="fa-solid fa-expand"></i> 전체화면</button>
     <span id="camTitle" class="cam-title-txt">사진 찍기</span>
   </div>
   <div id="cam-body">
@@ -371,7 +373,32 @@ function go(id){
 }
 function tipTog(hd){
   var t = hd.parentElement.querySelector('.pi-tip');
-  t.style.display = t.style.display==='block' ? 'none' : 'block';
+  if(t) t.style.display = t.style.display==='block' ? 'none' : 'block';
+}
+
+// ═══════════════════════════════
+// 전체화면 제어
+// ═══════════════════════════════
+async function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    try {
+      if (document.documentElement.requestFullscreen) {
+        await document.documentElement.requestFullscreen();
+      } else if (document.documentElement.webkitRequestFullscreen) { // Safari 지원
+        await document.documentElement.webkitRequestFullscreen();
+      }
+      document.getElementById('fsBtn').innerHTML = '<i class="fa-solid fa-compress"></i> 화면축소';
+    } catch (err) {
+      toast('전체화면 전환에 실패했습니다.');
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+    document.getElementById('fsBtn').innerHTML = '<i class="fa-solid fa-expand"></i> 전체화면';
+  }
 }
 
 // ═══════════════════════════════
@@ -385,6 +412,15 @@ async function openCam(title, btn){
   curZoom = 1;
   applyZoom(1);
   document.getElementById('cam').classList.add('on');
+
+  // 전체 화면 자동 시도 (사용자 클릭 이벤트 핸들러 내이므로 가능)
+  try {
+    if (!document.fullscreenElement) {
+        if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
+        else if (document.documentElement.webkitRequestFullscreen) await document.documentElement.webkitRequestFullscreen();
+        document.getElementById('fsBtn').innerHTML = '<i class="fa-solid fa-compress"></i> 화면축소';
+    }
+  } catch(e) {}
 
   // 핀치 줌 이벤트 리스너
   const body = document.getElementById('cam-body');
@@ -424,6 +460,13 @@ function closeCam(){
   if(stream){ stream.getTracks().forEach(t => t.stop()); stream=null; }
   document.getElementById('cam').classList.remove('on');
   if(callerBtn) callerBtn.disabled = false;
+  
+  // 전체화면 해제 시도
+  if (document.fullscreenElement) {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+  }
+  
   go('pg-home');
 }
 
@@ -457,25 +500,28 @@ function startCD(){
 // ═══════════════════════════════
 function takePhoto(){
   var vid = document.getElementById('videoMain');
+  if(vid.readyState < 2){ toast('카메라 준비 중이에요!'); return; }
+
   var isLand = window.innerWidth > window.innerHeight;
+  var vidW = vid.videoWidth, vidH = vid.videoHeight;
   var canvas = document.getElementById('captureCanvas');
   var ctx = canvas.getContext('2d');
 
-  var dw = isLand ? Math.max(vid.videoWidth, vid.videoHeight) : Math.min(vid.videoWidth, vid.videoHeight);
-  var dh = isLand ? Math.min(vid.videoWidth, vid.videoHeight) : Math.max(vid.videoWidth, vid.videoHeight);
+  var drawW = isLand ? Math.max(vidW, vidH) : Math.min(vidW, vidH);
+  var drawH = isLand ? Math.min(vidW, vidH) : Math.max(vidW, vidH);
   
   const limit = 2048;
-  if(dw > limit || dh > limit){ let r = Math.min(limit/dw, limit/dh); dw *= r; dh *= r; }
-  canvas.width = dw; canvas.height = dh;
+  if(drawW > limit || drawH > limit){ let r = Math.min(limit/drawW, limit/drawH); drawW *= r; dh *= r; }
+  canvas.width = drawW; canvas.height = drawH;
 
   ctx.save();
   if((isLand && vid.videoWidth < vid.videoHeight) || (!isLand && vid.videoWidth > vid.videoHeight)){
-    ctx.translate(dw/2, dh/2); ctx.rotate(90 * Math.PI / 180);
+    ctx.translate(drawW/2, drawH/2); ctx.rotate(90 * Math.PI / 180);
     if(facing==='user') ctx.scale(-1,1);
-    ctx.drawImage(vid, -dh/2, -dw/2, dh, dw);
+    ctx.drawImage(vid, -drawH/2, -drawW/2, drawH, drawW);
   } else {
-    if(facing==='user'){ ctx.translate(dw,0); ctx.scale(-1,1); }
-    ctx.drawImage(vid, 0, 0, dw, dh);
+    if(facing==='user'){ ctx.translate(drawW,0); ctx.scale(-1,1); }
+    ctx.drawImage(vid, 0, 0, drawW, drawH);
   }
   ctx.restore();
 
@@ -514,7 +560,7 @@ function savePhoto(){
 function discardPhoto(){ document.getElementById('inp-wrap').classList.remove('on'); toast('🗑️ 버렸습니다.'); }
 
 // ═══════════════════════════════
-// 결과 렌더링 & 제출 (목록 유지 수정 완료)
+// 결과 렌더링 & 제출 (목록 유지)
 // ═══════════════════════════════
 function renderResult(){
   var g = document.getElementById('pgrid');
